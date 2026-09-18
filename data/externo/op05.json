@@ -99,7 +99,7 @@
     "nombre": "Última cuenta Asignada",
     "producto": "Todos",
     "pais": "Todos",
-    "valores": "Valor por defecto para emisores nuevos: 00000.",
+    "valores": "00000 (Valor por defecto para emisores nuevos)",
     "que": "Muestra el último número de cuenta utilizado por el sistema para la generación de cuentas asociadas al emisor.",
     "como": "El valor es administrado automáticamente por Siscard y se actualiza conforme se generan nuevas cuentas para el emisor.",
     "dependencias": "El comportamiento del parámetro está relacionado con la generación de cuentas del emisor.",
@@ -109,7 +109,7 @@
     "codigo": "05",
     "id": "8b609ef1-a400-4d49-9c9e-69416646fb79",
     "creadoEn": "2026-09-18T19:18:13.899Z",
-    "actualizadoEn": "2026-09-18T20:01:53.705Z"
+    "actualizadoEn": "2026-09-18T20:08:14.138Z"
   },
   {
     "nombre": "Último Prospecto Asignado (Uso de Evertec)",
