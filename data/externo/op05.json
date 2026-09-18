@@ -3,7 +3,7 @@
     "nombre": "Emisor",
     "producto": "Todos",
     "pais": "Todos",
-    "valores": "No aplica (valor asignado automáticamente por el sistema).",
+    "valores": "Corresponde al número de 8 dígitos que el sistema crea de forma aleatoria y va ligada al bin8 dado por la marca, y es funcional para crear las cuentas a nivel del Siscard.",
     "que": "Identifica de forma única al emisor dentro del sistema y permite administrar las tarjetas y cuentas asociadas a sus productos.",
     "como": "El sistema asigna automáticamente un número único al emisor, el cual se utiliza internamente para relacionar tarjetas, cuentas y operaciones del banco dentro de la plataforma.",
     "dependencias": "Requiere que el BIN esté previamente definido y aprobado por la Marca.",
@@ -13,13 +13,13 @@
     "codigo": "05",
     "id": "6b8df515-da9e-4a1d-9030-14339dd3f367",
     "creadoEn": "2026-08-19T19:57:27.324Z",
-    "actualizadoEn": "2026-08-28T17:08:40.665Z"
+    "actualizadoEn": "2026-09-18T18:08:23.683Z"
   },
   {
     "nombre": "Franquicia",
     "producto": "Todos",
     "pais": "Todos",
-    "valores": "Código del producto",
+    "valores": "Códigos de producto como Visa Crédito, Visa Débito, Visa Prepago, Mastercard Crédito, Mastercard Débito, Mastercard Prepago, según corresponda.",
     "que": "Define el tipo de producto de tarjeta que se va a configurar dentro del emisor.",
     "como": "Se selecciona un código de producto que ya existe en el sistema. Este código identifica la marca y el tipo de tarjeta que tendrá el emisor.",
     "dependencias": "El código del producto debe estar creado previamente. Sin este código no se puede continuar con la configuración del emisor.",
@@ -29,7 +29,7 @@
     "codigo": "05",
     "id": "27c505e3-c040-4851-8118-f6f07229531f",
     "creadoEn": "2026-08-19T19:57:27.324Z",
-    "actualizadoEn": "2026-09-08T19:13:54.998Z"
+    "actualizadoEn": "2026-09-18T18:08:23.683Z"
   },
   {
     "nombre": "Moneda Asignada",
@@ -275,7 +275,7 @@
     "nombre": "Clase Inicial Cuenta \r\n(Clasificación de Pago)",
     "producto": "Crédito y Débito",
     "pais": "Todos",
-    "valores": "A = Cero importes vencidos y cumple pago mínimo\nB = Ha tenido un importe vencido (mora de 0 a 29 días)\nC = Dos importes vencidos (mora consecutiva de 30 a 59 días)\nD = Tres importes vencidos (mora consecutiva de 60 a 89 días)\nN = Nuevas \nX= Cuatro o cinco importes vencidos (mora consecutiva de 90 a 149 días)\nZ = Seis o más importes vencidos (mora mayor a 150 días)",
+    "valores": "A = Cero importes vencidos y cumple pago mínimo\r\nB = Ha tenido un importe vencido (mora de 0 a 29 días)\r\nC = Dos importes vencidos (mora consecutiva de 30 a 59 días)\r\nD = Tres importes vencidos (mora consecutiva de 60 a 89 días)\r\nN = Nuevas = Cuatro o cinco importes vencidos (mora consecutiva de 90 a 149 días)\r\nZ = Seis o más importes vencidos (mora mayor a 150 días)",
     "que": "El parámetro debe configurarse obligatoriamente al crear el emisor. De forma estándar, el valor inicial es N = Nuevas.",
     "como": "Las cuentas inician con una clasificación inicial y, con el tiempo, el sistema ajusta esa clasificación según el cumplimiento de pagos.",
     "dependencias": "La clasificación influye en la disponibilidad de algunos productos financieros, como adelantos o financiamientos.",
@@ -285,7 +285,7 @@
     "codigo": "05",
     "id": "6ac34578-93d8-41ed-8f62-138ef5203991",
     "creadoEn": "2026-08-19T19:57:27.324Z",
-    "actualizadoEn": "2026-09-08T17:13:10.962Z"
+    "actualizadoEn": "2026-09-18T18:08:23.683Z"
   },
   {
     "nombre": "Tipo Inicial Cuenta",
@@ -2206,5 +2206,21 @@
     "id": "c4c36cb9-abbc-4416-a3fd-e7cf2f12c932",
     "creadoEn": "2026-08-19T19:57:27.326Z",
     "actualizadoEn": "2026-08-19T19:57:27.326Z"
+  },
+  {
+    "nombre": "Saldo Origen (Uso Evertec)",
+    "producto": "",
+    "pais": "",
+    "valores": "",
+    "que": "",
+    "como": "",
+    "dependencias": "",
+    "cuando": "",
+    "ejemplo": "",
+    "notas": "",
+    "codigo": "05",
+    "id": "22256c37-63fb-4076-8f53-90977565f8e0",
+    "creadoEn": "2026-09-18T18:08:23.683Z",
+    "actualizadoEn": "2026-09-18T18:08:23.683Z"
   }
 ]
