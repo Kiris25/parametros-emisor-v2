@@ -19,23 +19,23 @@
     "nombre": "Franquicia",
     "producto": "Todos",
     "pais": "Todos",
-    "valores": "Códigos de producto. Ejemplo:  Visa Crédito, Visa Débito, Visa Prepago, Mastercard Crédito, Mastercard Débito, Mastercard Prepago, según corresponda.",
-    "que": "Define el tipo de producto de tarjeta que se va a configurar dentro del emisor.",
-    "como": "Se selecciona un código de producto que ya existe en el sistema. Este código identifica la marca y el tipo de tarjeta que tendrá el emisor.",
-    "dependencias": "El código del producto debe estar creado previamente. Sin este código no se puede continuar con la configuración del emisor.",
-    "cuando": "Aplica siempre que se realiza la creación o configuración de un emisor.",
-    "ejemplo": "Al configurar un emisor de tarjetas Mastercard Débito, se selecciona la Franquicia correspondiente a “MC Débito”.",
-    "notas": "El nombre del producto puede personalizarse al momento de crear la franquicia. Es un dato obligatorio y no puede dejarse vacío.",
+    "valores": "Código de franquicia de 2 dígitos asignado al producto",
+    "que": "Identifica el producto específico que será configurado dentro del emisor. Permite asociar correctamente los parámetros a la franquicia correspondiente.",
+    "como": "El código de franquicia es asignado previamente por Evertec para cada producto. Durante la solicitud de configuración, debe indicarse el código correspondiente para que los cambios se apliquen al producto correcto.",
+    "dependencias": "Debe existir previamente una Superfranquicia asociada al producto. El código debe corresponder a la franquicia definida para el emisor.",
+    "cuando": "Aplica en la creación de emisores y en cualquier solicitud de configuración o modificación de parámetros de productos asociados a una franquicia.",
+    "ejemplo": "Un banco posee varios productos configurados dentro del mismo emisor, por ejemplo:\r\n\r\n• Visa Crédito → Franquicia 01\r\n• Visa Débito → Franquicia 02\r\n• Mastercard Crédito → Franquicia 03\r\n\r\nSi se requiere actualizar los parámetros del producto Visa Débito, en el formulario se debe indicar la franquicia 02 para que Siscard aplique la configuración sobre ese producto específico y no sobre los demás productos asociados al emisor.",
+    "notas": "El código de franquicia no es definido durante la solicitud. Debe utilizarse el código previamente asignado al producto que se desea configurar.",
     "codigo": "05",
     "id": "27c505e3-c040-4851-8118-f6f07229531f",
     "creadoEn": "2026-08-19T19:57:27.324Z",
-    "actualizadoEn": "2026-09-18T18:13:25.326Z"
+    "actualizadoEn": "2026-09-18T18:39:32.189Z"
   },
   {
     "nombre": "Moneda Asignada",
     "producto": "Todos",
     "pais": "Depende del país del emisor",
-    "valores": "DO o la moneda nacional del país correspondiente al emisor.",
+    "valores": "DO o la moneda nacional del país correspondiente al emisor. Ejemplo: BS, BZ, CO, D1, D2, D3, EU, GT, HN, HT, MX, NI, PC, PD.",
     "que": "Define la moneda en la que operará el emisor y con la cual se identifican las transacciones asociadas al producto.",
     "como": "Se selecciona la moneda que corresponde al país del emisor. Esta definición se utiliza para identificar si el BIN se maneja como local o internacional, así como para bines propietarios.",
     "dependencias": "La moneda debe ser coherente con el país del emisor y con la definición del BIN ante la marca. Es un dato obligatorio para continuar con la configuración.",
@@ -45,7 +45,7 @@
     "codigo": "05",
     "id": "e1e5afe3-dc68-4bd3-a8f3-bb7b2ea15b18",
     "creadoEn": "2026-08-19T19:57:27.324Z",
-    "actualizadoEn": "2026-08-19T19:57:27.324Z"
+    "actualizadoEn": "2026-09-18T18:39:32.189Z"
   },
   {
     "nombre": "Tarjeta Corporativa",
