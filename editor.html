@@ -1345,14 +1345,39 @@
         $("modalRegistro").hidden = true; 
         cerrarMenuDependencias(); 
       } 
-      function clave(r, c) { 
-        return [ 
-          c, 
-          normalizar(r.nombre), 
-          normalizar(r.producto), 
-          normalizar(r.pais), 
-        ].join("|"); 
-      } 
+      function nombreComparable(nombre) { 
+
+  return normalizar( 
+
+    String(nombre || "") 
+
+      .replace(/\([^)]*evertec[^)]*\)/gi, "") 
+
+      .replace(/\([^)]*uso[^)]*\)/gi, "") 
+
+      .trim() 
+
+  ); 
+
+} 
+
+  
+
+function clave(r, c) { 
+
+  return [ 
+
+    c, 
+
+    nombreComparable(r.nombre), 
+
+    normalizar(r.producto), 
+
+    normalizar(r.pais), 
+
+  ].join("|"); 
+
+} 
       function existe(r, c, omitir = -1) { 
         return (datos[c] || []).some( 
           (x, i) => i !== omitir && clave(x, c) === clave(r, c), 
