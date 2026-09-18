@@ -1345,39 +1345,22 @@
         $("modalRegistro").hidden = true; 
         cerrarMenuDependencias(); 
       } 
-      function nombreComparable(nombre) { 
-
-  return normalizar( 
-
-    String(nombre || "") 
-
-      .replace(/\([^)]*evertec[^)]*\)/gi, "") 
-
-      .replace(/\([^)]*uso[^)]*\)/gi, "") 
-
-      .trim() 
-
-  ); 
-
-} 
-
-  
-
-function clave(r, c) { 
-
-  return [ 
-
-    c, 
-
-    nombreComparable(r.nombre), 
-
-    normalizar(r.producto), 
-
-    normalizar(r.pais), 
-
-  ].join("|"); 
-
-} 
+      function nombreComparable(nombre) {
+        return normalizar(
+          String(nombre || "")
+            .replace(/\([^)]*evertec[^)]*\)/gi, "")
+            .replace(/\([^)]*uso[^)]*\)/gi, "")
+            .trim(),
+        );
+      }
+      function clave(r, c) {
+        return [
+          c,
+          nombreComparable(r.nombre),
+          normalizar(r.producto),
+          normalizar(r.pais),
+        ].join("|");
+      } 
       function existe(r, c, omitir = -1) { 
         return (datos[c] || []).some( 
           (x, i) => i !== omitir && clave(x, c) === clave(r, c), 
@@ -1430,15 +1413,31 @@ function clave(r, c) {
         marcarCambio(origen); 
         if (destino !== origen) marcarCambio(destino); 
       }); 
-      function duplicarRegistro(c, i) { 
-        const r = structuredClone(datos[c][i]); 
-        r.id = crypto.randomUUID(); 
-        r.nombre = (r.nombre || "Sin nombre") + " - Copia"; 
-        r.creadoEn = r.actualizadoEn = new Date().toISOString(); 
-        datos[c].splice(i + 1, 0, r); 
-        renderizar(); 
-        marcarCambio(c); 
-        editarRegistro(c, i + 1); 
+      function duplicarRegistro(c, i) {
+        const lista = datos[c] || [];
+        const original = lista[i];
+        if (!original) return;
+        const totalPosiciones = lista.length + 1;
+        const entrada = prompt(
+          `¿En qué posición desea colocar la copia?
+Ingrese un número del 1 al ${totalPosiciones}.`,
+          String(i + 2),
+        );
+        if (entrada === null) return;
+        const posicion = Number.parseInt(entrada.trim(), 10);
+        if (!Number.isInteger(posicion) || posicion < 1 || posicion > totalPosiciones) {
+          aviso(`Ingrese una posición válida entre 1 y ${totalPosiciones}.`, true);
+          return;
+        }
+        const r = structuredClone(original);
+        r.id = crypto.randomUUID();
+        r.nombre = (r.nombre || "Sin nombre") + " - Copia";
+        r.creadoEn = r.actualizadoEn = new Date().toISOString();
+        const indiceDestino = posicion - 1;
+        lista.splice(indiceDestino, 0, r);
+        renderizar();
+        marcarCambio(c);
+        editarRegistro(c, indiceDestino);
       } 
       function eliminarRegistro(c, i) { 
         if (confirm(`¿Eliminar ${datos[c][i].nombre || "este registro"}?`)) { 
@@ -1938,7 +1937,21 @@ function clave(r, c) {
       }
       function importarUnicos(filas, c) {
         datos[c] ||= [];
-        const indices = new Map(datos[c].map((registro, indice) => [clave(registro, c), indice]));
+        const existentes = datos[c];
+        const usados = new Set();
+        const porClave = new Map();
+        const porNombre = new Map();
+        existentes.forEach((registro, indice) => {
+          const k = clave(registro, c);
+          if (!porClave.has(k)) porClave.set(k, []);
+          porClave.get(k).push(indice);
+          const n = nombreComparable(registro.nombre);
+          if (!porNombre.has(n)) porNombre.set(n, []);
+          porNombre.get(n).push(indice);
+        });
+        const tomarDisponible = (indices = []) =>
+          indices.find((indice) => !usados.has(indice));
+        const resultado = [];
         let nuevos = 0,
           actualizados = 0,
           sinCambios = 0,
@@ -1950,18 +1963,22 @@ function clave(r, c) {
             ignorados++;
             continue;
           }
-          const k = clave(r, c);
-          const indiceExistente = indices.get(k);
+          let indiceExistente = tomarDisponible(porClave.get(clave(r, c)));
           if (indiceExistente === undefined) {
-            r.id = r.id || crypto.randomUUID();
-            r.creadoEn = r.creadoEn || ahora;
+            const candidatosNombre = (porNombre.get(nombreComparable(r.nombre)) || [])
+              .filter((indice) => !usados.has(indice));
+            if (candidatosNombre.length === 1) indiceExistente = candidatosNombre[0];
+          }
+          if (indiceExistente === undefined) {
+            r.id ||= crypto.randomUUID();
+            r.creadoEn ||= ahora;
             r.actualizadoEn = ahora;
-            datos[c].push(r);
-            indices.set(k, datos[c].length - 1);
+            resultado.push(r);
             nuevos++;
             continue;
           }
-          const anterior = datos[c][indiceExistente];
+          usados.add(indiceExistente);
+          const anterior = existentes[indiceExistente];
           const actualizado = { ...anterior };
           let cambio = false;
           for (const campo of camposActuales()) {
@@ -1975,23 +1992,26 @@ function clave(r, c) {
             }
           }
           if ("dep" in actualizado) delete actualizado.dep;
+          actualizado.codigo = c;
+          actualizado.id = anterior.id || crypto.randomUUID();
+          actualizado.creadoEn = anterior.creadoEn || ahora;
           if (cambio) {
-            actualizado.codigo = c;
-            actualizado.id = anterior.id || crypto.randomUUID();
-            actualizado.creadoEn = anterior.creadoEn || ahora;
             actualizado.actualizadoEn = ahora;
-            datos[c][indiceExistente] = actualizado;
             actualizados++;
           } else {
             sinCambios++;
           }
+          resultado.push(actualizado);
         }
+        const noIncluidos = existentes.filter((_, indice) => !usados.has(indice));
+        resultado.push(...noIncluidos);
+        datos[c] = resultado;
         renderizar();
-        if (nuevos || actualizados) marcarCambio(c);
+        if (nuevos || actualizados || noIncluidos.length || filas.length) marcarCambio(c);
         aviso(
-          `${nuevos} nuevos agregados · ${actualizados} actualizados · ${sinCambios} sin cambios · ${ignorados} filas ignoradas.`,
+          `${nuevos} nuevos agregados · ${actualizados} actualizados · ${sinCambios} sin cambios · ${ignorados} filas ignoradas · orden del Excel aplicado.`,
         );
-      } 
+      }
       $("archivoJSON").addEventListener("change", async (e) => { 
         if (opcion === "todas") 
           return aviso("Seleccione una opción antes de importar.", true); 
