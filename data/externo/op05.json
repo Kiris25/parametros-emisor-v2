@@ -3,23 +3,23 @@
     "nombre": "Emisor",
     "producto": "Todos",
     "pais": "Todos",
-    "valores": "Corresponde al número de 8 dígitos que el sistema crea de forma aleatoria y va ligada al bin8 dado por la marca, y es funcional para crear las cuentas a nivel del Siscard.",
-    "que": "Identifica de forma única al emisor dentro del sistema y permite administrar las tarjetas y cuentas asociadas a sus productos.",
-    "como": "El sistema asigna automáticamente un número único al emisor, el cual se utiliza internamente para relacionar tarjetas, cuentas y operaciones del banco dentro de la plataforma.",
-    "dependencias": "Requiere que el BIN esté previamente definido y aprobado por la Marca.",
-    "cuando": "Aplica desde el momento en que el emisor se encuentra activo y para todas las operaciones asociadas a sus productos.",
-    "ejemplo": "Un banco cuenta con un identificador de emisor que le permite gestionar todas sus tarjetas de crédito y débito dentro del sistema.",
-    "notas": "Este identificador es único, no editable y forma parte de la configuración general del producto.",
+    "valores": "Número de emisor de 8 dígitos asociado al BIN del producto",
+    "que": "Identifica el emisor al que se asociará la configuración dentro de Siscard. Permite relacionar los parámetros, cuentas y procesos con el producto correcto.",
+    "como": "El número de emisor es un identificador previamente asignado para el producto. Aunque el sistema lo administra internamente, este dato debe incluirse en el formulario de configuración para indicar sobre cuál emisor se aplicarán los cambios solicitados.",
+    "dependencias": "Debe corresponder al BIN y al producto definidos para el emisor.",
+    "cuando": "Aplica en la creación de nuevos emisores y en solicitudes de configuración o actualización de parámetros existentes.",
+    "ejemplo": "Para configurar un producto Visa Crédito, se registra en el formulario el número de emisor asignado a ese producto. De esta forma, la configuración solicitada se aplica al emisor correcto.",
+    "notas": "El número de emisor no es definido durante la solicitud. Debe utilizarse el identificador previamente asignado para el producto correspondiente.",
     "codigo": "05",
     "id": "6b8df515-da9e-4a1d-9030-14339dd3f367",
     "creadoEn": "2026-08-19T19:57:27.324Z",
-    "actualizadoEn": "2026-09-18T18:08:23.683Z"
+    "actualizadoEn": "2026-09-18T18:13:25.326Z"
   },
   {
     "nombre": "Franquicia",
     "producto": "Todos",
     "pais": "Todos",
-    "valores": "Códigos de producto como Visa Crédito, Visa Débito, Visa Prepago, Mastercard Crédito, Mastercard Débito, Mastercard Prepago, según corresponda.",
+    "valores": "Códigos de producto. Ejemplo:  Visa Crédito, Visa Débito, Visa Prepago, Mastercard Crédito, Mastercard Débito, Mastercard Prepago, según corresponda.",
     "que": "Define el tipo de producto de tarjeta que se va a configurar dentro del emisor.",
     "como": "Se selecciona un código de producto que ya existe en el sistema. Este código identifica la marca y el tipo de tarjeta que tendrá el emisor.",
     "dependencias": "El código del producto debe estar creado previamente. Sin este código no se puede continuar con la configuración del emisor.",
@@ -29,7 +29,7 @@
     "codigo": "05",
     "id": "27c505e3-c040-4851-8118-f6f07229531f",
     "creadoEn": "2026-08-19T19:57:27.324Z",
-    "actualizadoEn": "2026-09-18T18:08:23.683Z"
+    "actualizadoEn": "2026-09-18T18:13:25.326Z"
   },
   {
     "nombre": "Moneda Asignada",
