@@ -29,7 +29,7 @@
     "codigo": "05",
     "id": "27c505e3-c040-4851-8118-f6f07229531f",
     "creadoEn": "2026-08-19T19:57:27.324Z",
-    "actualizadoEn": "2026-09-18T18:39:32.189Z"
+    "actualizadoEn": "2026-09-18T19:18:13.899Z"
   },
   {
     "nombre": "Moneda Asignada",
@@ -54,14 +54,14 @@
     "valores": "S = Sí / N = No",
     "que": "Define si el emisor corresponde a un esquema corporativo o empresarial.",
     "como": "Al seleccionar Sí, las tarjetas se organizan bajo un esquema empresarial donde existe una cuenta principal (cuenta madre) y tarjetas asociadas (cuentas hijas). Cada tarjeta hija opera de forma independiente, pero dentro del límite definido por la cuenta madre.",
-    "dependencias": "Si el valor es Sí, deben configurarse los parámetros corporativos asociados a la opción corporativa del emisor. Si el valor es No, el esquema corporativo no aplica.",
+    "dependencias": "La configuración en S requiere la definición y revisión de los parámetros de la Opción 27 - Corporativo.",
     "cuando": "Aplica durante la configuración de emisores empresariales que requieren administración de límites y operaciones bajo una estructura de cuenta madre y cuentas hijas.",
     "ejemplo": "Una empresa con varias tarjetas para sus colaboradores utiliza una cuenta principal que concentra el límite total, mientras cada tarjeta tiene un límite individual controlado dentro de ese monto.",
     "notas": "Este parámetro define si el producto funcionará como tarjeta empresarial. Al activarse, se habilitan reglas especiales de administración de cuentas y límites.",
     "codigo": "05",
     "id": "4f47bcb0-e646-49f0-b06f-41635afa5224",
     "creadoEn": "2026-08-19T19:57:27.324Z",
-    "actualizadoEn": "2026-08-19T19:57:27.324Z"
+    "actualizadoEn": "2026-09-18T19:18:13.899Z"
   },
   {
     "nombre": "Cantidad de Importes Vencidos para Arreglo de Pago",
@@ -2222,5 +2222,37 @@
     "id": "22256c37-63fb-4076-8f53-90977565f8e0",
     "creadoEn": "2026-09-18T18:08:23.683Z",
     "actualizadoEn": "2026-09-18T18:08:23.683Z"
+  },
+  {
+    "nombre": "Saldo Origen",
+    "producto": "Todos",
+    "pais": "Todos",
+    "valores": "I = Interno (Valor por defecto para productos Crédito) / E = Externo",
+    "que": "Define dónde se administrarán y validarán los saldos asociados al producto.",
+    "como": "Cuando se configura como I (Interno), los saldos son administrados dentro de la plataforma Siscard. Cuando se configura como E (Externo), los saldos son administrados por los sistemas del banco emisor.",
+    "dependencias": "La configuración depende del tipo de producto definido. Para productos de crédito el valor debe configurarse como I = Interno. Para productos débito y prepago puede configurarse como I = Interno o E = Externo, según el modelo operativo acordado entre el banco y Evertec.",
+    "cuando": "Aplica durante la creación o configuración de productos de crédito, débito o prepago.",
+    "ejemplo": "Un banco crea un nuevo producto de crédito. Debido a que los productos de crédito administran sus saldos en Siscard, el parámetro se configura automáticamente con el valor I = Interno. En cambio, para un producto prepago donde el banco administra los saldos desde un sistema propio, el parámetro puede configurarse como E = Externo.",
+    "notas": "Valor por defecto para Crédito: I = Interno. Para productos Débito y Prepago el valor puede ajustarse según la forma en que se administren los saldos del producto.",
+    "codigo": "05",
+    "id": "b2b706ce-051b-4248-8a90-5b9f084d49a9",
+    "creadoEn": "2026-09-18T19:18:13.899Z",
+    "actualizadoEn": "2026-09-18T19:18:13.899Z"
+  },
+  {
+    "nombre": "Última cuenta Asignada",
+    "producto": "Todos",
+    "pais": "Todos",
+    "valores": "00000 (Valor por defecto para emisores nuevos)",
+    "que": "Muestra el último número de cuenta utilizado por el sistema para la generación de cuentas asociadas al emisor.",
+    "como": "El valor es administrado automáticamente por Siscard y se actualiza conforme se generan nuevas cuentas para el emisor.",
+    "dependencias": "El comportamiento del parámetro está relacionado con la generación de cuentas del emisor.",
+    "cuando": "Aplica durante la apertura y administración de cuentas asociadas al emisor.",
+    "ejemplo": "Al crear un nuevo emisor, el sistema registra el valor 00000 como punto de partida. Conforme se generan nuevas cuentas, el sistema actualiza este valor automáticamente para reflejar la última cuenta asignada.",
+    "notas": "Valor por defecto: 00000. Este es un campo informativo administrado automáticamente por el sistema y no requiere configuración manual.",
+    "codigo": "05",
+    "id": "8b609ef1-a400-4d49-9c9e-69416646fb79",
+    "creadoEn": "2026-09-18T19:18:13.899Z",
+    "actualizadoEn": "2026-09-18T19:18:13.899Z"
   }
 ]
