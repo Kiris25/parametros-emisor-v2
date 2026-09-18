@@ -222,6 +222,21 @@
         background: #f2f2f2;
         color: var(--naranja);
       } 
+      .indicador-vinculo {
+        flex: 0 0 auto;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        margin-right: 7px;
+        border: 1px solid #ffb47f;
+        border-radius: 999px;
+        background: #fff5ec;
+        color: #8a3b00;
+        font-size: 15px;
+        font-weight: 850;
+      }
       .nombre[contenteditable="true"]:focus, 
       .editable-ficha:focus { 
         background: #fff; 
@@ -1117,6 +1132,16 @@
         let html = String(v || "—"); 
         if (!/<a\b/i.test(html)) html = escapar(html); 
         return html; 
+      }
+      function tieneHipervinculo(registro) {
+        return /<a\b[^>]*class=["'][^"']*dep-ref-inline/i.test(
+          String(registro?.dependencias || registro?.dep || ""),
+        );
+      }
+      function indicadorHipervinculo(registro) {
+        return tieneHipervinculo(registro)
+          ? '<span class="indicador-vinculo" title="Este registro contiene uno o más hipervínculos" aria-label="Registro con hipervínculo">🔗</span>'
+          : "";
       } 
       function resaltarHTML(valor) { 
         const contenedor = document.createElement("div"); 
@@ -1218,7 +1243,7 @@
                   i = indiceReal(r); 
                 const fichaId = idFichaEditor(c, i, r),
                   colapsada = estaFichaColapsada(c, i, r);
-                return `<article id="${escapar(fichaId)}" class="ficha ${colapsada ? "colapsada" : ""}"><div class="cabecera-ficha"><div class="codigo">Op. ${c}</div><div class="control-ficha"><button type="button" class="alternar-ficha" data-alternar-ficha="${escapar(fichaId)}" title="${colapsada ? textoEditor("mostrarFicha") : textoEditor("esconderFicha")}" aria-label="${colapsada ? textoEditor("mostrarFicha") : textoEditor("esconderFicha")}">${colapsada ? "▶" : "▼"}</button><div class="nombre" contenteditable="true" data-campo="nombre" data-opcion="${c}" data-indice="${i}">${resaltar(r.nombre)}</div></div><div class="acciones-ficha"><button class="boton" data-duplicar="${c}|${i}">${textoEditor("duplicar")}</button><button class="boton boton-rojo" data-eliminar="${c}|${i}">${textoEditor("eliminar")}</button></div></div><div class="cuadricula">${ambito === "interno"
+                return `<article id="${escapar(fichaId)}" class="ficha ${colapsada ? "colapsada" : ""}"><div class="cabecera-ficha"><div class="codigo">Op. ${c}</div><div class="control-ficha"><button type="button" class="alternar-ficha" data-alternar-ficha="${escapar(fichaId)}" title="${colapsada ? textoEditor("mostrarFicha") : textoEditor("esconderFicha")}" aria-label="${colapsada ? textoEditor("mostrarFicha") : textoEditor("esconderFicha")}">${colapsada ? "▶" : "▼"}</button><div class="nombre" contenteditable="true" data-campo="nombre" data-opcion="${c}" data-indice="${i}">${resaltar(r.nombre)}</div>${indicadorHipervinculo(r)}</div><div class="acciones-ficha"><button class="boton" data-duplicar="${c}|${i}">${textoEditor("duplicar")}</button><button class="boton boton-rojo" data-eliminar="${c}|${i}">${textoEditor("eliminar")}</button></div></div><div class="cuadricula">${ambito === "interno"
   ? campoEditable("Obligatorio", c, i, "obligatorio", r.obligatorio)
     + campoEditable("Permite Blancos", c, i, "permiteBlancos", r.permiteBlancos)
     + campoEditable(textoEditor("producto"), c, i, "producto", r.producto)
@@ -1849,35 +1874,98 @@
         $("archivoExcel").value = ""; 
         $("archivoExcel").click(); 
       } 
-      function importarUnicos(filas, c) { 
-        datos[c] ||= []; 
-        const existentes = new Set(datos[c].map((r) => clave(r, c))); 
-        let nuevos = 0, 
-          duplicados = 0, 
-          ignorados = 0; 
-        for (let r of filas) { 
-          r = { ...r, codigo: c, nombre: String(r.nombre || "").trim() }; 
-          if (!r.nombre) { 
-            ignorados++; 
-            continue; 
-          } 
-          const k = clave(r, c); 
-          if (existentes.has(k)) { 
-            duplicados++; 
-            continue; 
-          } 
-          r.id = r.id || crypto.randomUUID(); 
-          r.creadoEn = r.creadoEn || new Date().toISOString(); 
-          r.actualizadoEn = new Date().toISOString(); 
-          datos[c].push(r); 
-          existentes.add(k); 
-          nuevos++; 
-        } 
-        renderizar(); 
-        if (nuevos) marcarCambio(c); 
-        aviso( 
-          `${nuevos} nuevos agregados · ${duplicados} duplicados omitidos · ${ignorados} filas ignoradas.`, 
-        ); 
+      function valorComparable(valor) {
+        return String(valor ?? "").replace(/\r\n/g, "\n").trim();
+      }
+      function conservarHipervinculos(valorImportado, valorExistente) {
+        const nuevoTexto = textoHTML(valorImportado).trim();
+        const contenedorAnterior = document.createElement("div");
+        contenedorAnterior.innerHTML = String(valorExistente || "");
+        const enlaces = [...contenedorAnterior.querySelectorAll("a.dep-ref-inline")].map(
+          (enlace) => ({
+            texto: enlace.textContent || "",
+            target: enlace.dataset.target || "",
+          }),
+        ).filter((enlace) => enlace.texto && enlace.target);
+        if (!enlaces.length) return nuevoTexto;
+        const contenedorNuevo = document.createElement("div");
+        contenedorNuevo.textContent = nuevoTexto;
+        for (const enlace of enlaces) {
+          const caminante = document.createTreeWalker(contenedorNuevo, NodeFilter.SHOW_TEXT);
+          const nodos = [];
+          while (caminante.nextNode()) nodos.push(caminante.currentNode);
+          const nodo = nodos.find((actual) =>
+            (actual.nodeValue || "").toLocaleLowerCase().includes(enlace.texto.toLocaleLowerCase()),
+          );
+          if (!nodo) continue;
+          const indice = nodo.nodeValue.toLocaleLowerCase().indexOf(enlace.texto.toLocaleLowerCase());
+          const rango = document.createRange();
+          rango.setStart(nodo, indice);
+          rango.setEnd(nodo, indice + enlace.texto.length);
+          const ancla = document.createElement("a");
+          ancla.href = "#";
+          ancla.className = "dep-ref-inline";
+          ancla.dataset.target = enlace.target;
+          ancla.appendChild(rango.extractContents());
+          rango.insertNode(ancla);
+        }
+        return contenedorNuevo.innerHTML.trim();
+      }
+      function importarUnicos(filas, c) {
+        datos[c] ||= [];
+        const indices = new Map(datos[c].map((registro, indice) => [clave(registro, c), indice]));
+        let nuevos = 0,
+          actualizados = 0,
+          sinCambios = 0,
+          ignorados = 0;
+        const ahora = new Date().toISOString();
+        for (let r of filas) {
+          r = { ...r, codigo: c, nombre: String(r.nombre || "").trim() };
+          if (!r.nombre) {
+            ignorados++;
+            continue;
+          }
+          const k = clave(r, c);
+          const indiceExistente = indices.get(k);
+          if (indiceExistente === undefined) {
+            r.id = r.id || crypto.randomUUID();
+            r.creadoEn = r.creadoEn || ahora;
+            r.actualizadoEn = ahora;
+            datos[c].push(r);
+            indices.set(k, datos[c].length - 1);
+            nuevos++;
+            continue;
+          }
+          const anterior = datos[c][indiceExistente];
+          const actualizado = { ...anterior };
+          let cambio = false;
+          for (const campo of camposActuales()) {
+            if (campo === "codigo") continue;
+            const valorNuevo = campo === "dependencias"
+              ? conservarHipervinculos(r[campo], anterior[campo] || anterior.dep)
+              : String(r[campo] ?? "").trim();
+            if (valorComparable(actualizado[campo]) !== valorComparable(valorNuevo)) {
+              actualizado[campo] = valorNuevo;
+              cambio = true;
+            }
+          }
+          if ("dep" in actualizado) delete actualizado.dep;
+          if (cambio) {
+            actualizado.codigo = c;
+            actualizado.id = anterior.id || crypto.randomUUID();
+            actualizado.creadoEn = anterior.creadoEn || ahora;
+            actualizado.actualizadoEn = ahora;
+            datos[c][indiceExistente] = actualizado;
+            actualizados++;
+          } else {
+            sinCambios++;
+          }
+        }
+        renderizar();
+        if (nuevos || actualizados) marcarCambio(c);
+        aviso(
+          `${nuevos} nuevos agregados · ${actualizados} actualizados · ${sinCambios} sin cambios · ${ignorados} filas ignoradas.`,
+        );
       } 
       $("archivoJSON").addEventListener("change", async (e) => { 
         if (opcion === "todas") 
