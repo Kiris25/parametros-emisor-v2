@@ -358,14 +358,14 @@
     "valores": "Cantidad 0 a 30 días.",
     "que": "Define los días adicionales que se otorgan después de la fecha de vencimiento para que el tarjetahabiente realice el pago sin afectar el estado de la tarjeta ni generar cargos adicionales.",
     "como": "Una vez alcanzada la fecha de vencimiento del pago, el sistema considera un período adicional de días durante el cual el pago puede realizarse. Durante este período, la tarjeta no se bloquea por premora y el pago puede ser reconocido como pago de contado o pago mínimo, según corresponda.",
-    "dependencias": "El comportamiento de este parámetro depende de Separa Fecha Pago Cont./Mín. (TT1 - Superfranquicia). Cuando esta funcionalidad se encuentra activa, el parámetro se presenta como Días de Gracia Pago Mínimo y se habilita adicionalmente el parámetro Días Gracia Pago de Contado. También se relaciona con el parámetro Inactiva Estado 16 (Premora).",
+    "dependencias": "El comportamiento de este parámetro depende de Separa Fecha Pago Cont./Mín. (TT1 - Superfranquicia). Cuando esta funcionalidad se encuentra activa, el parámetro se presenta como Días de Gracia Pago Mínimo y se habilita adicionalmente el parámetro Días Gracia Pago de Contado. También se relaciona con el parámetro <a href=\"#\" class=\"dep-ref-inline\" data-target=\"2b7ba426-c8f0-41e1-9604-384f7ec90f6a\">Inactiva Estado 16 (Premora)</a>.",
     "cuando": "Aplica después de la fecha de vencimiento del pago, como un beneficio adicional para el tarjetahabiente en productos de crédito.",
     "ejemplo": "Si la fecha de vencimiento es el día 20 y se configuran 5 días de gracia, el pago realizado hasta el día 25 se considera válido sin generar bloqueo ni intereses moratorios.",
     "notas": "Este período adicional generalmente no es visible para el tarjetahabiente, pero evita bloqueos e intereses si el pago se realiza dentro del plazo definido.",
     "codigo": "05",
     "id": "de3206f9-b431-4397-9898-84e104eda364",
     "creadoEn": "2026-08-19T19:57:27.324Z",
-    "actualizadoEn": "2026-09-25T19:43:48.609Z"
+    "actualizadoEn": "2026-09-25T19:44:39.651Z"
   },
   {
     "nombre": "Cartas de renovación / Renovación AB con Fiador",
@@ -454,14 +454,14 @@
     "valores": "S = Sí / N = No",
     "que": "Define si las cuentas asociadas al emisor pueden contar con un aumento temporal del límite de crédito.",
     "como": "Cuando el valor es Sí, el emisor permite incrementos temporales del límite de crédito bajo condiciones previamente definidas. Cuando el valor es No, no se permiten aumentos temporales del límite.",
-    "dependencias": "Si el parámetro se configura en S, deben completarse los parámetros Monto Mínimo Override y Monto Máximo Override de la Opción 12 Trabajar con (Parámetros por tipo de Cliente y Moneda).",
+    "dependencias": "Si el parámetro se configura en S, deben completarse los parámetros <a href=\"#\" class=\"dep-ref-inline\" data-target=\"44372032-6c28-4242-972f-64003b58a271\">Monto Mínimo Override</a> y <a href=\"#\" class=\"dep-ref-inline\" data-target=\"7d52a5e3-b2eb-448d-b081-a84e213b6d59\">Monto Máximo Override</a> de la Opción 12 Trabajar con (Parámetros por tipo de Cliente y Moneda).",
     "cuando": "Aplica en emisores de crédito que requieren ofrecer aumentos temporales de límite por situaciones específicas o campañas definidas.",
     "ejemplo": "Un cliente puede recibir un aumento temporal de su límite de crédito durante un período específico para cubrir una necesidad puntual, siempre que el emisor lo permita.",
     "notas": "Este parámetro habilita o deshabilita la posibilidad de aumentos temporales del límite de crédito. Las condiciones específicas dependen de la política del emisor.",
     "codigo": "05",
     "id": "d7f54b51-e345-42a7-ac88-48262376c194",
     "creadoEn": "2026-08-19T19:57:27.325Z",
-    "actualizadoEn": "2026-09-25T19:43:48.609Z"
+    "actualizadoEn": "2026-09-25T19:45:12.406Z"
   },
   {
     "nombre": "Extrafinanciamiento",
