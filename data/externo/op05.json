@@ -19,7 +19,7 @@
     "nombre": "Franquicia",
     "producto": "Todos",
     "pais": "Todos",
-    "valores": "Código de franquicia de 2 dígitos asignado al producto",
+    "valores": "Código alfanumérico de franquicia de 2 dígitos asignado al producto",
     "que": "Identifica el producto específico que será configurado dentro del emisor. Permite asociar correctamente los parámetros a la franquicia correspondiente.",
     "como": "El código de franquicia es asignado previamente por Evertec para cada producto. Durante la solicitud de configuración, debe indicarse el código correspondiente para que los cambios se apliquen al producto correcto.",
     "dependencias": "Debe existir previamente una Superfranquicia asociada al producto. El código debe corresponder a la franquicia definida para el emisor.",
@@ -29,7 +29,7 @@
     "codigo": "05",
     "id": "27c505e3-c040-4851-8118-f6f07229531f",
     "creadoEn": "2026-08-19T19:57:27.324Z",
-    "actualizadoEn": "2026-09-18T19:18:13.899Z"
+    "actualizadoEn": "2026-09-25T14:10:02.232Z"
   },
   {
     "nombre": "Moneda Asignada",
