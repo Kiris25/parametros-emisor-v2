@@ -131,7 +131,7 @@
     "nombre": "Color de Tinta",
     "producto": "Todos",
     "pais": "Todos",
-    "valores": "Valores   BL, DO, NE ,PL\r\nValor predeterminado: En blanco",
+    "valores": "Valores permitidos:\nBL\nDO\nNE\nPL\n \nValor predeterminado:\nEn blanco",
     "que": "N/A",
     "como": "N/A",
     "dependencias": "N/A",
@@ -141,7 +141,7 @@
     "codigo": "05",
     "id": "d8ed33c7-82c0-4a96-9263-11724b329236",
     "creadoEn": "2026-08-19T19:57:27.324Z",
-    "actualizadoEn": "2026-09-25T14:12:33.111Z"
+    "actualizadoEn": "2026-09-25T14:18:40.979Z"
   },
   {
     "nombre": "Retiene Autorización",
