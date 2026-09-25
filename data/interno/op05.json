@@ -22,7 +22,7 @@
     "permiteBlancos": "NO",
     "producto": "Todos",
     "pais": "Todos",
-    "valores": "Código de franquicia de 2 dígitos asignado al producto",
+    "valores": "Código alfanumérico de franquicia de 2 dígitos asignado al producto",
     "requisitosImplementacion": "Debe existir previamente una Superfranquicia creada y asociada al producto correspondiente. El código debe encontrarse registrado en Siscard antes de iniciar la configuración del emisor.",
     "configuracionComportamiento": "Corresponde al identificador utilizado por Siscard para relacionar un producto específico con la configuración del emisor. El sistema utiliza este código para determinar sobre qué producto se aplicarán los parámetros definidos.",
     "dependencias": "Requiere la existencia previa de la Superfranquicia. Debe mantener consistencia con el producto asociado al emisor y con la configuración registrada en Siscard.",
@@ -31,7 +31,7 @@
     "codigo": "05",
     "id": "41465cd6-d4ba-456f-8bb3-7144755243d9",
     "creadoEn": "2026-09-07T22:38:43.160Z",
-    "actualizadoEn": "2026-09-25T14:01:24.463Z"
+    "actualizadoEn": "2026-09-25T14:07:20.056Z"
   },
   {
     "nombre": "Moneda Asignada",
