@@ -136,23 +136,6 @@
     "actualizadoEn": "2026-09-25T14:01:24.463Z"
   },
   {
-    "nombre": "Color de Tinta",
-    "obligatorio": "SI",
-    "permiteBlancos": "NO",
-    "producto": "Todos",
-    "pais": "N/A",
-    "valores": "Valores permitidos:\nBL\nDO\nNE\nPL\n \nValor predeterminado:\nEn blanco",
-    "requisitosImplementacion": "N/A",
-    "configuracionComportamiento": "N/A",
-    "dependencias": "N/A",
-    "condicionesOperativas": "N/A",
-    "ejemploOperativo": "",
-    "codigo": "05",
-    "id": "9228801a-df41-46bc-b62e-608371fc06aa",
-    "creadoEn": "2026-09-07T22:38:43.160Z",
-    "actualizadoEn": "2026-09-25T14:18:51.999Z"
-  },
-  {
     "nombre": "Retiene Autorización",
     "obligatorio": "SI",
     "permiteBlancos": "SI",
