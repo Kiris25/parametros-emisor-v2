@@ -147,7 +147,7 @@
     "nombre": "Retiene Autorización",
     "producto": "Todos",
     "pais": "Todos",
-    "valores": "Cantidad de días.\r\n\r\nDefault: En blanco.\r\n\r\nMáximo permitido por las marcas:\r\n• Mastercard: 7 días\r\n• Visa: 14 días",
+    "valores": "Cantidad de días.\n\nDefault: En blanco.\n\nMáximo permitido por las marcas:\nMastercard: 7 días\nVisa: 14 días",
     "que": "Define cuánto tiempo una autorización aprobada puede permanecer pendiente de cobro antes de que el sistema la anule automáticamente.",
     "como": "La autorización permanece en tránsito hasta el número de días configurado. Si el comercio no presenta el cobro dentro de ese plazo, el sistema anula automáticamente la autorización y devuelve el monto disponible a la tarjeta. Si el campo se deja en blanco, las autorizaciones se anulan el mismo día durante el proceso nocturno.",
     "dependencias": "La cantidad máxima de días permitida depende de la regulación de las marcas. Mastercard permite un máximo de 7 días y Visa un máximo de 14 días.",
@@ -157,7 +157,7 @@
     "codigo": "05",
     "id": "d1f78e80-6755-4a49-a3a5-0ed77d1fd2eb",
     "creadoEn": "2026-08-19T19:57:27.324Z",
-    "actualizadoEn": "2026-09-18T21:02:50.737Z"
+    "actualizadoEn": "2026-09-25T13:01:55.675Z"
   },
   {
     "nombre": "Permite Tarjeta Adicional",
