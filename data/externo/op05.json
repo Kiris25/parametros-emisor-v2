@@ -339,7 +339,7 @@
     "nombre": "Días para Pagar / Días para Pagar Pago Mínimo",
     "producto": "Crédito",
     "pais": "Todos",
-    "valores": "Cantidad de días. Rango general indicado: de 0 a 30 días.",
+    "valores": "Cantidad 0 a 30 días.",
     "que": "Define la cantidad de días, a partir de la fecha de corte, para establecer la fecha de vencimiento del pago mínimo y/o del pago de contado.",
     "como": "El sistema calcula la fecha de vencimiento sumando los días configurados a la fecha de corte. Si la fecha resultante cae en un día no hábil o feriado, puede trasladarse al siguiente día hábil según las reglas de cálculo aplicables. En algunos emisores, este parámetro se utiliza únicamente para el pago mínimo cuando la fecha de pago mínimo y la de contado se manejan por separado.",
     "dependencias": "Aplica únicamente para emisores de crédito. Puede depender de la configuración que permita separar la fecha de pago mínimo y la de contado. La validación de días hábiles depende de la parametrización del calendario correspondiente.",
@@ -349,7 +349,7 @@
     "codigo": "05",
     "id": "7e35c552-ca64-4878-ac7d-ad927e51aa12",
     "creadoEn": "2026-08-19T19:57:27.324Z",
-    "actualizadoEn": "2026-08-19T19:57:27.324Z"
+    "actualizadoEn": "2026-09-25T14:48:56.536Z"
   },
   {
     "nombre": "Días de Gracia / Días de Gracia Pago Mínimo",
