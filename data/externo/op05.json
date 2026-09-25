@@ -19,7 +19,7 @@
     "nombre": "Franquicia",
     "producto": "Todos",
     "pais": "Todos",
-    "valores": "Código alfanumérico de franquicia de 2 carácteres asignado al producto",
+    "valores": "Código de franquicia de 2 carácteres asignado al producto",
     "que": "Identifica el producto específico que será configurado dentro del emisor. Permite asociar correctamente los parámetros a la franquicia correspondiente.",
     "como": "El código de franquicia es asignado previamente por Evertec para cada producto. Durante la solicitud de configuración, debe indicarse el código correspondiente para que los cambios se apliquen al producto correcto.",
     "dependencias": "Debe existir previamente una Superfranquicia asociada al producto. El código debe corresponder a la franquicia definida para el emisor.",
@@ -29,7 +29,7 @@
     "codigo": "05",
     "id": "27c505e3-c040-4851-8118-f6f07229531f",
     "creadoEn": "2026-08-19T19:57:27.324Z",
-    "actualizadoEn": "2026-09-25T14:20:59.043Z"
+    "actualizadoEn": "2026-09-25T14:16:29.404Z"
   },
   {
     "nombre": "Moneda Asignada",
@@ -126,22 +126,6 @@
     "id": "5dfba02e-a6bc-4dc1-ac79-40afb2e440ad",
     "creadoEn": "2026-08-19T19:57:27.324Z",
     "actualizadoEn": "2026-09-25T14:12:33.111Z"
-  },
-  {
-    "nombre": "Color de Tinta",
-    "producto": "Todos",
-    "pais": "Todos",
-    "valores": "Valores permitidos:\nBL\nDO\nNE\nPL\n \nValor predeterminado:\nEn blanco",
-    "que": "N/A",
-    "como": "N/A",
-    "dependencias": "N/A",
-    "cuando": "N/A",
-    "ejemplo": "N/A",
-    "notas": "N/A",
-    "codigo": "05",
-    "id": "d8ed33c7-82c0-4a96-9263-11724b329236",
-    "creadoEn": "2026-08-19T19:57:27.324Z",
-    "actualizadoEn": "2026-09-25T14:18:40.979Z"
   },
   {
     "nombre": "Retiene Autorización",
