@@ -115,7 +115,7 @@
     "nombre": "Último Prospecto Asignado",
     "producto": "Todos",
     "pais": "Todos",
-    "valores": "Valor numérico registrado en el sistema (Valor por defecto)",
+    "valores": "Valor numérico registrado en el sistema\nValor predeterminado: 0",
     "que": "Permite identificar el consecutivo de la última gestión de prospectación registrada para el emisor.",
     "como": "El valor es actualizado automáticamente por el sistema conforme se generan nuevas gestiones de prospectación para el emisor.",
     "dependencias": "N/A",
@@ -125,7 +125,7 @@
     "codigo": "05",
     "id": "5dfba02e-a6bc-4dc1-ac79-40afb2e440ad",
     "creadoEn": "2026-08-19T19:57:27.324Z",
-    "actualizadoEn": "2026-09-18T21:02:50.737Z"
+    "actualizadoEn": "2026-09-25T13:56:34.225Z"
   },
   {
     "nombre": "Color de Tinta",
