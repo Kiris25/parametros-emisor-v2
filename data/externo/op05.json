@@ -19,7 +19,7 @@
     "nombre": "Franquicia",
     "producto": "Todos",
     "pais": "Todos",
-    "valores": "Código alfanumérico de franquicia de 2 dígitos asignado al producto",
+    "valores": "Código de franquicia de 2 dígitos asignado al producto",
     "que": "Identifica el producto específico que será configurado dentro del emisor. Permite asociar correctamente los parámetros a la franquicia correspondiente.",
     "como": "El código de franquicia es asignado previamente por Evertec para cada producto. Durante la solicitud de configuración, debe indicarse el código correspondiente para que los cambios se apliquen al producto correcto.",
     "dependencias": "Debe existir previamente una Superfranquicia asociada al producto. El código debe corresponder a la franquicia definida para el emisor.",
@@ -29,7 +29,7 @@
     "codigo": "05",
     "id": "27c505e3-c040-4851-8118-f6f07229531f",
     "creadoEn": "2026-08-19T19:57:27.324Z",
-    "actualizadoEn": "2026-09-25T14:10:02.232Z"
+    "actualizadoEn": "2026-09-18T19:18:13.899Z"
   },
   {
     "nombre": "Moneda Asignada",
@@ -67,7 +67,7 @@
     "nombre": "Saldo Origen",
     "producto": "Todos",
     "pais": "Todos",
-    "valores": "I = Interno (Valor por defecto para productos Crédito) / E = Externo",
+    "valores": "I = Interno\r\nE = Externo\r\nValor predeterminado para Crédito: I = Interno",
     "que": "Define dónde se administrarán y validarán los saldos asociados al producto.",
     "como": "Cuando se configura como I (Interno), los saldos son administrados dentro de la plataforma Siscard. Cuando se configura como E (Externo), los saldos son administrados por los sistemas del banco emisor.",
     "dependencias": "La configuración depende del tipo de producto definido. Para productos de crédito el valor debe configurarse como I = Interno. Para productos débito y prepago puede configurarse como I = Interno o E = Externo, según el modelo operativo acordado entre el banco y Evertec.",
@@ -77,7 +77,7 @@
     "codigo": "05",
     "id": "b2b706ce-051b-4248-8a90-5b9f084d49a9",
     "creadoEn": "2026-09-18T19:18:13.899Z",
-    "actualizadoEn": "2026-09-18T19:18:13.899Z"
+    "actualizadoEn": "2026-09-25T14:12:33.111Z"
   },
   {
     "nombre": "Cantidad de Importes Vencidos para Arreglo de Pago",
@@ -99,7 +99,7 @@
     "nombre": "Última cuenta Asignada",
     "producto": "Todos",
     "pais": "Todos",
-    "valores": "00000 (Valor por defecto para emisores nuevos)",
+    "valores": "Valor numérico administrado por el sistema.\r\nValor predeterminado para emisores nuevos: 00000",
     "que": "Muestra el último número de cuenta utilizado por el sistema para la generación de cuentas asociadas al emisor.",
     "como": "El valor es administrado automáticamente por Siscard y se actualiza conforme se generan nuevas cuentas para el emisor.",
     "dependencias": "El comportamiento del parámetro está relacionado con la generación de cuentas del emisor.",
@@ -109,13 +109,13 @@
     "codigo": "05",
     "id": "8b609ef1-a400-4d49-9c9e-69416646fb79",
     "creadoEn": "2026-09-18T19:18:13.899Z",
-    "actualizadoEn": "2026-09-18T20:08:14.138Z"
+    "actualizadoEn": "2026-09-25T14:12:33.111Z"
   },
   {
     "nombre": "Último Prospecto Asignado",
     "producto": "Todos",
     "pais": "Todos",
-    "valores": "Valor numérico registrado en el sistema\nValor predeterminado: 0",
+    "valores": "Valor numérico administrado por el sistema.\r\nValor predeterminado para emisores creados mediante copia: 0",
     "que": "Permite identificar el consecutivo de la última gestión de prospectación registrada para el emisor.",
     "como": "El valor es actualizado automáticamente por el sistema conforme se generan nuevas gestiones de prospectación para el emisor.",
     "dependencias": "N/A",
@@ -125,13 +125,13 @@
     "codigo": "05",
     "id": "5dfba02e-a6bc-4dc1-ac79-40afb2e440ad",
     "creadoEn": "2026-08-19T19:57:27.324Z",
-    "actualizadoEn": "2026-09-25T13:56:34.225Z"
+    "actualizadoEn": "2026-09-25T14:12:33.111Z"
   },
   {
     "nombre": "Color de Tinta",
     "producto": "Todos",
     "pais": "Todos",
-    "valores": "Default: En blanco.",
+    "valores": "Valores   BL, DO, NE ,PL\r\nValor predeterminado: En blanco",
     "que": "N/A",
     "como": "N/A",
     "dependencias": "N/A",
@@ -141,13 +141,13 @@
     "codigo": "05",
     "id": "d8ed33c7-82c0-4a96-9263-11724b329236",
     "creadoEn": "2026-08-19T19:57:27.324Z",
-    "actualizadoEn": "2026-09-18T21:02:50.737Z"
+    "actualizadoEn": "2026-09-25T14:12:33.111Z"
   },
   {
     "nombre": "Retiene Autorización",
     "producto": "Todos",
     "pais": "Todos",
-    "valores": "Cantidad de días.\n\nDefault: En blanco.\n\nMáximo permitido por las marcas:\nMastercard: 7 días\nVisa: 14 días",
+    "valores": "Cantidad de días.\r\n \r\nValores sugeridos:\r\n• 7 días (Mastercard)\r\n• 14 días (Visa)\r\n \r\nValor predeterminado: En blanco",
     "que": "Define cuánto tiempo una autorización aprobada puede permanecer pendiente de cobro antes de que el sistema la anule automáticamente.",
     "como": "La autorización permanece en tránsito hasta el número de días configurado. Si el comercio no presenta el cobro dentro de ese plazo, el sistema anula automáticamente la autorización y devuelve el monto disponible a la tarjeta. Si el campo se deja en blanco, las autorizaciones se anulan el mismo día durante el proceso nocturno.",
     "dependencias": "La cantidad máxima de días permitida depende de la regulación de las marcas. Mastercard permite un máximo de 7 días y Visa un máximo de 14 días.",
@@ -157,7 +157,7 @@
     "codigo": "05",
     "id": "d1f78e80-6755-4a49-a3a5-0ed77d1fd2eb",
     "creadoEn": "2026-08-19T19:57:27.324Z",
-    "actualizadoEn": "2026-09-25T13:01:55.675Z"
+    "actualizadoEn": "2026-09-25T14:12:33.111Z"
   },
   {
     "nombre": "Permite Tarjeta Adicional",
@@ -179,7 +179,7 @@
     "nombre": "Programa Imprime Letra",
     "producto": "Todos",
     "pais": "Todos",
-    "valores": "Por defecto: En blanco.",
+    "valores": "Nombre del programa.\r\nValor predeterminado: En blanco",
     "que": "Parámetro relacionado con procesos históricos de impresión asociados al emisor.",
     "como": "N/A",
     "dependencias": "N/A",
@@ -189,13 +189,13 @@
     "codigo": "05",
     "id": "5d237453-e34c-463e-b545-45f443de9db9",
     "creadoEn": "2026-08-19T19:57:27.324Z",
-    "actualizadoEn": "2026-09-18T21:02:50.737Z"
+    "actualizadoEn": "2026-09-25T14:12:33.111Z"
   },
   {
     "nombre": "Programa Imprime Contrato",
     "producto": "Todos",
     "pais": "Todos",
-    "valores": "Por defecto: En blanco.",
+    "valores": "Nombre del programa.\r\nValor predeterminado: En blanco",
     "que": "Parámetro relacionado con procesos históricos de impresión asociados al emisor.",
     "como": "N/A",
     "dependencias": "N/A",
@@ -205,13 +205,13 @@
     "codigo": "05",
     "id": "7c1f526d-d772-4004-979f-519b04a8247d",
     "creadoEn": "2026-08-19T19:57:27.324Z",
-    "actualizadoEn": "2026-09-18T21:02:50.737Z"
+    "actualizadoEn": "2026-09-25T14:12:33.111Z"
   },
   {
     "nombre": "Carta por 1.IV",
     "producto": "N/A",
     "pais": "N/A",
-    "valores": "Por defecto: N/A",
+    "valores": "Valor predeterminado: N/A",
     "que": "N/A",
     "como": "N/A",
     "dependencias": "N/A",
@@ -221,13 +221,13 @@
     "codigo": "05",
     "id": "abc19c23-abaf-4f4c-8d67-4d4eae8a075f",
     "creadoEn": "2026-08-19T19:57:27.324Z",
-    "actualizadoEn": "2026-09-18T21:02:50.737Z"
+    "actualizadoEn": "2026-09-25T14:12:33.111Z"
   },
   {
     "nombre": "Carta por 2.IV",
     "producto": "N/A",
     "pais": "N/A",
-    "valores": "Por defecto: N/A",
+    "valores": "Valor predeterminado: N/A",
     "que": "N/A",
     "como": "N/A",
     "dependencias": "N/A",
@@ -237,13 +237,13 @@
     "codigo": "05",
     "id": "60db5cab-54ec-4f21-b233-c4715e62cecd",
     "creadoEn": "2026-08-19T19:57:27.324Z",
-    "actualizadoEn": "2026-09-18T21:02:50.737Z"
+    "actualizadoEn": "2026-09-25T14:12:33.111Z"
   },
   {
     "nombre": "Carta por 3.IV",
     "producto": "N/A",
     "pais": "N/A",
-    "valores": "Por defecto: N/A",
+    "valores": "Valor predeterminado: N/A",
     "que": "N/A",
     "como": "N/A",
     "dependencias": "N/A",
@@ -253,13 +253,13 @@
     "codigo": "05",
     "id": "167e318d-0392-49d6-8137-21c2dca68d34",
     "creadoEn": "2026-08-19T19:57:27.324Z",
-    "actualizadoEn": "2026-09-18T21:02:50.737Z"
+    "actualizadoEn": "2026-09-25T14:12:33.111Z"
   },
   {
     "nombre": "Carta por Mas de 3.IV",
     "producto": "N/A",
     "pais": "N/A",
-    "valores": "Por defecto: N/A",
+    "valores": "Valor predeterminado: N/A",
     "que": "N/A",
     "como": "N/A",
     "dependencias": "N/A",
@@ -269,7 +269,7 @@
     "codigo": "05",
     "id": "c6563aab-6451-4ce5-bebd-1fecaeafd344",
     "creadoEn": "2026-08-19T19:57:27.324Z",
-    "actualizadoEn": "2026-09-18T21:02:50.737Z"
+    "actualizadoEn": "2026-09-25T14:12:33.111Z"
   },
   {
     "nombre": "Línea de Emisor",
@@ -291,7 +291,7 @@
     "nombre": "Clase Inicial Cuenta \r\n(Clasificación de Pago)",
     "producto": "Crédito y Débito",
     "pais": "Todos",
-    "valores": "A = Cero importes vencidos y cumple pago mínimo\r\nB = Ha tenido un importe vencido (mora de 0 a 29 días)\r\nC = Dos importes vencidos (mora consecutiva de 30 a 59 días)\r\nD = Tres importes vencidos (mora consecutiva de 60 a 89 días)\r\nN = Nuevas = Cuatro o cinco importes vencidos (mora consecutiva de 90 a 149 días)\r\nZ = Seis o más importes vencidos (mora mayor a 150 días)",
+    "valores": "Valor predeterminado para cuentas nuevas: N = Nuevas\r\nA = Cero importes vencidos y cumple pago mínimo\r\nB = Ha tenido un importe vencido (mora de 0 a 29 días)\r\nC = Dos importes vencidos (mora consecutiva de 30 a 59 días)\r\nD = Tres importes vencidos (mora consecutiva de 60 a 89 días)\r\nN = Nuevas = Cuatro o cinco importes vencidos (mora consecutiva de 90 a 149 días)\r\nZ = Seis o más importes vencidos (mora mayor a 150 días)",
     "que": "El parámetro debe configurarse obligatoriamente al crear el emisor. De forma estándar, el valor inicial es N = Nuevas.",
     "como": "Las cuentas inician con una clasificación inicial y, con el tiempo, el sistema ajusta esa clasificación según el cumplimiento de pagos.",
     "dependencias": "La clasificación influye en la disponibilidad de algunos productos financieros, como adelantos o financiamientos.",
@@ -301,7 +301,7 @@
     "codigo": "05",
     "id": "6ac34578-93d8-41ed-8f62-138ef5203991",
     "creadoEn": "2026-08-19T19:57:27.324Z",
-    "actualizadoEn": "2026-09-18T18:08:23.683Z"
+    "actualizadoEn": "2026-09-25T14:12:33.111Z"
   },
   {
     "nombre": "Tipo Inicial Cuenta",
@@ -1539,7 +1539,7 @@
     "nombre": "Esquema de Cálculo de Interés (Procesa Tasa Diferenciada)",
     "producto": "Crédito",
     "pais": "Panamá",
-    "valores": "N = No aplica\r\nP = Planes",
+    "valores": "N = No aplica\r\nP = Planes\r\nValor predeterminado para Panamá: P = Planes\r\nValor predeterminado para otros países: N = No aplica",
     "que": "Define el esquema que utiliza el sistema para calcular los intereses de los productos de crédito.",
     "como": "En Panamá, el sistema utiliza por defecto el esquema de planes para el cálculo de intereses. Para otros países, el valor por default es No aplica.",
     "dependencias": "El esquema aplicado está definido por la configuración del emisor en Panamá.",
@@ -1549,7 +1549,7 @@
     "codigo": "05",
     "id": "2f2f740c-53b5-4212-aed0-507af0087658",
     "creadoEn": "2026-08-19T19:57:27.325Z",
-    "actualizadoEn": "2026-08-19T19:57:27.325Z"
+    "actualizadoEn": "2026-09-25T14:12:33.111Z"
   },
   {
     "nombre": "Tipo de Autorización Visa",
