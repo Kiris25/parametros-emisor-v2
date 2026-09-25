@@ -1443,7 +1443,7 @@
     "nombre": "Días para Eliminar pin No impreso",
     "producto": "Todos",
     "pais": "Todos",
-    "valores": "Cantidad de Días",
+    "valores": "Cantidad 0 a 30 días.",
     "que": "Define cuántos días puede mantenerse un PIN pendiente de impresión antes de ser eliminado.",
     "como": "El sistema controla el tiempo que un PIN permanece sin imprimirse y lo elimina automáticamente cuando se cumple el número de días configurado.",
     "dependencias": "Aplica únicamente para pines que no han sido impresos y que forman parte del proceso de impresión de pines.",
@@ -1453,13 +1453,13 @@
     "codigo": "05",
     "id": "e6ec6c1b-3b8f-41ca-9240-9fbed5790f5c",
     "creadoEn": "2026-08-19T19:57:27.325Z",
-    "actualizadoEn": "2026-08-19T19:57:27.325Z"
+    "actualizadoEn": "2026-09-25T16:32:22.098Z"
   },
   {
     "nombre": "Días para Eliminar Pin Impreso",
     "producto": "Todos",
     "pais": "Todos",
-    "valores": "Cantidad de Días",
+    "valores": "Cantidad 0 a 30 días.",
     "que": "Define después de cuántos días se eliminan los PIN que ya fueron impresos.",
     "como": "El sistema controla el tiempo que los PIN impresos permanecen almacenados y los elimina automáticamente cuando se cumple el plazo definido.",
     "dependencias": "Solo aplica a PIN que ya han sido impresos. Si el valor es cero, los PIN no se eliminan.",
@@ -1469,7 +1469,7 @@
     "codigo": "05",
     "id": "bd1b6b99-3415-47f9-afc0-79be304431a0",
     "creadoEn": "2026-08-19T19:57:27.325Z",
-    "actualizadoEn": "2026-08-19T19:57:27.325Z"
+    "actualizadoEn": "2026-09-25T16:32:30.076Z"
   },
   {
     "nombre": "Permite Tarjeta Titular Minicard",
@@ -1699,7 +1699,7 @@
     "nombre": "Días Gracia Pago de Contado",
     "producto": "Crédito",
     "pais": "Todos",
-    "valores": "Cantidad de días",
+    "valores": "Cantidad 0 a 30 días.",
     "que": "Define cuántos días adicionales se otorgan para realizar el pago total después de la fecha de pago de contado.",
     "como": "Una vez cumplida la fecha de pago de contado, el sistema permite un periodo adicional definido en días para completar el pago total.",
     "dependencias": "Solo está disponible cuando se maneja separación entre la fecha de pago de contado y la fecha de pago mínimo.",
@@ -1709,13 +1709,13 @@
     "codigo": "05",
     "id": "188c1fff-6f77-46e1-ac2a-93283516df83",
     "creadoEn": "2026-08-19T19:57:27.326Z",
-    "actualizadoEn": "2026-08-19T19:57:27.326Z"
+    "actualizadoEn": "2026-09-25T16:32:31.594Z"
   },
   {
     "nombre": "Días para Pagar Pago de Contado",
     "producto": "Crédito",
     "pais": "Todos",
-    "valores": "Cantidad de días (hasta 31 días)",
+    "valores": "Cantidad 0 a 31 días.",
     "que": "Define cuántos días tiene el cliente para realizar el pago total después del corte.",
     "como": "El sistema toma el número de días configurado y lo utiliza para calcular la fecha límite de pago de contado. Si esa fecha coincide con otras fechas del ciclo, el sistema realiza un ajuste automático para evitar conflictos.",
     "dependencias": "Solo aplica cuando se maneja separación entre la fecha de pago de contado y la fecha de pago mínimo.",
@@ -1725,7 +1725,7 @@
     "codigo": "05",
     "id": "87871a40-11bf-4325-82a5-c891b40091be",
     "creadoEn": "2026-08-19T19:57:27.326Z",
-    "actualizadoEn": "2026-08-19T19:57:27.326Z"
+    "actualizadoEn": "2026-09-25T16:32:35.293Z"
   },
   {
     "nombre": "Permite Prospectar Cuenta",
