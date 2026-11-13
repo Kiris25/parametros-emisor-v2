@@ -54,14 +54,14 @@
     "valores": "S = Sí / N = No",
     "que": "Define si el emisor corresponde a un esquema corporativo o empresarial.",
     "como": "Al seleccionar Sí, las tarjetas se organizan bajo un esquema empresarial donde existe una cuenta principal (cuenta madre) y tarjetas asociadas (cuentas hijas). Cada tarjeta hija opera de forma independiente, pero dentro del límite definido por la cuenta madre.",
-    "dependencias": "La configuración en S requiere la definición y revisión de los parámetro<span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">s de la Opción 27 - Corporativo</span>.",
+    "dependencias": "La configuración en S requiere la definición y revisión de los <a href=\"#\" class=\"dep-ref-inline\" data-target=\"b78abcfd-2364-4d0d-accb-6def91112649\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Parámetro\">parámetro</a><span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">s de la Opción 27 - Corporativo</span>.",
     "cuando": "Aplica durante la configuración de emisores empresariales que requieren administración de límites y operaciones bajo una estructura de cuenta madre y cuentas hijas.",
     "ejemplo": "Una empresa con varias tarjetas para sus colaboradores utiliza una cuenta principal que concentra el límite total, mientras cada tarjeta tiene un límite individual controlado dentro de ese monto.",
     "notas": "Este parámetro define si el producto funcionará como tarjeta empresarial. Al activarse, se habilitan reglas especiales de administración de cuentas y límites.",
     "codigo": "05",
     "id": "5aa3394c-9d8d-4944-b4d3-32bdef0f8466",
     "creadoEn": "2026-11-13T16:22:15.027Z",
-    "actualizadoEn": "2026-11-13T16:22:15.116Z"
+    "actualizadoEn": "2026-11-13T16:23:59.471Z"
   },
   {
     "nombre": "Saldo Origen",
@@ -150,14 +150,14 @@
     "valores": "S = Sí / N = No",
     "que": "Define si el emisor permite emitir tarjetas adicionales asociadas a una tarjeta principal.",
     "como": "Cuando está habilitado, el sistema permite crear tarjetas adicionales para un mismo cliente o cuenta, según las políticas del emisor.",
-    "dependencias": "No posee dependencias obligatorias para su funcionamiento. Sin embargo, si se utilizarán tarjetas adicionales, pueden configurarse parámetro<span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">s relacionados dentro de la Opción 5 - Parámetros del</span> <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Hay más de un parámetro con este nombre exacto. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Emisor</span>, tales como Límite Crédito Adicional, <a href=\"#\" class=\"dep-ref-inline\" data-target=\"427dddf1-4bf7-427f-88d8-e420d2cba011\" data-auto=\"true\" title=\"Referencia automática: Op. 05 · Acepta Pago no Dirigido\">Acepta Pago No Dirigido</a>, <a href=\"#\" class=\"dep-ref-inline\" data-target=\"23fbe5a3-e703-4586-b2d6-49fbd0f60224\" data-auto=\"true\" title=\"Referencia automática: Op. 05 · Límite Sobregiro Adicional\">Límite Sobregiro Adicional</a>, Saldo a Favor en Disp/Adel, Períodos de Consumo Adicional y Manejo Lim. x Compras y Adelantos. Estos parámetro<span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">s complementan la administración de las tarjetas adicionales</span>, pero no son requeridos para habilitarlas.",
+    "dependencias": "No posee dependencias obligatorias para su funcionamiento. Sin embargo, si se utilizarán tarjetas adicionales, pueden configurarse <a href=\"#\" class=\"dep-ref-inline\" data-target=\"b78abcfd-2364-4d0d-accb-6def91112649\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Parámetro\">parámetro</a><span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">s relacionados dentro de la Opción 5 - Parámetros del</span> <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Hay más de un parámetro con este nombre exacto. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Emisor</span>, tales como Límite Crédito Adicional, <a href=\"#\" class=\"dep-ref-inline\" data-target=\"427dddf1-4bf7-427f-88d8-e420d2cba011\" data-auto=\"true\" title=\"Referencia automática: Op. 05 · Acepta Pago no Dirigido\">Acepta Pago No Dirigido</a>, <a href=\"#\" class=\"dep-ref-inline\" data-target=\"23fbe5a3-e703-4586-b2d6-49fbd0f60224\" data-auto=\"true\" title=\"Referencia automática: Op. 05 · Límite Sobregiro Adicional\">Límite Sobregiro Adicional</a>, Saldo a Favor en Disp/Adel, Períodos de Consumo Adicional y Manejo Lim. x Compras y Adelantos. Estos <a href=\"#\" class=\"dep-ref-inline\" data-target=\"b78abcfd-2364-4d0d-accb-6def91112649\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Parámetro\">parámetro</a><span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">s complementan la administración de las tarjetas adicionales</span>, pero no son requeridos para habilitarlas.",
     "cuando": "Al momento de crear nuevas tarjetas adicionales por cualquier canal habilitado por el emisor.",
     "ejemplo": "Un cliente con tarjeta principal puede solicitar una tarjeta adicional para un tercero, siempre que el emisor tenga esta opción habilitada.",
     "notas": "Si esta opción no se encuentra habilitada, el emisor no permitirá la emisión de tarjetas adicionales.",
     "codigo": "05",
     "id": "48eab56c-c9ac-4423-9fe1-dd2d4af735ba",
     "creadoEn": "2026-11-13T16:22:15.027Z",
-    "actualizadoEn": "2026-11-13T16:22:15.122Z"
+    "actualizadoEn": "2026-11-13T16:23:59.479Z"
   },
   {
     "nombre": "Programa Imprime Letra",
@@ -262,14 +262,14 @@
     "valores": "Clasificación del emisor. Ejemplo: \r\nB CORPORATIVA\r\nC REGIONAL\r\nD DÉBITO\r\nE EMPRESARIAL\r\nF INFINITE\r\nG PREPAGO\r\nI INTERNACIONAL\r\nL LOCAL\r\nM MASTERCARD BLACK\r\nO ORO\r\nP PLATINO\r\nR PROPIETARIA \r\nS SIGNATURE",
     "que": "Define el tipo o categoría del producto que emite el banco.",
     "como": "El valor seleccionado identifica el tipo de producto y es utilizado por distintos procesos del sistema, incluyendo la generación de información estadística y algunos formatos de estados de cuenta. La clasificación seleccionada debe ser consistente con las características reales del producto y con la definición establecida por la marca correspondiente.",
-    "dependencias": "Cuando se selecciona G = Prepago, se habilita el <a href=\"#\" class=\"dep-ref-inline\" data-target=\"b78abcfd-2364-4d0d-accb-6def91112649\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Parámetro\">parámetro</a> Uso como Prepago (Opción 5 - Parámetro<span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">s del</span> <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Hay más de un parámetro con este nombre exacto. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Emisor</span>), mediante el cual se define si el producto será manejado como Bien Social o Comercial.",
+    "dependencias": "Cuando se selecciona G = Prepago, se habilita el <a href=\"#\" class=\"dep-ref-inline\" data-target=\"b78abcfd-2364-4d0d-accb-6def91112649\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Parámetro\">parámetro</a> Uso como Prepago (Opción 5 - <a href=\"#\" class=\"dep-ref-inline\" data-target=\"b78abcfd-2364-4d0d-accb-6def91112649\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Parámetro\">Parámetro</a><span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">s del</span> <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Hay más de un parámetro con este nombre exacto. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Emisor</span>), mediante el cual se define si el producto será manejado como Bien Social o Comercial.",
     "cuando": "Aplica durante la creación y configuración de cualquier emisor o producto asociado al emisor.",
     "ejemplo": "Si se configura un producto Mastercard Black, debe seleccionarse el valor M = Mastercard Black. Si posteriormente se configura un producto Prepago, debe seleccionarse G = Prepago, lo que habilitará la definición del tipo de prepago que utilizará el producto.",
     "notas": "La clasificación seleccionada debe corresponder al tipo real de tarjeta emitida para evitar inconsistencias en información y reportes.",
     "codigo": "05",
     "id": "3a825cd1-8b73-494a-925b-9d159a9f5df8",
     "creadoEn": "2026-11-13T16:22:15.027Z",
-    "actualizadoEn": "2026-11-13T16:22:15.127Z"
+    "actualizadoEn": "2026-11-13T16:23:59.483Z"
   },
   {
     "nombre": "Clase Inicial Cuenta \r\n(Clasificación de Pago)",
@@ -454,14 +454,14 @@
     "valores": "S = Sí / N = No",
     "que": "Define si las cuentas asociadas al emisor pueden contar con un aumento temporal del límite de crédito.",
     "como": "Cuando el valor es Sí, el emisor permite incrementos temporales del límite de crédito bajo condiciones previamente definidas. Cuando el valor es No, no se permiten aumentos temporales del límite.",
-    "dependencias": "Si el <a href=\"#\" class=\"dep-ref-inline\" data-target=\"b78abcfd-2364-4d0d-accb-6def91112649\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Parámetro\">parámetro</a> se configura en S, deben completarse los parámetros <a href=\"#\" class=\"dep-ref-inline\" data-target=\"44372032-6c28-4242-972f-64003b58a271\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Monto Mínimo Override\">Monto Mínimo Override</a> y <a href=\"#\" class=\"dep-ref-inline\" data-target=\"7d52a5e3-b2eb-448d-b081-a84e213b6d59\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Monto Máximo Override\">Monto Máximo Override</a> de la Opción 12 Trabajar con (Parámetro<span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">s por</span> <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Hay más de un parámetro con este nombre exacto. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">tipo de Cliente</span> y <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Hay más de un parámetro con este nombre exacto. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Moneda</span>).",
+    "dependencias": "Si el <a href=\"#\" class=\"dep-ref-inline\" data-target=\"b78abcfd-2364-4d0d-accb-6def91112649\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Parámetro\">parámetro</a> se configura en S, deben completarse los parámetros <a href=\"#\" class=\"dep-ref-inline\" data-target=\"44372032-6c28-4242-972f-64003b58a271\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Monto Mínimo Override\">Monto Mínimo Override</a> y <a href=\"#\" class=\"dep-ref-inline\" data-target=\"7d52a5e3-b2eb-448d-b081-a84e213b6d59\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Monto Máximo Override\">Monto Máximo Override</a> de la Opción 12 Trabajar con (<a href=\"#\" class=\"dep-ref-inline\" data-target=\"b78abcfd-2364-4d0d-accb-6def91112649\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Parámetro\">Parámetro</a><span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">s por</span> <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Hay más de un parámetro con este nombre exacto. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">tipo de Cliente</span> y <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Hay más de un parámetro con este nombre exacto. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Moneda</span>).",
     "cuando": "Aplica en emisores de crédito que requieren ofrecer aumentos temporales de límite por situaciones específicas o campañas definidas.",
     "ejemplo": "Un cliente puede recibir un aumento temporal de su límite de crédito durante un período específico para cubrir una necesidad puntual, siempre que el emisor lo permita.",
     "notas": "Este parámetro habilita o deshabilita la posibilidad de aumentos temporales del límite de crédito. Las condiciones específicas dependen de la política del emisor.",
     "codigo": "05",
     "id": "cdaadb81-7a43-4002-8b3b-f130b020dd4e",
     "creadoEn": "2026-11-13T16:22:15.027Z",
-    "actualizadoEn": "2026-11-13T16:22:15.132Z"
+    "actualizadoEn": "2026-11-13T16:23:59.494Z"
   },
   {
     "nombre": "Extrafinanciamiento",
@@ -470,14 +470,14 @@
     "valores": "S = Sí / N = No",
     "que": "Define si el emisor permite manejar un límite de crédito adicional independiente del límite normal de la tarjeta.",
     "como": "Cuando el valor es Sí, el sistema habilita un límite adicional que se administra de forma separada al límite normal y que, por lo general, se paga mediante cuotas fijas incluidas en el pago mínimo. Si el valor es No, este tipo de financiamiento no está disponible.",
-    "dependencias": "Si se configura en Sí, deben configurarse los parámetro<span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">s Clases</span> para Disponible (Opción 24) y Estados de Extrafinanciamiento (Opción 30). Una vez que existen extrafinanciamientos creados, el <a href=\"#\" class=\"dep-ref-inline\" data-target=\"b78abcfd-2364-4d0d-accb-6def91112649\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Parámetro\">parámetro</a> no puede volver a configurarse en No.",
+    "dependencias": "Si se configura en Sí, deben configurarse los <a href=\"#\" class=\"dep-ref-inline\" data-target=\"b78abcfd-2364-4d0d-accb-6def91112649\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Parámetro\">parámetro</a><span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">s Clases</span> para Disponible (Opción 24) y Estados de Extrafinanciamiento (Opción 30). Una vez que existen extrafinanciamientos creados, el <a href=\"#\" class=\"dep-ref-inline\" data-target=\"b78abcfd-2364-4d0d-accb-6def91112649\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Parámetro\">parámetro</a> no puede volver a configurarse en No.",
     "cuando": "Aplica en emisores de crédito que ofrecen financiamientos adicionales distintos al saldo normal de la tarjeta.",
     "ejemplo": "Un tarjetahabiente solicita un financiamiento especial para la compra de un electrodoméstico. El importe se registra como extrafinanciamiento y se paga mediante cuotas mensuales, manteniendo separado el saldo de compras regulares de la tarjeta.",
     "notas": "Este parámetro habilita un tipo de financiamiento adicional con reglas y saldos independientes del crédito regular.",
     "codigo": "05",
     "id": "2efa2b3f-02f5-409a-820f-f05bd9454f8a",
     "creadoEn": "2026-11-13T16:22:15.027Z",
-    "actualizadoEn": "2026-11-13T16:22:15.133Z"
+    "actualizadoEn": "2026-11-13T16:23:59.495Z"
   },
   {
     "nombre": "Incluye Saldo de Extrafinanciamiento a Saldo de la Cuenta",
@@ -518,14 +518,14 @@
     "valores": "C = Cobro Completo\r\nT = Cobro en Tractos",
     "que": "Define si la membresía se cobra en una única transacción o si se distribuye en varios tractos durante los cortes de la cuenta.",
     "como": "Cuando se selecciona C, la membresía se cobra de forma completa. Cuando se selecciona T, la membresía se distribuye en varios tractos según la configuración definida para el producto.",
-    "dependencias": "Si se configura el valor T, deben definirse los parámetro<span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">s de Tractos Membresía (Opción 18 - Por</span> <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Hay más de un parámetro con este nombre exacto. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Tipo de Cliente</span>) para determinar la cantidad de tractos en los que se dividirá el cobro.",
+    "dependencias": "Si se configura el valor T, deben definirse los <a href=\"#\" class=\"dep-ref-inline\" data-target=\"b78abcfd-2364-4d0d-accb-6def91112649\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Parámetro\">parámetro</a><span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">s de Tractos Membresía (Opción 18 - Por</span> <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Hay más de un parámetro con este nombre exacto. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Tipo de Cliente</span>) para determinar la cantidad de tractos en los que se dividirá el cobro.",
     "cuando": "Aplica en emisores de crédito y prepago que realizan cobro de membresía.",
     "ejemplo": "Una membresía anual de USD 120 puede cobrarse completamente en un solo cargo utilizando la opción C. Si el emisor utiliza la opción T y configura 12 tractos, el sistema puede distribuir el cobro en doce cargos de USD 10 durante los cortes correspondientes.",
     "notas": "La forma de cobro determina únicamente cómo se distribuye la membresía, no el monto total que debe cobrarse.",
     "codigo": "05",
     "id": "40ad15cc-c99b-4fb1-87d4-4cecb04cb6ee",
     "creadoEn": "2026-11-13T16:22:15.027Z",
-    "actualizadoEn": "2026-11-13T16:22:15.134Z"
+    "actualizadoEn": "2026-11-13T16:23:59.497Z"
   },
   {
     "nombre": "Estado en que Nace la Cuenta",
@@ -870,14 +870,14 @@
     "valores": "S = Sí / N = No",
     "que": "Define si los saldos de las cuentas del emisor deben mantenerse sincronizados y disponibles en SAETA para procesos de autorización, validación o consulta de saldo.",
     "como": "Cuando se configura con S, el sistema envía y actualiza los saldos hacia SAETA para que puedan ser consultados durante procesos de autorización o validación. Cuando se configura con N, los saldos continúan administrándose fuera de SAETA y dicho sistema no utiliza información de saldo.",
-    "dependencias": "Cuando este <a href=\"#\" class=\"dep-ref-inline\" data-target=\"b78abcfd-2364-4d0d-accb-6def91112649\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Parámetro\">parámetro</a> se configura en S, el descriptor Utilizar Doble <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Hay más de un parámetro con este nombre exacto. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Moneda</span> (DOUBLE_CURRENCY) del Formulario Parámetro<span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">s del Autorizador</span> debe encontrarse configurado en No (0). SAETA únicamente administra saldos en <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Hay más de un parámetro con este nombre exacto. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">moneda</span> local y no soporta validaciones de saldo en doble <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Hay más de un parámetro con este nombre exacto. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">moneda</span>. Si DOUBLE_CURRENCY está habilitado, las transacciones pueden ser rechazadas durante la validación de saldo.",
+    "dependencias": "Cuando este <a href=\"#\" class=\"dep-ref-inline\" data-target=\"b78abcfd-2364-4d0d-accb-6def91112649\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Parámetro\">parámetro</a> se configura en S, el descriptor Utilizar Doble <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Hay más de un parámetro con este nombre exacto. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Moneda</span> (DOUBLE_CURRENCY) del Formulario <a href=\"#\" class=\"dep-ref-inline\" data-target=\"b78abcfd-2364-4d0d-accb-6def91112649\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Parámetro\">Parámetro</a><span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">s del Autorizador</span> debe encontrarse configurado en No (0). SAETA únicamente administra saldos en <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Hay más de un parámetro con este nombre exacto. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">moneda</span> local y no soporta validaciones de saldo en doble <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Hay más de un parámetro con este nombre exacto. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">moneda</span>. Si DOUBLE_CURRENCY está habilitado, las transacciones pueden ser rechazadas durante la validación de saldo.",
     "cuando": "Aplica para emisores que utilizan SAETA en procesos de autorización, validación o consulta de saldos.",
     "ejemplo": "Un emisor utiliza SAETA para validar el saldo disponible antes de aprobar una compra. Al configurar el parámetro en S, el saldo de las cuentas se mantiene actualizado en SAETA para que pueda ser utilizado durante la autorización de las transacciones.",
     "notas": "Si SAETA participa en la validación de saldos, se recomienda revisar también la configuración del autorizador relacionada con doble moneda.",
     "codigo": "05",
     "id": "453ed520-1151-40f7-bac9-5ae90a7210aa",
     "creadoEn": "2026-11-13T16:22:15.027Z",
-    "actualizadoEn": "2026-11-13T16:22:15.143Z"
+    "actualizadoEn": "2026-11-13T16:23:59.509Z"
   },
   {
     "nombre": "Múltiples Planes Premiación",
@@ -1126,14 +1126,14 @@
     "valores": "S = Sí / N = No",
     "que": "Define si el emisor participa en la generación de acciones asociadas a promociones y permite consultar las acciones generadas para los tarjetahabientes.",
     "como": "Cuando se habilita, el emisor puede participar en promociones que generen acciones para los tarjetahabientes. Las acciones generadas pueden consultarse desde la opción 56 de TRT28SN3 - Trabajar con una Cuenta.",
-    "dependencias": "Está relacionado con los parámetro<span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">s de Sorteos (TT1 - Superfranquicia) configurados en TRTT1SN0</span>. Además, habilita la opción 56 de TRT28SN3 - Trabajar con una Cuenta para consultar las acciones generadas.",
+    "dependencias": "Está relacionado con los <a href=\"#\" class=\"dep-ref-inline\" data-target=\"b78abcfd-2364-4d0d-accb-6def91112649\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Parámetro\">parámetro</a><span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">s de Sorteos (TT1 - Superfranquicia) configurados en TRTT1SN0</span>. Además, habilita la opción 56 de TRT28SN3 - Trabajar con una Cuenta para consultar las acciones generadas.",
     "cuando": "Aplica cuando el emisor participa en promociones que utilizan generación de acciones.",
     "ejemplo": "Un banco realiza una promoción en la que las operaciones que cumplen las condiciones definidas generan acciones para participar en un sorteo. Con Genera Acciones = S, el emisor participa en este esquema y las acciones acumuladas por cada tarjetahabiente pueden consultarse posteriormente.",
     "notas": "La generación de acciones se encuentra vinculada con la configuración de sorteos definida a nivel de Superfranquicia.",
     "codigo": "05",
     "id": "699993a9-65bd-44c2-ad27-6749e2847d44",
     "creadoEn": "2026-11-13T16:22:15.027Z",
-    "actualizadoEn": "2026-11-13T16:22:15.154Z"
+    "actualizadoEn": "2026-11-13T16:23:59.522Z"
   },
   {
     "nombre": "Múltiples Cuentas Activas por Ente",
@@ -1302,14 +1302,14 @@
     "valores": "S = Sí / N = No",
     "que": "Define si el monto del pago de contado se calcula con redondeo o si se cobra el valor exacto resultante del cálculo.",
     "como": "Cuando el valor es Sí, el sistema aplica reglas de redondeo al cálculo del pago de contado. El tipo y la cantidad del redondeo se determinan mediante la configuración por moneda. Cuando el valor es No, el pago de contado se cobra por el monto exacto calculado, sin redondeos.",
-    "dependencias": "Con S = Sí, deben configurarse los parámetro<span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">s de la Opción 13 = Por</span> <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Hay más de un parámetro con este nombre exacto. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Moneda</span>, donde se determina la forma y cantidad de redondeo aplicable.",
+    "dependencias": "Con S = Sí, deben configurarse los <a href=\"#\" class=\"dep-ref-inline\" data-target=\"b78abcfd-2364-4d0d-accb-6def91112649\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Parámetro\">parámetro</a><span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">s de la Opción 13 = Por</span> <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Hay más de un parámetro con este nombre exacto. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Moneda</span>, donde se determina la forma y cantidad de redondeo aplicable.",
     "cuando": "Aplica a emisores de crédito que requieren redondear el resultado del cálculo del pago de contado.",
     "ejemplo": "Si el cálculo del pago de contado resulta en USD 127,43 y el parámetro está en S, el importe final se ajusta según la regla de redondeo configurada en la Opción 13 - Por Moneda. Si está en N, se mantienen los USD 127,43 calculados.",
     "notas": "El valor S no define por sí mismo cómo se redondea el importe. La regla específica de redondeo se configura por moneda.",
     "codigo": "05",
     "id": "25fac63b-b0dc-45e3-8e48-5f6c053ea4e3",
     "creadoEn": "2026-11-13T16:22:15.027Z",
-    "actualizadoEn": "2026-11-13T16:22:15.160Z"
+    "actualizadoEn": "2026-11-13T16:23:59.533Z"
   },
   {
     "nombre": "Límite de Crédito Adicional",
@@ -1398,14 +1398,14 @@
     "valores": "S = Sí / N = No",
     "que": "Define si se permite reiniciar el contador de intentos de PIN cuando el tarjetahabiente alcanza la cantidad máxima permitida en un periodo de 24 horas.",
     "como": "Con S = Sí, se habilita una opción para reiniciar el contador de frecuencia de PIN y comenzar nuevamente desde cero. Con N = No, no se dispone de esta opción y el tarjetahabiente debe esperar 24 horas desde el último intento para que el contador se reinicie automáticamente.",
-    "dependencias": "La cantidad máxima de intentos permitidos se define en los parámetro<span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">s del autorizador</span>. Este <a href=\"#\" class=\"dep-ref-inline\" data-target=\"b78abcfd-2364-4d0d-accb-6def91112649\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Parámetro\">parámetro</a> no realiza un <a href=\"#\" class=\"dep-ref-inline\" data-target=\"3e317bcf-de98-4a0e-b417-a840fc128f9e\" data-auto=\"true\" title=\"Referencia automática: Op. 05 · Cambio de Pin\">cambio de PIN</a>; únicamente habilita el reinicio del contador de frecuencia.",
+    "dependencias": "La cantidad máxima de intentos permitidos se define en los <a href=\"#\" class=\"dep-ref-inline\" data-target=\"b78abcfd-2364-4d0d-accb-6def91112649\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Parámetro\">parámetro</a><span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">s del autorizador</span>. Este <a href=\"#\" class=\"dep-ref-inline\" data-target=\"b78abcfd-2364-4d0d-accb-6def91112649\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Parámetro\">parámetro</a> no realiza un <a href=\"#\" class=\"dep-ref-inline\" data-target=\"3e317bcf-de98-4a0e-b417-a840fc128f9e\" data-auto=\"true\" title=\"Referencia automática: Op. 05 · Cambio de Pin\">cambio de PIN</a>; únicamente habilita el reinicio del contador de frecuencia.",
     "cuando": "Aplica cuando el tarjetahabiente alcanza la cantidad máxima de intentos de PIN permitida por el autorizador y se requiere reiniciar el contador sin esperar su reinicio automático.",
     "ejemplo": "Un tarjetahabiente alcanza el máximo de intentos de PIN permitido durante las últimas 24 horas. Si Inicializar Frecuencia de PIN = S, se puede reiniciar el contador para que vuelva a iniciar desde cero. Si está en N, debe esperar 24 horas desde el último intento para que el contador se reinicie automáticamente.",
     "notas": "Esta función depende de la política del banco y no implica cambio del PIN.",
     "codigo": "05",
     "id": "7a53624c-97c1-4c6b-a3ec-9a6f69c26b57",
     "creadoEn": "2026-11-13T16:22:15.027Z",
-    "actualizadoEn": "2026-11-13T16:22:15.165Z"
+    "actualizadoEn": "2026-11-13T16:23:59.537Z"
   },
   {
     "nombre": "Inicializar Frecuencia",
@@ -1446,14 +1446,14 @@
     "valores": "S = Sí / N = No",
     "que": "Define cómo se calcula la comisión por adelantos de efectivo cuando existe tanto un monto como un porcentaje de comisión configurado para los MCC 6010 y 6011.",
     "como": "Con S = Sí, se comparan el monto y el porcentaje de comisión calculado y se aplica el valor mayor. Con N = No, ambos valores se suman para determinar la comisión.",
-    "dependencias": "Depende de los valores de monto y <a href=\"#\" class=\"dep-ref-inline\" data-target=\"8cc5e68d-0400-4f93-ab6b-cbb4db4078b3\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Porcentaje\">porcentaje</a> de comisión configurados para adelantos de efectivo en los MCC 6010 y 6011 dentro de TRT08SN0 → Opción 12 - Trabajar con. Si los parámetro<span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">s de</span> <a href=\"#\" class=\"dep-ref-inline\" data-target=\"fd37f906-68ef-4368-990e-5aaac24574b9\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Monto o Porcentaje\">monto o porcentaje</a> correspondientes se encuentran en blanco, la documentación indica que no se cobra comisión.",
+    "dependencias": "Depende de los valores de monto y <a href=\"#\" class=\"dep-ref-inline\" data-target=\"8cc5e68d-0400-4f93-ab6b-cbb4db4078b3\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Porcentaje\">porcentaje</a> de comisión configurados para adelantos de efectivo en los MCC 6010 y 6011 dentro de TRT08SN0 → Opción 12 - Trabajar con. Si los <a href=\"#\" class=\"dep-ref-inline\" data-target=\"b78abcfd-2364-4d0d-accb-6def91112649\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Parámetro\">parámetro</a><span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">s de</span> <a href=\"#\" class=\"dep-ref-inline\" data-target=\"fd37f906-68ef-4368-990e-5aaac24574b9\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Monto o Porcentaje\">monto o porcentaje</a> correspondientes se encuentran en blanco, la documentación indica que no se cobra comisión.",
     "cuando": "Aplica al cálculo de comisiones por adelantos de efectivo en la liquidación Incoming y en la liquidación de la red de cajeros ATH.",
     "ejemplo": "Aplica al cálculo de comisiones por Para un adelanto se obtiene una comisión por monto de USD 5 y una comisión calculada por porcentaje de USD 8. Con Cálculo Comisión Excluyente = S, se aplica el mayor valor, es decir USD 8. Con N, ambos valores se suman y la comisión resultante sería USD 13. de efectivo en la liquidación Incoming y en la liquidación de la red de cajeros ATH.",
     "notas": "La configuración determina si los componentes de monto y porcentaje de la comisión por adelanto se comparan o se suman.",
     "codigo": "05",
     "id": "3188dede-e2df-49b2-b18c-fc40f625d35d",
     "creadoEn": "2026-11-13T16:22:15.027Z",
-    "actualizadoEn": "2026-11-13T16:22:15.275Z"
+    "actualizadoEn": "2026-11-13T16:23:59.638Z"
   },
   {
     "nombre": "Cálculo Comisión por MCC",
@@ -1862,14 +1862,14 @@
     "valores": "S = Sí / N = No",
     "que": "Define cómo se administra la fecha de vencimiento durante una renovación o reposición por deterioro, permitiendo conservar temporalmente los datos de la tarjeta anterior mientras el nuevo plástico se encuentra pendiente de entrega.",
     "como": "Con S = Sí, durante una renovación o reposición el sistema conserva para la sincronización la fecha de vencimiento anterior mientras el tarjetahabiente continúa utilizando el plástico anterior. Cuando el nuevo plástico se entrega y activa mediante el módulo de trasiego, se actualizan el estado y la fecha de vencimiento correspondientes. Con N = No, los nuevos datos se actualizan desde el proceso de renovación o reposición, lo que puede impedir continuar utilizando el plástico anterior.",
-    "dependencias": "Con S = Sí, deben configurarse la Opción 19 - Renovación y la Opción 47 - Trabajar Parámetro<span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">s Deterioro Tarjeta de TRT08SN0</span>. Para reposiciones mediante la Opción 47 que mantienen el mismo número de tarjeta, debe agregarse al menos 1 mes a la fecha de vencimiento.",
+    "dependencias": "Con S = Sí, deben configurarse la Opción 19 - Renovación y la Opción 47 - Trabajar <a href=\"#\" class=\"dep-ref-inline\" data-target=\"b78abcfd-2364-4d0d-accb-6def91112649\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Parámetro\">Parámetro</a><span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">s Deterioro Tarjeta de TRT08SN0</span>. Para reposiciones mediante la Opción 47 que mantienen el mismo número de tarjeta, debe agregarse al menos 1 mes a la fecha de vencimiento.",
     "cuando": "Aplica principalmente durante renovaciones y reposiciones por deterioro cuando se requiere que el plástico anterior continúe operativo hasta que el nuevo plástico sea entregado y activado.",
     "ejemplo": "Una tarjeta vence el 31/12/2026 y la renovación genera un nuevo plástico con vencimiento 31/12/2030. Con el parámetro en S, mientras el nuevo plástico permanece pendiente de entrega se conserva la fecha anterior para evitar afectar transaccionalmente la tarjeta que todavía posee el tarjetahabiente. Cuando se entrega y activa el nuevo plástico, se actualiza la información correspondiente a la nueva tarjeta.",
     "notas": "Para emisores nuevos se recomienda utilizar S y realizar las reposiciones mediante servicios. Antes de cambiar un emisor existente de N o blanco a S, debe verificarse que no existan tarjetas en renovación ni pendientes de trasiego.",
     "codigo": "05",
     "id": "85a41124-09d7-42dc-b486-6799e6a92bd8",
     "creadoEn": "2026-11-13T16:22:15.027Z",
-    "actualizadoEn": "2026-11-13T16:22:15.290Z"
+    "actualizadoEn": "2026-11-13T16:23:59.658Z"
   },
   {
     "nombre": "Uso como prepago (B/C)",
@@ -1910,14 +1910,14 @@
     "valores": "S = Sí / N = No",
     "que": "Define si, al crear una tarjeta nueva del emisor, debe generarse automáticamente una tarjeta Priority Pass relacionada.",
     "como": "Con S = Sí, por cada tarjeta nueva, titular o adicional, creada mediante prospectación manual o masiva, se genera automáticamente una tarjeta Priority Pass relacionada. Con N = No, no se realiza la generación automática; la tarjeta Priority Pass puede agregarse posteriormente mediante el proceso manual disponible en Siscard.",
-    "dependencias": "Trabaja en conjunto con Permite Prospectar Priority Pass y con Parámetro<span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">s Priority Pass (TRTT2SN0 - Parámetros por</span> <a href=\"#\" class=\"dep-ref-inline\" data-target=\"24146be7-550c-430b-b904-5148236a2491\" data-auto=\"true\" title=\"Referencia automática: Op. 05 · Franquicia\">Franquicia</a>, Opción 19).",
+    "dependencias": "Trabaja en conjunto con Permite Prospectar Priority Pass y con <a href=\"#\" class=\"dep-ref-inline\" data-target=\"b78abcfd-2364-4d0d-accb-6def91112649\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Parámetro\">Parámetro</a><span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">s Priority Pass (TRTT2SN0 - Parámetros por</span> <a href=\"#\" class=\"dep-ref-inline\" data-target=\"24146be7-550c-430b-b904-5148236a2491\" data-auto=\"true\" title=\"Referencia automática: Op. 05 · Franquicia\">Franquicia</a>, Opción 19).",
     "cuando": "Aplica a emisores de crédito que requieren generar automáticamente tarjetas Priority Pass junto con las nuevas tarjetas creadas mediante prospectación manual o masiva.",
     "ejemplo": "Durante la apertura de una cuenta se generan una tarjeta titular y una tarjeta adicional. Con Permite Prospectar Priority Pass Automáticamente = S, el sistema genera automáticamente una Priority Pass relacionada para la titular y otra para la adicional, sin requerir agregarlas individualmente después de la apertura.",
     "notas": "Con N = No, se mantiene disponible la generación manual de Priority Pass. La configuración en S automatiza la generación para las nuevas tarjetas titulares y adicionales creadas durante la prospectación.",
     "codigo": "05",
     "id": "a1cc768a-8e77-4175-945e-bbf87ceea900",
     "creadoEn": "2026-11-13T16:22:15.027Z",
-    "actualizadoEn": "2026-11-13T16:22:15.292Z"
+    "actualizadoEn": "2026-11-13T16:23:59.660Z"
   },
   {
     "nombre": "Activa Tarjeta Priority Pass",
