@@ -3,7 +3,7 @@
   <head> 
     <meta charset="UTF-8" /> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
-    <title>Parámetros del Emisor - Editor V7</title> 
+    <title>Parámetros del Emisor - Editor V8</title> 
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script> 
     <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js"></script>
     <style> 
@@ -107,7 +107,33 @@
       .opcion.activa { 
         color: #fff; 
         border-color: var(--naranja); 
-      } 
+      }
+      .opcion-grupo {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 25px;
+        gap: 2px;
+        min-width: 0;
+      }
+      .opcion-grupo .opcion {
+        width: 100%;
+      }
+      .borrar-opcion {
+        width: 25px;
+        height: 25px;
+        padding: 0;
+        border: 1px solid #e7b5b0;
+        border-radius: 999px;
+        background: #fff;
+        color: var(--rojo);
+        font-size: 12px;
+        font-weight: 900;
+        line-height: 1;
+      }
+      .borrar-opcion:hover,
+      .borrar-opcion:focus-visible {
+        background: var(--rojo);
+        color: #fff;
+      }
       .filtros { 
         position: sticky; 
         top: 0; 
@@ -313,7 +339,35 @@
         color: #8a3b00; 
         font-weight: 800; 
         text-decoration: none; 
-      } 
+      }
+      .dep-pendiente {
+        padding: 0 3px;
+        border-bottom: 2px dashed #b26a00;
+        border-radius: 3px;
+        background: #fff3cd;
+        color: #714300;
+        font-weight: 800;
+      }
+      .dep-pendiente::before {
+        content: "⚠ ";
+        color: #b26a00;
+        font-size: 0.9em;
+      }
+      .indicador-pendiente {
+        flex: 0 0 auto;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        margin-right: 7px;
+        border: 1px solid #e5b557;
+        border-radius: 999px;
+        background: #fff3cd;
+        color: #714300;
+        font-size: 14px;
+        font-weight: 900;
+      }
       .vacio { 
         padding: 24px; 
         background: #fff; 
@@ -675,9 +729,10 @@
               class="editable" 
               contenteditable="true" 
             ></div> 
-            <p class="ayuda"> 
-              Marque una porción de texto y haga clic derecho. Se abrirá el 
-              buscador de parámetros. 
+            <p class="ayuda">
+              Las coincidencias exactas se vinculan automáticamente. Las referencias
+              marcadas con ⚠ están pendientes de revisión; seleccione el texto y haga
+              clic derecho para vincularlo manualmente.
             </p> 
           </label> 
           <label class="completo campo-externo">¿Cuándo aplica?<textarea id="cuando"></textarea> 
@@ -1031,6 +1086,247 @@
           (datos[c] || []).map((r) => ({ ...r, __opcion: c })), 
         ); 
       } 
+      function objetivoReferencia(registro) {
+        const c = registro.__opcion || registro.codigo || "";
+        return (
+          registro.id ||
+          `op${c}-${normalizar(registro.nombre).replaceAll(" ", "-")}`
+        );
+      }
+      function escaparExpresion(valor) {
+        return String(valor || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      }
+      function indiceParametros() {
+        const porNombre = new Map();
+        todos().forEach((registro) => {
+          const nombre = String(registro.nombre || "").trim();
+          const comparable = nombreComparable(nombre);
+          if (!nombre || !comparable) return;
+          if (!porNombre.has(comparable)) porNombre.set(comparable, []);
+          porNombre.get(comparable).push(registro);
+        });
+        return [...porNombre.entries()]
+          .map(([comparable, registros]) => ({
+            comparable,
+            nombre: registros[0].nombre.trim(),
+            registros,
+          }))
+          .sort((a, b) => b.nombre.length - a.nombre.length);
+      }
+      function crearVinculoAutomatico(texto, registro) {
+        const enlace = document.createElement("a");
+        enlace.href = "#";
+        enlace.className = "dep-ref-inline";
+        enlace.dataset.target = objetivoReferencia(registro);
+        enlace.dataset.auto = "true";
+        enlace.title = `Referencia automática: Op. ${registro.__opcion} · ${registro.nombre}`;
+        enlace.textContent = texto;
+        return enlace;
+      }
+      function crearPendiente(texto, motivo = "Referencia sin coincidencia exacta") {
+        const marca = document.createElement("span");
+        marca.className = "dep-pendiente";
+        marca.dataset.estado = "pendiente";
+        marca.title = `${motivo}. Seleccione el texto y haga clic derecho para vincularlo manualmente.`;
+        marca.textContent = texto;
+        return marca;
+      }
+      function candidatosSinActual(registros, registroActual) {
+        const actual = registroActual ? objetivoReferencia(registroActual) : "";
+        return registros.filter((registro) => objetivoReferencia(registro) !== actual);
+      }
+      function resolverPendientesExistentes(contenedor, indice, registroActual) {
+        contenedor.querySelectorAll(".dep-pendiente").forEach((marca) => {
+          const comparable = nombreComparable(marca.textContent);
+          const entrada = indice.find((item) => item.comparable === comparable);
+          if (!entrada) return;
+          const candidatos = candidatosSinActual(entrada.registros, registroActual);
+          if (candidatos.length !== 1) return;
+          marca.replaceWith(crearVinculoAutomatico(marca.textContent, candidatos[0]));
+        });
+      }
+      function revisarVinculosExistentes(contenedor) {
+        contenedor.querySelectorAll("a.dep-ref-inline").forEach((enlace) => {
+          if (encontrarRelacionado(enlace.dataset.target)) return;
+          enlace.replaceWith(
+            crearPendiente(enlace.textContent, "El parámetro vinculado ya no existe"),
+          );
+        });
+      }
+      function vincularCoincidenciasExactas(contenedor, indice, registroActual) {
+        const caminante = document.createTreeWalker(
+          contenedor,
+          NodeFilter.SHOW_TEXT,
+          {
+            acceptNode(nodo) {
+              const padre = nodo.parentElement;
+              if (!nodo.nodeValue?.trim()) return NodeFilter.FILTER_REJECT;
+              if (padre?.closest("a.dep-ref-inline, .dep-pendiente")) {
+                return NodeFilter.FILTER_REJECT;
+              }
+              return NodeFilter.FILTER_ACCEPT;
+            },
+          },
+        );
+        const nodos = [];
+        while (caminante.nextNode()) nodos.push(caminante.currentNode);
+        nodos.forEach((nodo) => {
+          const texto = nodo.nodeValue || "";
+          const hallazgos = [];
+          indice.forEach((entrada) => {
+            if (entrada.nombre.length < 3) return;
+            const patronNombre = entrada.nombre
+              .trim()
+              .split(/\s+/)
+              .map(escaparExpresion)
+              .join("\\s+");
+            const expresion = new RegExp(
+              `(^|[^\\p{L}\\p{N}])(${patronNombre})(?=$|[^\\p{L}\\p{N}])`,
+              "giu",
+            );
+            let coincidencia;
+            while ((coincidencia = expresion.exec(texto))) {
+              const inicio = coincidencia.index + coincidencia[1].length;
+              const valor = coincidencia[2];
+              const candidatos = candidatosSinActual(entrada.registros, registroActual);
+              if (!candidatos.length) continue;
+              hallazgos.push({
+                inicio,
+                fin: inicio + valor.length,
+                valor,
+                candidatos,
+              });
+              if (!coincidencia[0].length) expresion.lastIndex++;
+            }
+          });
+          hallazgos.sort((a, b) => a.inicio - b.inicio || b.fin - b.inicio - (a.fin - a.inicio));
+          const elegidos = [];
+          let finAnterior = -1;
+          hallazgos.forEach((hallazgo) => {
+            if (hallazgo.inicio < finAnterior) return;
+            elegidos.push(hallazgo);
+            finAnterior = hallazgo.fin;
+          });
+          if (!elegidos.length) return;
+          const fragmento = document.createDocumentFragment();
+          let posicion = 0;
+          elegidos.forEach((hallazgo) => {
+            fragmento.appendChild(document.createTextNode(texto.slice(posicion, hallazgo.inicio)));
+            if (hallazgo.candidatos.length === 1) {
+              fragmento.appendChild(
+                crearVinculoAutomatico(hallazgo.valor, hallazgo.candidatos[0]),
+              );
+            } else {
+              fragmento.appendChild(
+                crearPendiente(
+                  hallazgo.valor,
+                  "Hay más de un parámetro con este nombre exacto",
+                ),
+              );
+            }
+            posicion = hallazgo.fin;
+          });
+          fragmento.appendChild(document.createTextNode(texto.slice(posicion)));
+          nodo.replaceWith(fragmento);
+        });
+      }
+      function recortarReferenciaPendiente(valor) {
+        const texto = String(valor || "").trim();
+        if (/^(?:se|es|está|esta|debe|permite|define|indica|aplica|controla|habilita|requiere|tiene)\b/i.test(texto)) {
+          return "";
+        }
+        const corte = texto.search(
+          /\s+(?:está|esta|esté|este|es|sea|debe|tiene|cuando|si|para|activo|activa|inactivo|inactiva|habilitado|habilitada)\b/i,
+        );
+        return (corte >= 0 ? texto.slice(0, corte) : texto)
+          .replace(/[\s:;,.!?]+$/g, "")
+          .trim();
+      }
+      function marcarReferenciasPendientes(contenedor) {
+        const caminante = document.createTreeWalker(
+          contenedor,
+          NodeFilter.SHOW_TEXT,
+          {
+            acceptNode(nodo) {
+              const padre = nodo.parentElement;
+              if (!nodo.nodeValue?.trim()) return NodeFilter.FILTER_REJECT;
+              if (padre?.closest("a.dep-ref-inline, .dep-pendiente")) {
+                return NodeFilter.FILTER_REJECT;
+              }
+              return NodeFilter.FILTER_ACCEPT;
+            },
+          },
+        );
+        const nodos = [];
+        while (caminante.nextNode()) nodos.push(caminante.currentNode);
+        const patron = /\b(?:parámetr(?:o|os)|parameter(?:s)?|referencia(?:s)?(?:\s+al)?|ref\.?)\s*(?:[:#-]\s*)?(?:["“'«]([^"”'»\n]{2,100})["”'»]|([^,;.\n]{2,100}))/giu;
+        nodos.forEach((nodo) => {
+          const texto = nodo.nodeValue || "";
+          const hallazgos = [];
+          let coincidencia;
+          patron.lastIndex = 0;
+          while ((coincidencia = patron.exec(texto))) {
+            const bruto = coincidencia[1] || coincidencia[2] || "";
+            const candidato = recortarReferenciaPendiente(bruto);
+            if (candidato.length < 2) continue;
+            const inicioBruto = coincidencia.index + coincidencia[0].lastIndexOf(bruto);
+            const desplazamiento = bruto.indexOf(candidato);
+            const inicio = inicioBruto + Math.max(0, desplazamiento);
+            hallazgos.push({ inicio, fin: inicio + candidato.length, valor: candidato });
+          }
+          if (!hallazgos.length) return;
+          const fragmento = document.createDocumentFragment();
+          let posicion = 0;
+          hallazgos.forEach((hallazgo) => {
+            if (hallazgo.inicio < posicion) return;
+            fragmento.appendChild(document.createTextNode(texto.slice(posicion, hallazgo.inicio)));
+            fragmento.appendChild(crearPendiente(hallazgo.valor));
+            posicion = hallazgo.fin;
+          });
+          fragmento.appendChild(document.createTextNode(texto.slice(posicion)));
+          nodo.replaceWith(fragmento);
+        });
+      }
+      function analizarDependenciaHTML(valor, registroActual = null) {
+        const contenedor = document.createElement("div");
+        contenedor.innerHTML = String(valor || "");
+        const anterior = contenedor.innerHTML;
+        const indice = indiceParametros();
+        revisarVinculosExistentes(contenedor);
+        resolverPendientesExistentes(contenedor, indice, registroActual);
+        vincularCoincidenciasExactas(contenedor, indice, registroActual);
+        marcarReferenciasPendientes(contenedor);
+        return {
+          html: contenedor.innerHTML.trim(),
+          cambio: contenedor.innerHTML.trim() !== anterior.trim(),
+          vinculos: contenedor.querySelectorAll("a.dep-ref-inline").length,
+          pendientes: contenedor.querySelectorAll(".dep-pendiente").length,
+        };
+      }
+      function analizarTodasLasDependencias({ marcarCambios = false } = {}) {
+        const modificadas = new Set();
+        let vinculos = 0;
+        let pendientes = 0;
+        OPCIONES.forEach(([c]) => {
+          (datos[c] || []).forEach((registro) => {
+            const original = registro.dependencias || registro.dep || "";
+            if (!original) return;
+            const resultado = analizarDependenciaHTML(original, {
+              ...registro,
+              __opcion: c,
+            });
+            vinculos += resultado.vinculos;
+            pendientes += resultado.pendientes;
+            if (resultado.html === String(original).trim() && !("dep" in registro)) return;
+            registro.dependencias = resultado.html;
+            if ("dep" in registro) delete registro.dep;
+            registro.actualizadoEn = new Date().toISOString();
+            modificadas.add(c);
+          });
+        });
+        if (marcarCambios) modificadas.forEach(marcarCambio);
+        return { modificadas, vinculos, pendientes };
+      }
       function aviso(m, error = false) { 
         $("toast").textContent = m; 
         $("toast").className = "toast" + (error ? " error" : ""); 
@@ -1042,11 +1338,38 @@
         $("menu").innerHTML = 
           `<button class="opcion ${opcion === "todas" ? "activa" : ""}" data-opcion="todas">${textoEditor("todas")}</button>` + 
           OPCIONES.map( 
-            ([c, n]) => 
-              `<button class="opcion ${opcion === c ? "activa" : ""}" data-opcion="${c}" title="Op. ${c} · ${escapar(n)}">Op. ${c} · ${escapar(n)}</button>`, 
+            ([c, n]) =>
+              `<div class="opcion-grupo"><button class="opcion ${opcion === c ? "activa" : ""}" data-opcion="${c}" title="Op. ${c} · ${escapar(n)}">Op. ${c} · ${escapar(n)}</button><button type="button" class="borrar-opcion" data-borrar-opcion="${c}" title="Borrar únicamente los parámetros de Op. ${c} en ${ambito === "externo" ? "Externo" : "Interno"}" aria-label="Borrar parámetros de Op. ${c}">🗑</button></div>`, 
           ).join(""); 
-      } 
-      $("menu").addEventListener("click", (e) => { 
+      }
+      async function borrarParametrosOpcion(c) {
+        const cantidad = (datos[c] || []).length;
+        const nombreAmbito = ambito === "externo" ? "Externo" : "Interno";
+        if (!cantidad) {
+          aviso(`La Op. ${c} no tiene parámetros en ${nombreAmbito}.`);
+          return;
+        }
+        const confirmado = confirm(
+          `¿Borrar los ${cantidad} parámetro(s) de la Op. ${c} · ${nombreOpcion(c)} en ${nombreAmbito}?\n\n` +
+          "El título de la opción se conservará. El borrado quedará pendiente y solo se publicará al presionar Guardar cambios.",
+        );
+        if (!confirmado) return;
+        datos[c] = [];
+        marcarCambio(c);
+        analizarTodasLasDependencias({ marcarCambios: true });
+        renderizar();
+        aviso(
+          `Parámetros de la Op. ${c} eliminados en ${nombreAmbito}. Presione Guardar cambios para publicar el borrado.`,
+        );
+      }
+      $("menu").addEventListener("click", (e) => {
+        const borrar = e.target.closest("[data-borrar-opcion]");
+        if (borrar) {
+          e.preventDefault();
+          e.stopPropagation();
+          borrarParametrosOpcion(borrar.dataset.borrarOpcion);
+          return;
+        }
         const b = e.target.closest("[data-opcion]"); 
         if (!b) return; 
         opcion = b.dataset.opcion; 
@@ -1077,16 +1400,33 @@
         const pares = await Promise.all( 
           OPCIONES.map(async ([c]) => [c, await leer(c)]), 
         ); 
-        datos = Object.fromEntries(pares); 
-        renderizar(); 
-        $("estado").className = "estado ok"; 
-        $("estado").textContent = 
-          `${ambito === "externo" ? "Externo" : "Interno"} · ${todos().length} registros cargados.`; 
+        datos = Object.fromEntries(pares);
+        const analisis = analizarTodasLasDependencias({ marcarCambios: !modoFicha });
+        renderizar();
+        if (cambiosPendientes.size) {
+          $("estado").className = "estado";
+          $("estado").textContent =
+            `Referencias analizadas: ${analisis.vinculos} vínculo(s) y ${analisis.pendientes} pendiente(s) de revisión. ` +
+            "Los cambios automáticos están pendientes de Guardar cambios.";
+        } else {
+          $("estado").className = "estado ok";
+          $("estado").textContent =
+            `${ambito === "externo" ? "Externo" : "Interno"} · ${todos().length} registros cargados · ${analisis.pendientes} referencia(s) pendiente(s) de revisión.`;
+        }
       } 
-      async function cambiarAmbito(v) { 
+      async function cambiarAmbito(v) {
+        if (v === ambito) return;
+        if (cambiosPendientes.size) {
+          aviso(
+            "Guarde los cambios pendientes antes de cambiar entre Externo e Interno.",
+            true,
+          );
+          return;
+        }
         ambito = v; 
         $("externo").classList.toggle("activa", v === "externo"); 
-        $("interno").classList.toggle("activa", v === "interno"); 
+        $("interno").classList.toggle("activa", v === "interno");
+        construirMenu();
         await cargarTodo(); 
       } 
       function registrosVisibles() { 
@@ -1129,8 +1469,11 @@
           : s; 
       } 
       function dependenciaVisible(v) { 
-        let html = String(v || "—"); 
-        if (!/<a\b/i.test(html)) html = escapar(html); 
+        let html = String(v || "—");
+        const contieneMarcado =
+          /<a\b/i.test(html) ||
+          /<span\b[^>]*class=["'][^"']*dep-pendiente/i.test(html);
+        if (!contieneMarcado) html = escapar(html); 
         return html; 
       }
       function tieneHipervinculo(registro) {
@@ -1141,6 +1484,13 @@
       function indicadorHipervinculo(registro) {
         return tieneHipervinculo(registro)
           ? '<span class="indicador-vinculo" title="Este registro contiene uno o más hipervínculos" aria-label="Registro con hipervínculo">🔗</span>'
+          : "";
+      }
+      function indicadorPendiente(registro) {
+        return /class=["'][^"']*dep-pendiente/i.test(
+          String(registro?.dependencias || registro?.dep || ""),
+        )
+          ? '<span class="indicador-pendiente" title="Este registro contiene referencias pendientes de revisión" aria-label="Referencia pendiente de revisión">⚠</span>'
           : "";
       } 
       function resaltarHTML(valor) { 
@@ -1188,7 +1538,7 @@
         return `<div class="campo ${clase}"><div class="etiqueta">${t}</div><div class="texto editable-ficha" contenteditable="true" data-campo="${k}" data-opcion="${c}" data-indice="${i}">${resaltar(v)}</div></div>`; 
       } 
       function campoDependencia(c, i, v) { 
-        return `<div class="campo"><div class="etiqueta">${textoEditor("dependencias")}</div><div class="texto dependencia-inline" contenteditable="true" data-dep-opcion="${c}" data-dep-indice="${i}" title="Edite directamente. Seleccione texto y haga clic derecho para vincularlo.">${resaltarHTML(dependenciaVisible(v))}</div><div class="ayuda">Edición directa · seleccione texto y haga clic derecho para vincular.</div></div>`; 
+        return `<div class="campo"><div class="etiqueta">${textoEditor("dependencias")}</div><div class="texto dependencia-inline" contenteditable="true" data-dep-opcion="${c}" data-dep-indice="${i}" title="Edite directamente. Seleccione texto y haga clic derecho para vincularlo.">${resaltarHTML(dependenciaVisible(v))}</div><div class="ayuda">🔗 vínculo automático · ⚠ pendiente de revisión · seleccione texto y haga clic derecho para vincular manualmente.</div></div>`; 
       } 
       function indiceReal(r) { 
         return (datos[r.__opcion] || []).findIndex( 
@@ -1243,7 +1593,7 @@
                   i = indiceReal(r); 
                 const fichaId = idFichaEditor(c, i, r),
                   colapsada = estaFichaColapsada(c, i, r);
-                return `<article id="${escapar(fichaId)}" class="ficha ${colapsada ? "colapsada" : ""}"><div class="cabecera-ficha"><div class="codigo">Op. ${c}</div><div class="control-ficha"><button type="button" class="alternar-ficha" data-alternar-ficha="${escapar(fichaId)}" title="${colapsada ? textoEditor("mostrarFicha") : textoEditor("esconderFicha")}" aria-label="${colapsada ? textoEditor("mostrarFicha") : textoEditor("esconderFicha")}">${colapsada ? "▶" : "▼"}</button><div class="nombre" contenteditable="true" data-campo="nombre" data-opcion="${c}" data-indice="${i}">${resaltar(r.nombre)}</div>${indicadorHipervinculo(r)}</div><div class="acciones-ficha"><button class="boton" data-duplicar="${c}|${i}">${textoEditor("duplicar")}</button><button class="boton boton-rojo" data-eliminar="${c}|${i}">${textoEditor("eliminar")}</button></div></div><div class="cuadricula">${ambito === "interno"
+                return `<article id="${escapar(fichaId)}" class="ficha ${colapsada ? "colapsada" : ""}"><div class="cabecera-ficha"><div class="codigo">Op. ${c}</div><div class="control-ficha"><button type="button" class="alternar-ficha" data-alternar-ficha="${escapar(fichaId)}" title="${colapsada ? textoEditor("mostrarFicha") : textoEditor("esconderFicha")}" aria-label="${colapsada ? textoEditor("mostrarFicha") : textoEditor("esconderFicha")}">${colapsada ? "▶" : "▼"}</button><div class="nombre" contenteditable="true" data-campo="nombre" data-opcion="${c}" data-indice="${i}">${resaltar(r.nombre)}</div>${indicadorHipervinculo(r)}${indicadorPendiente(r)}</div><div class="acciones-ficha"><button class="boton" data-duplicar="${c}|${i}">${textoEditor("duplicar")}</button><button class="boton boton-rojo" data-eliminar="${c}|${i}">${textoEditor("eliminar")}</button></div></div><div class="cuadricula">${ambito === "interno"
   ? campoEditable("Obligatorio", c, i, "obligatorio", r.obligatorio)
     + campoEditable("Permite Blancos", c, i, "permiteBlancos", r.permiteBlancos)
     + campoEditable(textoEditor("producto"), c, i, "producto", r.producto)
@@ -1402,16 +1752,22 @@
               ejemplo: $("ejemplo").value.trim(),
               notas: $("notas").value.trim()
             };
+        const dependenciaAnalizada = analizarDependenciaHTML(r.dependencias, {
+          ...r,
+          __opcion: destino,
+        });
+        r.dependencias = dependenciaAnalizada.html;
         if (!r.nombre) return aviso("Nombre es obligatorio.", true); 
         if (existe(r, destino, origen === destino ? i : -1)) 
           return aviso("El registro ya existe.", true); 
         if (i >= 0) datos[origen].splice(i, 1); 
         datos[destino] ||= []; 
         datos[destino].unshift(r); 
-        cerrarFormulario(); 
-        renderizar(); 
+        cerrarFormulario();
         marcarCambio(origen); 
-        if (destino !== origen) marcarCambio(destino); 
+        if (destino !== origen) marcarCambio(destino);
+        analizarTodasLasDependencias({ marcarCambios: true });
+        renderizar(); 
       }); 
       function duplicarRegistro(c, i) {
         const lista = datos[c] || [];
@@ -1441,9 +1797,10 @@ Ingrese un número del 1 al ${totalPosiciones}.`,
       } 
       function eliminarRegistro(c, i) { 
         if (confirm(`¿Eliminar ${datos[c][i].nombre || "este registro"}?`)) { 
-          datos[c].splice(i, 1); 
+          datos[c].splice(i, 1);
+          marcarCambio(c);
+          analizarTodasLasDependencias({ marcarCambios: true });
           renderizar(); 
-          marcarCambio(c); 
         } 
       } 
  
@@ -1670,6 +2027,12 @@ Ingrese un número del 1 al ${totalPosiciones}.`,
         r.actualizadoEn = new Date().toISOString(); 
         marcarCambio(c); 
       }); 
+      $("contenido").addEventListener("focusout", (e) => {
+        const nombre = e.target.closest('[data-campo="nombre"]');
+        if (!nombre) return;
+        analizarTodasLasDependencias({ marcarCambios: true });
+        renderizar();
+      });
       $("contenido").addEventListener("input", (e) => { 
         const el = e.target.closest(".dependencia-inline"); 
         if (!el) return; 
@@ -1681,6 +2044,41 @@ Ingrese un número del 1 al ${totalPosiciones}.`,
         r.actualizadoEn = new Date().toISOString(); 
         marcarCambio(c); 
       }); 
+      $("contenido").addEventListener("focusout", (e) => {
+        const el = e.target.closest(".dependencia-inline");
+        if (!el) return;
+        const c = el.dataset.depOpcion;
+        const i = Number(el.dataset.depIndice);
+        const registro = datos[c]?.[i];
+        if (!registro) return;
+        const resultado = analizarDependenciaHTML(el.innerHTML, {
+          ...registro,
+          __opcion: c,
+        });
+        if (resultado.html !== el.innerHTML.trim()) el.innerHTML = resultado.html;
+        registro.dependencias = resultado.html;
+        registro.actualizadoEn = new Date().toISOString();
+        marcarCambio(c);
+        if (resultado.pendientes) {
+          aviso(`${resultado.pendientes} referencia(s) pendiente(s) de revisión.`);
+        }
+      });
+      $("dependencias").addEventListener("blur", () => {
+        const destino = $("codigo").value || opcion;
+        const i = Number($("indiceEdicion").value);
+        const origen = $("opcionOrigen").value;
+        const actual = i >= 0 ? datos[origen]?.[i] : null;
+        const resultado = analizarDependenciaHTML($("dependencias").innerHTML, {
+          ...(actual || {}),
+          codigo: destino,
+          __opcion: destino,
+          nombre: $("nombre").value.trim(),
+        });
+        $("dependencias").innerHTML = resultado.html;
+        if (resultado.pendientes) {
+          aviso(`${resultado.pendientes} referencia(s) pendiente(s) de revisión.`);
+        }
+      });
       function puntaje(q, r) { 
         const palabras = normalizar(q) 
             .split(" ") 
@@ -1709,9 +2107,16 @@ Ingrese un número del 1 al ${totalPosiciones}.`,
         e.preventDefault(); 
         e.stopPropagation(); 
         if (!seleccionDependencia) return; 
-        const id = 
-          b.dataset.vincular || 
-          `op${b.dataset.opcion}-${normalizar(b.dataset.nombre).replaceAll(" ", "-")}`; 
+        const registroSeleccionado = todos().find(
+          (registro) =>
+            registro.__opcion === b.dataset.opcion &&
+            registro.nombre === b.dataset.nombre &&
+            (!b.dataset.vincular || registro.id === b.dataset.vincular),
+        );
+        const id = registroSeleccionado
+          ? objetivoReferencia(registroSeleccionado)
+          : b.dataset.vincular ||
+            `op${b.dataset.opcion}-${normalizar(b.dataset.nombre).replaceAll(" ", "-")}`; 
         const a = document.createElement("a"); 
         a.href = "#"; 
         a.className = "dep-ref-inline"; 
@@ -1719,7 +2124,9 @@ Ingrese un número del 1 al ${totalPosiciones}.`,
         try { 
           a.appendChild(seleccionDependencia.rango.extractContents()); 
           seleccionDependencia.rango.insertNode(a); 
-          a.after(document.createTextNode("")); 
+          a.after(document.createTextNode(""));
+          const pendiente = a.parentElement?.closest(".dep-pendiente");
+          if (pendiente) pendiente.replaceWith(...pendiente.childNodes);
         } catch (error) { 
           aviso( 
             "No se pudo crear el vínculo. Vuelva a seleccionar el texto.", 
@@ -1753,12 +2160,7 @@ Ingrese un número del 1 al ${totalPosiciones}.`,
           cerrarMenuDependencias(); 
       }); 
       function encontrarRelacionado(id) { 
-        return todos().find( 
-          (r) => 
-            r.id === id || 
-            `op${r.__opcion}-${normalizar(r.nombre).replaceAll(" ", "-")}` === 
-              id, 
-        ); 
+        return todos().find((r) => objetivoReferencia(r) === id); 
       } 
       document.addEventListener("mouseover", (e) => { 
         const a = e.target.closest?.(".dep-ref-inline"); 
@@ -2006,8 +2408,9 @@ Ingrese un número del 1 al ${totalPosiciones}.`,
         const noIncluidos = existentes.filter((_, indice) => !usados.has(indice));
         resultado.push(...noIncluidos);
         datos[c] = resultado;
-        renderizar();
         if (nuevos || actualizados || noIncluidos.length || filas.length) marcarCambio(c);
+        analizarTodasLasDependencias({ marcarCambios: true });
+        renderizar();
         aviso(
           `${nuevos} nuevos agregados · ${actualizados} actualizados · ${sinCambios} sin cambios · ${ignorados} filas ignoradas · orden del Excel aplicado.`,
         );
