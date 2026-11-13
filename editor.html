@@ -3,7 +3,7 @@
   <head> 
     <meta charset="UTF-8" /> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
-    <title>Parámetros del Emisor - Editor V8</title> 
+    <title>Parámetros del Emisor - Editor V8.1</title> 
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script> 
     <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js"></script>
     <style> 
@@ -876,7 +876,8 @@
         seleccionDependencia = null, 
         elementoDependenciaActivo = null, 
         ocultarTarjeta = null, 
-        cambiosPendientes = new Set();
+        cambiosPendientes = new Set(),
+        basesLocales = {};
       let colapsoPorContexto = cargarColapsoPorContexto();
       const excepcionesPorContexto = {};
 
@@ -1382,25 +1383,139 @@
             `<option value="${x}" ${x === c ? "selected" : ""}>Op. ${x} · ${escapar(n)}</option>`, 
         ).join(""); 
       } 
-      async function leer(c) { 
-        try { 
-          const url = `${baseLectura()}${ruta(c)}?v=${Date.now()}`; 
-          const r = await fetch(url, { cache: "no-store" }); 
-          if (r.status === 404) return []; 
-          if (!r.ok) throw new Error(`${url} (${r.status})`); 
-          const x = await r.json(); 
-          return Array.isArray(x) ? x : []; 
-        } catch (e) { 
-          console.warn(e); 
-          return []; 
-        } 
-      } 
+      function serializarBase(valor) {
+        return JSON.stringify(valor ?? []);
+      }
+      function serializarOpcion(c) {
+        return serializarBase(datos[c] || []);
+      }
+      function clavePublicacionLocal(c) {
+        return `peEditorPublicacion|${idiomaEditor}|${ambito}|op${c}`;
+      }
+      function guardarPublicacionLocal(c, contenido, metadatos = {}) {
+        try {
+          localStorage.setItem(
+            clavePublicacionLocal(c),
+            JSON.stringify({
+              datos: contenido,
+              serializado: serializarBase(contenido),
+              guardadoEn: Date.now(),
+              propietario: github.propietario || "",
+              repositorio: github.repositorio || "",
+              rama: github.rama || "main",
+              ruta: ruta(c),
+              sha: metadatos.sha || "",
+            }),
+          );
+        } catch (error) {
+          console.warn("No se pudo conservar la referencia local publicada.", error);
+        }
+      }
+      function leerPublicacionLocal(c) {
+        try {
+          const guardada = JSON.parse(
+            localStorage.getItem(clavePublicacionLocal(c)) || "null",
+          );
+          if (!guardada || !Array.isArray(guardada.datos)) return null;
+          if (guardada.ruta !== ruta(c)) return null;
+          const detectado = github.propietario ? github : detectarRepositorio();
+          if (
+            detectado?.propietario &&
+            guardada.propietario &&
+            (guardada.propietario !== detectado.propietario ||
+              guardada.repositorio !== detectado.repositorio ||
+              guardada.rama !== (detectado.rama || "main"))
+          ) {
+            return null;
+          }
+          return guardada;
+        } catch (error) {
+          console.warn("No se pudo leer la referencia local publicada.", error);
+          return null;
+        }
+      }
+      function decodificarBase64Unicode(valor) {
+        const binario = atob(String(valor || "").replace(/\s/g, ""));
+        const bytes = Uint8Array.from(binario, (caracter) => caracter.charCodeAt(0));
+        return new TextDecoder().decode(bytes);
+      }
+      async function leerDesdeGitHub(c) {
+        const token = localStorage.getItem("peToken") || github.token || "";
+        const repositorio = github.propietario ? github : detectarRepositorio();
+        if (!token || !repositorio?.propietario || !repositorio?.repositorio) return null;
+        const api =
+          `https://api.github.com/repos/${encodeURIComponent(repositorio.propietario)}/` +
+          `${encodeURIComponent(repositorio.repositorio)}/contents/${ruta(c)}`;
+        const respuesta = await fetch(
+          `${api}?ref=${encodeURIComponent(repositorio.rama || "main")}&v=${Date.now()}`,
+          {
+            cache: "no-store",
+            headers: {
+              Accept: "application/vnd.github+json",
+              Authorization: `Bearer ${token}`,
+              "X-GitHub-Api-Version": "2022-11-28",
+            },
+          },
+        );
+        if (respuesta.status === 404) return [];
+        if (!respuesta.ok) {
+          throw new Error(`GitHub no pudo leer ${ruta(c)} (${respuesta.status}).`);
+        }
+        const archivo = await respuesta.json();
+        if (!archivo.content || archivo.encoding !== "base64") return null;
+        const contenido = JSON.parse(decodificarBase64Unicode(archivo.content));
+        if (!Array.isArray(contenido)) return [];
+        const publicada = leerPublicacionLocal(c);
+        if (publicada && serializarBase(contenido) === publicada.serializado) {
+          localStorage.removeItem(clavePublicacionLocal(c));
+        }
+        return contenido;
+      }
+      async function leer(c) {
+        try {
+          const contenidoGitHub = await leerDesdeGitHub(c);
+          if (contenidoGitHub !== null) return contenidoGitHub;
+        } catch (error) {
+          console.warn(error);
+        }
+        try {
+          const url = `${baseLectura()}${ruta(c)}?v=${Date.now()}`;
+          const respuesta = await fetch(url, { cache: "no-store" });
+          if (respuesta.status === 404) return [];
+          if (!respuesta.ok) throw new Error(`${url} (${respuesta.status})`);
+          const contenido = await respuesta.json();
+          const remoto = Array.isArray(contenido) ? contenido : [];
+          const publicada = leerPublicacionLocal(c);
+          const reciente =
+            publicada && Date.now() - Number(publicada.guardadoEn || 0) < 30 * 60 * 1000;
+          if (reciente && serializarBase(remoto) !== publicada.serializado) {
+            return structuredClone(publicada.datos);
+          }
+          if (publicada && serializarBase(remoto) === publicada.serializado) {
+            localStorage.removeItem(clavePublicacionLocal(c));
+          }
+          return remoto;
+        } catch (error) {
+          console.warn(error);
+          const publicada = leerPublicacionLocal(c);
+          if (publicada) return structuredClone(publicada.datos);
+          return [];
+        }
+      }
+      function establecerBasesCargadas() {
+        basesLocales = Object.fromEntries(
+          OPCIONES.map(([c]) => [c, serializarOpcion(c)]),
+        );
+        cambiosPendientes.clear();
+        $("botonGuardar").disabled = true;
+      }
       async function cargarTodo() { 
         $("estado").textContent = "Cargando todas las opciones..."; 
         const pares = await Promise.all( 
           OPCIONES.map(async ([c]) => [c, await leer(c)]), 
         ); 
         datos = Object.fromEntries(pares);
+        establecerBasesCargadas();
         const analisis = analizarTodasLasDependencias({ marcarCambios: !modoFicha });
         renderizar();
         if (cambiosPendientes.size) {
@@ -1825,13 +1940,30 @@ Ingrese un número del 1 al ${totalPosiciones}.`,
         } 
         return null; 
       } 
-      function marcarCambio(c) { 
-        cambiosPendientes.add(c); 
-        $("botonGuardar").disabled = false; 
-        $("estado").className = "estado"; 
-        $("estado").textContent = 
-          `Cambios pendientes en ${[...cambiosPendientes].map((x) => "op" + x).join(", ")}.`; 
-      } 
+      function actualizarInterfazCambios() {
+        $("botonGuardar").disabled = cambiosPendientes.size === 0;
+        if (!cambiosPendientes.size) {
+          $("estado").className = "estado ok";
+          $("estado").textContent = "No hay cambios pendientes.";
+          return;
+        }
+        $("estado").className = "estado";
+        $("estado").textContent =
+          `Cambios pendientes en ${[...cambiosPendientes].map((x) => "op" + x).join(", ")}.`;
+      }
+      function marcarCambio(c) {
+        if (!(c in basesLocales)) basesLocales[c] = serializarBase([]);
+        if (serializarOpcion(c) === basesLocales[c]) cambiosPendientes.delete(c);
+        else cambiosPendientes.add(c);
+        actualizarInterfazCambios();
+      }
+      function confirmarOpcionGuardada(c, serializadoGuardado, contenidoGuardado, metadatos) {
+        basesLocales[c] = serializadoGuardado;
+        guardarPublicacionLocal(c, contenidoGuardado, metadatos);
+        if (serializarOpcion(c) === serializadoGuardado) cambiosPendientes.delete(c);
+        else cambiosPendientes.add(c);
+        actualizarInterfazCambios();
+      }
       function configurarGitHub() { 
         const detectado = detectarRepositorio(); 
         if (!detectado) { 
@@ -1919,21 +2051,34 @@ Ingrese un número del 1 al ${totalPosiciones}.`,
         const opciones = [...cambiosPendientes]; 
         let guardadas = 0; 
         try { 
-          for (const c of opciones) { 
-            await guardarOpcion(c); 
-            cambiosPendientes.delete(c); 
-            guardadas++; 
-          } 
-          $("estado").className = "estado ok"; 
-          $("estado").textContent = 
-            `${guardadas} archivo(s) guardado(s). El visor leerá estos mismos JSON.`; 
-          aviso("Cambios guardados y publicados para el visor."); 
+          for (const c of opciones) {
+            const resultado = await guardarOpcion(c);
+            confirmarOpcionGuardada(
+              c,
+              resultado.serializado,
+              resultado.contenido,
+              { sha: resultado.sha },
+            );
+            guardadas++;
+          }
+          if (cambiosPendientes.size) {
+            $("estado").className = "estado";
+            $("estado").textContent =
+              `${guardadas} archivo(s) guardado(s). Hay cambios nuevos pendientes en ` +
+              `${[...cambiosPendientes].map((x) => "op" + x).join(", ")}.`;
+            aviso("Se guardó la versión enviada, pero hay cambios posteriores pendientes.");
+          } else {
+            $("estado").className = "estado ok";
+            $("estado").textContent =
+              `${guardadas} archivo(s) guardado(s). No hay cambios pendientes.`;
+            aviso("Cambios guardados y publicados para el visor.");
+          }
         } catch (error) { 
           $("estado").className = "estado error"; 
           $("estado").textContent = error.message; 
           aviso(error.message, true); 
-        } finally { 
-          $("botonGuardar").disabled = cambiosPendientes.size === 0; 
+        } finally {
+          $("botonGuardar").disabled = cambiosPendientes.size === 0;
         } 
       } 
       function base64Unicode(s) { 
@@ -1943,40 +2088,48 @@ Ingrese un número del 1 al ${totalPosiciones}.`,
           b += String.fromCharCode(...a.subarray(i, i + 32768)); 
         return btoa(b); 
       } 
-      async function guardarOpcion(c) { 
-        const p = ruta(c), 
-          api = `https://api.github.com/repos/${encodeURIComponent(github.propietario)}/${encodeURIComponent(github.repositorio)}/contents/${p}`, 
-          h = cabecerasGitHub(); 
-        $("estado").className = "estado"; 
-        $("estado").textContent = `Guardando ${p}...`; 
-        let sha; 
-        const actual = await fetch( 
-          `${api}?ref=${encodeURIComponent(github.rama)}`, 
-          { headers: h }, 
-        ); 
-        if (actual.ok) sha = (await actual.json()).sha; 
-        else if (actual.status !== 404) 
-          throw new Error(`No se pudo leer ${p} (${actual.status}).`); 
-        const body = { 
-          message: `Actualizar ${p} desde Editor`, 
-          content: base64Unicode(JSON.stringify(datos[c], null, 2) + "\n"), 
-          branch: github.rama, 
-        }; 
-        if (sha) body.sha = sha; 
-        const r = await fetch(api, { 
-          method: "PUT", 
-          headers: { ...h, "Content-Type": "application/json" }, 
-          body: JSON.stringify(body), 
-        }); 
-        if (!r.ok) { 
-          const detalle = await r.text(); 
-          if (r.status === 403) 
-            throw new Error( 
-              `El token puede abrir el repositorio, pero no puede escribir ${p}. Cree o edite un token con acceso a este repositorio y Repository permissions > Contents > Read and write. Detalle de GitHub: ${detalle}`, 
-            ); 
-          throw new Error(`GitHub rechazó ${p} (${r.status}): ${detalle}`); 
-        } 
-      } 
+      async function guardarOpcion(c) {
+        const p = ruta(c),
+          api = `https://api.github.com/repos/${encodeURIComponent(github.propietario)}/${encodeURIComponent(github.repositorio)}/contents/${p}`,
+          h = cabecerasGitHub(),
+          contenido = structuredClone(datos[c] || []),
+          serializado = serializarBase(contenido);
+        $("estado").className = "estado";
+        $("estado").textContent = `Guardando ${p}...`;
+        let sha;
+        const actual = await fetch(
+          `${api}?ref=${encodeURIComponent(github.rama)}&v=${Date.now()}`,
+          { headers: h, cache: "no-store" },
+        );
+        if (actual.ok) sha = (await actual.json()).sha;
+        else if (actual.status !== 404)
+          throw new Error(`No se pudo leer ${p} (${actual.status}).`);
+        const body = {
+          message: `Actualizar ${p} desde Editor`,
+          content: base64Unicode(JSON.stringify(contenido, null, 2) + "\n"),
+          branch: github.rama,
+        };
+        if (sha) body.sha = sha;
+        const respuesta = await fetch(api, {
+          method: "PUT",
+          headers: { ...h, "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+        if (!respuesta.ok) {
+          const detalle = await respuesta.text();
+          if (respuesta.status === 403)
+            throw new Error(
+              `El token puede abrir el repositorio, pero no puede escribir ${p}. Cree o edite un token con acceso a este repositorio y Repository permissions > Contents > Read and write. Detalle de GitHub: ${detalle}`,
+            );
+          throw new Error(`GitHub rechazó ${p} (${respuesta.status}): ${detalle}`);
+        }
+        const confirmacion = await respuesta.json();
+        return {
+          contenido,
+          serializado,
+          sha: confirmacion?.content?.sha || confirmacion?.commit?.sha || "",
+        };
+      }
  
       function obtenerSeleccion(el) { 
         const s = window.getSelection(); 
