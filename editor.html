@@ -3,7 +3,7 @@
   <head> 
     <meta charset="UTF-8" /> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
-    <title>Parámetros del Emisor - Editor V8.6</title> 
+    <title>Parámetros del Emisor - Editor V8.7</title> 
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script> 
     <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js"></script>
     <style> 
@@ -211,6 +211,45 @@
       }
       .ficha:not(.colapsada) {
         grid-column: 1 / -1;
+      }
+      .ficha.ficha-localizada {
+        position: relative;
+        z-index: 2;
+        border-color: #ffb173;
+        background: #fffaf5;
+        box-shadow:
+          0 0 0 4px #ff6c0c26,
+          0 8px 22px #ff6c0c24;
+        animation: resaltarFichaLocalizada 1.8s ease-out both;
+      }
+      @keyframes resaltarFichaLocalizada {
+        0% {
+          border-color: var(--naranja);
+          background: #fff3e8;
+          box-shadow:
+            0 0 0 6px #ff6c0c38,
+            0 10px 28px #ff6c0c30;
+        }
+        68% {
+          border-color: #ffb173;
+          background: #fffaf5;
+          box-shadow:
+            0 0 0 4px #ff6c0c20,
+            0 7px 20px #ff6c0c18;
+        }
+        100% {
+          border-color: var(--borde);
+          background: #fff;
+          box-shadow: 0 2px 7px #0001;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .ficha.ficha-localizada {
+          animation: none;
+          border-color: #ffb173;
+          background: #fffaf5;
+          box-shadow: 0 0 0 4px #ff6c0c26;
+        }
       }
       .ficha:not(.colapsada) .cuadricula {
         grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -953,6 +992,7 @@
         elementoDependenciaActivo = null, 
         ocultarTarjeta = null,
         marcaPendienteActiva = null,
+        temporizadorResaltadoFicha = null,
         cambiosPendientes = new Set(),
         basesLocales = {};
       let colapsoPorContexto = cargarColapsoPorContexto();
@@ -1966,23 +2006,69 @@
         const esExcepcion = excepcionesActuales().has(idFichaEditor(codigo, indice, registro));
         return modoColapsado ? !esExcepcion : esExcepcion;
       }
+      function fichaReferenciaNavegacion() {
+        const fichas = [...document.querySelectorAll("#contenido .ficha[data-ficha-id]")];
+        if (!fichas.length) return null;
+        const limiteSuperior = Math.max(0, document.querySelector(".filtros")?.getBoundingClientRect().bottom || 0);
+        const visible = fichas.find((ficha) => {
+          const rect = ficha.getBoundingClientRect();
+          return rect.bottom > limiteSuperior + 4 && rect.top < window.innerHeight - 4;
+        });
+        if (visible) return visible.dataset.fichaId;
+        return fichas
+          .map((ficha) => ({
+            id: ficha.dataset.fichaId,
+            distancia: Math.abs(ficha.getBoundingClientRect().top - limiteSuperior - 10),
+          }))
+          .sort((a, b) => a.distancia - b.distancia)[0]?.id || null;
+      }
+      function enfocarFichaDespuesDeRender(registroId, { resaltar = true } = {}) {
+        if (!registroId) return;
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            const ficha = document.getElementById(registroId);
+            if (!ficha) return;
+            ficha.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
+            if (!resaltar) return;
+            clearTimeout(temporizadorResaltadoFicha);
+            ficha.classList.remove("ficha-localizada");
+            void ficha.offsetWidth;
+            ficha.classList.add("ficha-localizada");
+            temporizadorResaltadoFicha = setTimeout(() => {
+              ficha.classList.remove("ficha-localizada");
+              temporizadorResaltadoFicha = null;
+            }, 1850);
+          });
+        });
+      }
       function esconderTodasLasFichas() {
+        const referencia = fichaReferenciaNavegacion();
         colapsoPorContexto[claveContextoActual()] = true;
         excepcionesActuales().clear();
         guardarColapsoPorContexto();
         renderizar();
+        // Mantiene como ancla la primera ficha razonablemente visible antes del cierre
+        // global, evitando que la nueva cuadrícula salte a un punto impredecible.
+        enfocarFichaDespuesDeRender(referencia, { resaltar: true });
       }
       function mostrarTodasLasFichas() {
+        const referencia = fichaReferenciaNavegacion();
         colapsoPorContexto[claveContextoActual()] = false;
         excepcionesActuales().clear();
         guardarColapsoPorContexto();
         renderizar();
+        enfocarFichaDespuesDeRender(referencia, { resaltar: false });
       }
       function alternarFichaEditor(registroId) {
+        const fichaActual = document.getElementById(registroId);
+        const estabaColapsada = fichaActual?.classList.contains("colapsada") ?? true;
         const excepciones = excepcionesActuales();
         if (excepciones.has(registroId)) excepciones.delete(registroId);
         else excepciones.add(registroId);
         renderizar();
+        // Al cerrar, la ficha vuelve de ancho completo a la cuadrícula. Se centra y
+        // resalta temporalmente para que el usuario no pierda su ubicación visual.
+        if (!estabaColapsada) enfocarFichaDespuesDeRender(registroId, { resaltar: true });
       }
       function cerrarMenuTitulo() {
         $("menuTitulo").style.display = "none";
