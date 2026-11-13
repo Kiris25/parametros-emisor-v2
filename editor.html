@@ -3,7 +3,7 @@
   <head> 
     <meta charset="UTF-8" /> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
-    <title>Parámetros del Emisor - Editor V8.3</title> 
+    <title>Parámetros del Emisor - Editor V8.4</title> 
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script> 
     <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js"></script>
     <style> 
@@ -207,28 +207,50 @@
         background: #fff;
         border: 1px solid var(--borde);
         box-shadow: 0 2px 7px #0001;
+        cursor: pointer;
+      }
+      .ficha:not(.colapsada) {
+        grid-column: 1 / -1;
+      }
+      .ficha:not(.colapsada) .cuadricula {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+      .ficha button,
+      .ficha a,
+      .ficha input,
+      .ficha textarea,
+      .ficha select,
+      .ficha [contenteditable="true"] {
+        cursor: auto;
       }
       .cabecera-ficha {
         display: grid;
-        grid-template-columns: 92px minmax(0, 1fr) auto;
+        grid-template-columns: 42px minmax(0, 1fr) auto;
         min-width: 0;
         border-bottom: 1px solid var(--borde);
       }
-      .codigo { 
-        display: flex; 
-        align-items: center; 
-        justify-content: center; 
-        padding: 9px; 
-        background: #5a5a5a; 
-        color: #fff; 
-        font-weight: 800; 
-      } 
-      .nombre { 
-        padding: 9px 14px; 
-        color: var(--naranja); 
-        font-size: 24px; 
-        font-weight: 300; 
+      .codigo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        min-width: 42px;
+        padding: 9px 4px;
+        background: #5a5a5a;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 850;
+      }
+      .nombre {
+        min-width: 0;
+        overflow-wrap: anywhere;
+        padding: 9px 14px;
+        color: var(--naranja);
+        font-size: 24px;
+        font-weight: 300;
         outline: none;
+        cursor: pointer;
+        user-select: text;
       }
       .ficha.colapsada .cabecera-ficha {
         border-bottom: 0;
@@ -275,7 +297,6 @@
         font-size: 15px;
         font-weight: 850;
       }
-      .nombre[contenteditable="true"]:focus, 
       .editable-ficha:focus { 
         background: #fff; 
         box-shadow: inset 0 0 0 2px #ff6c0c38; 
@@ -294,7 +315,12 @@
       .acciones-ficha .boton { 
         padding: 6px 8px; 
         font-size: 11px; 
-      } 
+      }
+      .boton-home {
+        min-width: 42px;
+        padding: 9px 10px;
+        white-space: nowrap;
+      }
       .cuadricula {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -459,7 +485,11 @@
         padding: 18px; 
         border-radius: 18px; 
         background: #fff; 
-      } 
+      }
+      #menuTitulo {
+        width: 220px;
+        padding: 12px;
+      }
       .menu-contextual strong { 
         display: block; 
         margin-bottom: 3px; 
@@ -594,7 +624,8 @@
         .contenido > .ficha:only-child {
           grid-column: auto;
         }
-        .cuadricula {
+        .cuadricula,
+        .ficha:not(.colapsada) .cuadricula {
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
       }
@@ -602,17 +633,18 @@
         .menu { 
           grid-template-columns: repeat(4, 1fr); 
         } 
-        .filtros, 
-        .cuadricula, 
-        .formulario { 
-          grid-template-columns: 1fr; 
-        } 
+        .filtros,
+        .cuadricula,
+        .ficha:not(.colapsada) .cuadricula,
+        .formulario {
+          grid-template-columns: 1fr;
+        }
         .completo, 
         .acciones-formulario { 
           grid-column: auto; 
         } 
         .cabecera-ficha { 
-          grid-template-columns: 90px 1fr; 
+          grid-template-columns: 42px 1fr; 
         } 
         .acciones-ficha { 
           grid-column: 1/-1; 
@@ -708,6 +740,9 @@
       </button>
       <button id="btnMostrarTodos" class="boton boton-naranja" onclick="mostrarTodasLasFichas()">
         Mostrar todos
+      </button>
+      <button id="btnHome" class="boton boton-home" type="button" onclick="irInicio()" title="Volver al inicio" aria-label="Volver al inicio">
+        ⌂ Home
       </button> 
     </section> 
     <div id="estado" class="estado"></div> 
@@ -827,7 +862,8 @@
         </div> 
       </section> 
     </div> 
-    <div id="menuDependencias" class="menu-contextual"></div> 
+    <div id="menuDependencias" class="menu-contextual"></div>
+    <div id="menuTitulo" class="menu-contextual"></div>
     <div id="tarjetaDependencia" class="tarjeta-flotante"></div> 
     <div id="toast" class="toast" hidden></div> 
  
@@ -995,6 +1031,8 @@
           mostrarTodos: "Mostrar todos",
           mostrarFicha: "Mostrar ficha",
           esconderFicha: "Esconder ficha",
+          home: "⌂ Home",
+          editarTitulo: "Editar título",
         }, 
         en: { 
           titulo: "Issuer Parameters", 
@@ -1029,6 +1067,8 @@
           mostrarTodos: "Show all",
           mostrarFicha: "Show card",
           esconderFicha: "Hide card",
+          home: "⌂ Home",
+          editarTitulo: "Edit title",
         }, 
       }; 
  
@@ -1056,7 +1096,9 @@
         $("filtrarPais").placeholder = textoEditor("filtrarPais"); 
         $("btnLimpiar").textContent = textoEditor("limpiar");
         $("btnEsconderTodos").textContent = textoEditor("esconderTodos");
-        $("btnMostrarTodos").textContent = textoEditor("mostrarTodos"); 
+        $("btnMostrarTodos").textContent = textoEditor("mostrarTodos");
+        $("btnHome").textContent = textoEditor("home");
+        $("btnHome").title = idiomaEditor === "en" ? "Back to top" : "Volver al inicio";
       } 
  
       function escapar(v) { 
@@ -1699,7 +1741,9 @@
         return `ficha-editor-${codigo}-${identificador}`;
       }
       function estaFichaColapsada(codigo, indice, registro) {
-        const modoColapsado = Boolean(colapsoPorContexto[claveContextoActual()]);
+        const clave = claveContextoActual();
+        const modoColapsado =
+          clave in colapsoPorContexto ? Boolean(colapsoPorContexto[clave]) : true;
         const esExcepcion = excepcionesActuales().has(idFichaEditor(codigo, indice, registro));
         return modoColapsado ? !esExcepcion : esExcepcion;
       }
@@ -1721,6 +1765,56 @@
         else excepciones.add(registroId);
         renderizar();
       }
+      function cerrarMenuTitulo() {
+        $("menuTitulo").style.display = "none";
+        $("menuTitulo").replaceChildren();
+      }
+      function abrirMenuTitulo(e, elemento) {
+        e.preventDefault();
+        e.stopPropagation();
+        cerrarMenuDependencias();
+        const menu = $("menuTitulo");
+        menu.style.display = "block";
+        menu.style.left = Math.min(e.clientX, window.innerWidth - 230) + "px";
+        menu.style.top = Math.min(e.clientY, window.innerHeight - 120) + "px";
+        menu.innerHTML = `<strong>${textoEditor("editarTitulo")}</strong><button type="button" class="resultado-dependencia" data-editar-titulo="${elemento.dataset.opcion}|${elemento.dataset.indice}">${textoEditor("editarTitulo")}</button>`;
+      }
+      function editarTituloRegistro(c, i) {
+        const registro = datos[c]?.[i];
+        if (!registro) return;
+        const entrada = prompt(
+          idiomaEditor === "en" ? "Edit parameter title:" : "Editar título del parámetro:",
+          registro.nombre || "",
+        );
+        if (entrada === null) return;
+        const nombre = entrada.trim();
+        if (!nombre) return aviso("Nombre es obligatorio.", true);
+        if (nombre === registro.nombre) return;
+        const candidato = { ...registro, nombre };
+        if (existe(candidato, c, i)) return aviso("El registro ya existe.", true);
+        registro.nombre = nombre;
+        registro.actualizadoEn = new Date().toISOString();
+        marcarCambio(c);
+        analizarTodasLasDependencias({ marcarCambios: true });
+        renderizar();
+        aviso(idiomaEditor === "en" ? "Title updated. Save changes to publish it." : "Título actualizado. Guarde los cambios para publicarlo.");
+      }
+      $("menuTitulo").addEventListener("click", (e) => {
+        const boton = e.target.closest("[data-editar-titulo]");
+        if (!boton) return;
+        e.preventDefault();
+        e.stopPropagation();
+        const [c, indice] = boton.dataset.editarTitulo.split("|");
+        cerrarMenuTitulo();
+        editarTituloRegistro(c, Number(indice));
+      });
+      $("contenido").addEventListener("contextmenu", (e) => {
+        const titulo = e.target.closest(".nombre-titulo");
+        if (titulo) abrirMenuTitulo(e, titulo);
+      });
+      document.addEventListener("pointerdown", (e) => {
+        if (!$("menuTitulo").contains(e.target)) cerrarMenuTitulo();
+      });
 
       function renderizar() { 
         const a = registrosVisibles(), 
@@ -1732,12 +1826,12 @@
             : `${textoEditor("opcion")} ${opcion} ${nombreOpcion(opcion)}`; 
         $("contenido").innerHTML = a.length 
           ? a 
-              .map((r) => { 
+              .map((r, posicionVisual) => { 
                 const c = r.__opcion, 
                   i = indiceReal(r); 
                 const fichaId = idFichaEditor(c, i, r),
                   colapsada = estaFichaColapsada(c, i, r);
-                return `<article id="${escapar(fichaId)}" class="ficha ${colapsada ? "colapsada" : ""}"><div class="cabecera-ficha"><div class="codigo">Op. ${c}</div><div class="control-ficha"><button type="button" class="alternar-ficha" data-alternar-ficha="${escapar(fichaId)}" title="${colapsada ? textoEditor("mostrarFicha") : textoEditor("esconderFicha")}" aria-label="${colapsada ? textoEditor("mostrarFicha") : textoEditor("esconderFicha")}">${colapsada ? "▶" : "▼"}</button><div class="nombre" contenteditable="true" data-campo="nombre" data-opcion="${c}" data-indice="${i}">${resaltar(r.nombre)}</div>${indicadorHipervinculo(r)}${indicadorPendiente(r)}</div><div class="acciones-ficha"><button class="boton" data-duplicar="${c}|${i}">${textoEditor("duplicar")}</button><button class="boton boton-rojo" data-eliminar="${c}|${i}">${textoEditor("eliminar")}</button></div></div><div class="cuadricula">${ambito === "interno"
+                return `<article id="${escapar(fichaId)}" class="ficha ${colapsada ? "colapsada" : ""}" data-ficha-id="${escapar(fichaId)}"><div class="cabecera-ficha"><div class="codigo" title="Op. ${c} · ${escapar(nombreOpcion(c))}">${posicionVisual + 1}</div><div class="control-ficha"><button type="button" class="alternar-ficha" data-alternar-ficha="${escapar(fichaId)}" title="${colapsada ? textoEditor("mostrarFicha") : textoEditor("esconderFicha")}" aria-label="${colapsada ? textoEditor("mostrarFicha") : textoEditor("esconderFicha")}">${colapsada ? "▶" : "▼"}</button><div class="nombre nombre-titulo" data-opcion="${c}" data-indice="${i}" title="${idiomaEditor === "en" ? "Right-click to edit title" : "Clic derecho para editar título"}">${resaltar(r.nombre)}</div>${indicadorHipervinculo(r)}${indicadorPendiente(r)}</div><div class="acciones-ficha"><button class="boton" data-duplicar="${c}|${i}">${textoEditor("duplicar")}</button><button class="boton boton-rojo" data-eliminar="${c}|${i}">${textoEditor("eliminar")}</button></div></div><div class="cuadricula">${ambito === "interno"
   ? campoEditable("Obligatorio", c, i, "obligatorio", r.obligatorio)
     + campoEditable("Permite Blancos", c, i, "permiteBlancos", r.permiteBlancos)
     + campoEditable(textoEditor("producto"), c, i, "producto", r.producto)
@@ -1766,24 +1860,35 @@
         const alternar = e.target.closest("[data-alternar-ficha]");
         if (alternar) {
           e.preventDefault();
+          e.stopPropagation();
           alternarFichaEditor(alternar.dataset.alternarFicha);
           return;
         }
-        for (const tipo of ["duplicar", "eliminar"]) { 
-          const b = e.target.closest(`[data-${tipo}]`); 
-          if (!b) continue; 
-          const [c, i] = b.dataset[tipo].split("|"); 
-          ({ duplicar: duplicarRegistro, eliminar: eliminarRegistro })[tipo]( 
-            c, 
-            Number(i), 
-          ); 
-          return; 
-        } 
-        const a = e.target.closest(".dep-ref-inline"); 
-        if (a) { 
-          e.preventDefault(); 
-        } 
-      }); 
+        for (const tipo of ["duplicar", "eliminar"]) {
+          const b = e.target.closest(`[data-${tipo}]`);
+          if (!b) continue;
+          e.preventDefault();
+          e.stopPropagation();
+          const [c, i] = b.dataset[tipo].split("|");
+          ({ duplicar: duplicarRegistro, eliminar: eliminarRegistro })[tipo](
+            c,
+            Number(i),
+          );
+          return;
+        }
+        const enlace = e.target.closest(".dep-ref-inline");
+        if (enlace) {
+          e.preventDefault();
+          return;
+        }
+        const interactivo = e.target.closest(
+          'button, a, input, textarea, select, [contenteditable="true"], .acciones-ficha',
+        );
+        if (interactivo || modoFicha) return;
+        const ficha = e.target.closest(".ficha[data-ficha-id]");
+        if (!ficha) return;
+        alternarFichaEditor(ficha.dataset.fichaId);
+      });
       ["buscar", "filtrarProducto", "filtrarPais"].forEach( 
         (id) => $(id).addEventListener("input", renderizar), 
       ); 
@@ -1792,7 +1897,10 @@
           (id) => ($(id).value = ""), 
         ); 
         renderizar(); 
-      } 
+      }
+      function irInicio() {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
       function aplicarCamposFormulario() {
         const interno = ambito === "interno";
         document.querySelectorAll(".campo-interno").forEach((el) => (el.hidden = !interno));
