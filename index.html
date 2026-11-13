@@ -156,10 +156,22 @@
         top: 0; 
         z-index: 80; 
         display: grid; 
-        grid-template-columns: 2fr 1fr 1fr auto auto auto; 
+        grid-template-columns: minmax(220px, 2fr) minmax(120px, 1fr) minmax(120px, 1fr) auto auto auto auto; 
         gap: 8px; 
         padding: 12px 22px; 
+        background: rgba(242, 242, 242, 0.94);
+        background: color-mix(in srgb, var(--fondo) 94%, transparent); 
+        backdrop-filter: blur(5px); 
       } 
+
+      .boton-home {
+        min-width: 42px;
+        width: 42px;
+        padding-inline: 10px;
+        font-size: 18px;
+        line-height: 1;
+        justify-self: start;
+      }
  
       input, 
       textarea { 
@@ -189,32 +201,66 @@
         color: #444; 
         font-size: 25px; 
         font-weight: 400; 
+        scroll-margin-top: 86px;
       } 
  
       .contenido { 
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: start;
+        gap: 14px;
         padding: 10px 22px 90px; 
       } 
  
       .ficha { 
-        margin-bottom: 14px; 
+        min-width: 0;
+        margin: 0; 
         background: white; 
         border: 1px solid var(--borde); 
         box-shadow: 0 2px 7px #00000012; 
+        scroll-margin-top: 92px;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+      }
+
+      .ficha:not(.colapsada) {
+        grid-column: 1 / -1;
+      }
+
+      .ficha-destacada {
+        border-color: var(--naranja);
+        background: #fff8f2;
+        box-shadow: 0 0 0 4px #ff6c0c30, 0 8px 24px #0002;
+        animation: destacar-ficha 1.9s ease-out;
+      }
+
+      @keyframes destacar-ficha {
+        0%, 55% {
+          border-color: var(--naranja);
+          box-shadow: 0 0 0 5px #ff6c0c38, 0 8px 24px #0002;
+        }
+        100% {
+          border-color: var(--borde);
+          box-shadow: 0 2px 7px #00000012;
+        }
       } 
  
       .ficha-encabezado { 
         display: grid; 
-        grid-template-columns: 145px 1fr; 
+        grid-template-columns: 46px minmax(0, 1fr); 
         border-bottom: 1px solid var(--borde); 
+        cursor: pointer;
+        user-select: none;
       } 
  
       .codigo { 
         display: flex; 
         align-items: center; 
         justify-content: center; 
-        padding: 10px; 
+        min-width: 46px;
+        padding: 9px 6px; 
         background: #595959; 
         color: white; 
+        font-size: 15px;
         font-weight: 800; 
       } 
  
@@ -223,8 +269,6 @@
         color: var(--naranja); 
         font-size: 24px; 
         font-weight: 300;
-        cursor: pointer;
-        user-select: none;
       }
       .ficha.colapsada .ficha-encabezado {
         border-bottom: 0;
@@ -287,8 +331,16 @@
         font-weight: 800; 
         text-decoration: none; 
       } 
+
+      .dep-opcion-inline,
+      .dep-ref-option {
+        border-bottom-color: #2563a6;
+        background: #e8f2ff;
+        color: #174c7f;
+      }
  
       .sin-resultados { 
+        grid-column: 1 / -1;
         padding: 28px; 
         background: white; 
         border: 1px dashed var(--borde); 
@@ -479,17 +531,36 @@
           grid-template-columns: 1fr 1fr; 
         } 
       } 
+
+      @media (max-width: 1100px) {
+        .filtros {
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+        #buscar {
+          grid-column: span 2;
+        }
+      }
  
       @media (max-width: 720px) { 
         .menu-opciones { 
           grid-template-columns: repeat(4, 1fr); 
         } 
         .filtros, 
+        .contenido,
         .cuadricula { 
           grid-template-columns: 1fr; 
         } 
+        #buscar {
+          grid-column: auto;
+        }
         .ficha-encabezado { 
-          grid-template-columns: 90px 1fr; 
+          grid-template-columns: 42px minmax(0, 1fr); 
+        }
+        .codigo {
+          min-width: 42px;
+        }
+        .ficha:not(.colapsada) {
+          grid-column: auto;
         } 
       } 
 
@@ -817,7 +888,17 @@
       </button>
       <button id="botonMostrarTodos" class="boton boton-naranja" onclick="mostrarTodasLasFichas()">
         Mostrar todos
-      </button> 
+       </button>
+       <button
+         id="botonHome"
+         class="boton boton-home"
+         type="button"
+         onclick="volverInicio()"
+         title="Volver al inicio"
+         aria-label="Volver al inicio"
+       >
+         ⌂
+       </button> 
     </section> 
  
     <div id="estado" class="estado"></div> 
@@ -955,6 +1036,7 @@
           mostrarTodos: "Mostrar todos",
           mostrarFicha: "Mostrar ficha",
           esconderFicha: "Esconder ficha",
+           home: "Volver al inicio",
         }, 
         en: { 
           titulo: "Issuer Parameters", 
@@ -1001,6 +1083,7 @@
           mostrarTodos: "Show all",
           mostrarFicha: "Show card",
           esconderFicha: "Hide card",
+           home: "Back to top",
         }, 
       }; 
  
@@ -1135,6 +1218,151 @@ const $ = (id) => document.getElementById(id);
         temporal.innerHTML = String(valor ?? ""); 
         return temporal.textContent || ""; 
       } 
+
+      function objetivoEnlace(enlace) {
+        return String(
+          enlace?.dataset?.target ||
+          enlace?.getAttribute?.("data-reference") ||
+          enlace?.getAttribute?.("data-target-id") ||
+          "",
+        ).trim();
+      }
+
+      function tipoEnlace(enlace) {
+        return normalizar(
+          enlace?.dataset?.targetType ||
+          enlace?.dataset?.referenceType ||
+          enlace?.dataset?.kind ||
+          enlace?.getAttribute?.("data-type") ||
+          "",
+        );
+      }
+
+      function codigoOpcionEnlace(enlace) {
+        if (!enlace) return "";
+        const tipo = tipoEnlace(enlace);
+        const clases = String(enlace.className || "");
+        const objetivo = objetivoEnlace(enlace);
+        const atributoEspecifico =
+          enlace.getAttribute("data-option-target") ||
+          enlace.getAttribute("data-option-code") ||
+          enlace.getAttribute("data-opcion-codigo") ||
+          enlace.getAttribute("data-target-option") ||
+          enlace.getAttribute("data-target-opcion") ||
+          enlace.getAttribute("data-option") ||
+          (!objetivo ? enlace.getAttribute("data-opcion") : "") ||
+          "";
+        const esTipoOpcion =
+          /^(opcion|option)$/.test(tipo) ||
+          /(^|\s)(dep-ref-option|dep-opcion-inline|option-ref-inline|opcion-ref-inline)(\s|$)/i.test(clases);
+        const candidato = esTipoOpcion
+          ? `${atributoEspecifico} ${objetivo}`
+          : atributoEspecifico;
+        let coincidencia = candidato.match(/(?:^|\D)(\d{1,2})(?:\D|$)/);
+        if (!coincidencia && !esTipoOpcion) {
+          coincidencia = objetivo.match(
+            /^(?:#?)(?:op|opc|opcion|option)[\s:_|\/-]*(\d{1,2})(?:[\s:_|\/-]*(?:externo|interno|external|internal))?$/i,
+          );
+        }
+        if (!coincidencia) return "";
+        return coincidencia[1].padStart(2, "0");
+      }
+
+      function esMarcaEditorialPendiente(elemento) {
+        const firma = normalizar(
+          [
+            elemento?.className,
+            elemento?.getAttribute?.("data-status"),
+            elemento?.getAttribute?.("data-estado"),
+            elemento?.getAttribute?.("data-review"),
+          ].join(" "),
+        );
+        return /(^| )(pending|pendiente|revision|review|editorial|unconfirmed|no confirmado|suggested|sugerida|partial|parcial|ambiguous|ambigua|warning|advertencia)( |$)/.test(
+          firma,
+        );
+      }
+
+      function esEnlaceConfirmado(enlace) {
+        if (!enlace?.classList?.contains("dep-ref-inline")) return false;
+        if (esMarcaEditorialPendiente(enlace)) return false;
+        const confirmado = normalizar(
+          enlace.getAttribute("data-confirmed") ||
+          enlace.getAttribute("data-confirmado") ||
+          "",
+        );
+        if (["false", "no", "0"].includes(confirmado)) return false;
+        return Boolean(objetivoEnlace(enlace) || codigoOpcionEnlace(enlace));
+      }
+
+      function dependenciaConfirmadaHTML(valor) {
+        const entrada = document.createElement("div");
+        entrada.innerHTML = String(valor || "—");
+        const salida = document.createElement("div");
+        const etiquetasPermitidas = new Set([
+          "B", "STRONG", "EM", "I", "U", "UL", "OL", "LI", "P", "DIV",
+        ]);
+
+        function copiar(nodo, destino) {
+          if (nodo.nodeType === Node.TEXT_NODE) {
+            destino.appendChild(document.createTextNode(nodo.nodeValue || ""));
+            return;
+          }
+          if (nodo.nodeType !== Node.ELEMENT_NODE) return;
+          const elemento = nodo;
+          const etiqueta = elemento.tagName;
+          if (["SCRIPT", "STYLE", "BUTTON", "INPUT", "SELECT", "TEXTAREA"].includes(etiqueta)) {
+            return;
+          }
+          if (etiqueta === "BR") {
+            destino.appendChild(document.createElement("br"));
+            return;
+          }
+          if (esMarcaEditorialPendiente(elemento)) {
+            const copia = elemento.cloneNode(true);
+            copia.querySelectorAll("button, input, select, textarea, .acciones, .pending-actions, .editorial-actions").forEach((accion) => accion.remove());
+            destino.appendChild(document.createTextNode(copia.textContent || ""));
+            return;
+          }
+          if (etiqueta === "A") {
+            if (!esEnlaceConfirmado(elemento)) {
+              destino.appendChild(document.createTextNode(elemento.textContent || ""));
+              return;
+            }
+            const codigoOpcion = codigoOpcionEnlace(elemento);
+            if (!codigoOpcion && !encontrarRelacionado(objetivoEnlace(elemento))) {
+              destino.appendChild(document.createTextNode(elemento.textContent || ""));
+              return;
+            }
+            const enlace = document.createElement("a");
+            enlace.href = "#";
+            enlace.className = "dep-ref-inline";
+            [
+              "data-target", "data-reference", "data-target-id", "data-target-type",
+              "data-reference-type", "data-kind", "data-type", "data-option",
+              "data-opcion", "data-option-code", "data-opcion-codigo",
+              "data-option-target", "data-target-option", "data-target-opcion", "data-auto",
+            ].forEach((atributo) => {
+              if (elemento.hasAttribute(atributo)) {
+                enlace.setAttribute(atributo, elemento.getAttribute(atributo));
+              }
+            });
+            if (codigoOpcion) enlace.classList.add("dep-opcion-inline", "dep-ref-option");
+            enlace.textContent = elemento.textContent || "";
+            destino.appendChild(enlace);
+            return;
+          }
+          if (etiquetasPermitidas.has(etiqueta)) {
+            const limpio = document.createElement(etiqueta.toLowerCase());
+            Array.from(elemento.childNodes).forEach((hijo) => copiar(hijo, limpio));
+            destino.appendChild(limpio);
+            return;
+          }
+          Array.from(elemento.childNodes).forEach((hijo) => copiar(hijo, destino));
+        }
+
+        Array.from(entrada.childNodes).forEach((nodo) => copiar(nodo, salida));
+        return salida.innerHTML || "—";
+      }
  
       function nombreOpcion(codigo) { 
         return OPCIONES.find((item) => item[0] === codigo)?.[1] || ""; 
@@ -1240,6 +1468,8 @@ const $ = (id) => document.getElementById(id);
         $("botonLimpiar").textContent = t.limpiar;
         $("botonEsconderTodos").textContent = t.esconderTodos;
         $("botonMostrarTodos").textContent = t.mostrarTodos;
+         $("botonHome").title = t.home;
+         $("botonHome").setAttribute("aria-label", t.home);
         $("buscar").placeholder = t.buscar; 
         $("filtrarProducto").placeholder = t.producto; 
         $("filtrarPais").placeholder = t.pais; 
@@ -1375,7 +1605,7 @@ const $ = (id) => document.getElementById(id);
         return ` 
                 <div class="campo ${clase}"> 
                     <div class="etiqueta">${etiqueta}</div> 
-                    <div class="texto">${dependencia ? resaltarHTML(valor) : resaltar(valor)}</div> 
+                    <div class="texto">${dependencia ? resaltarHTML(dependenciaConfirmadaHTML(valor)) : resaltar(valor)}</div> 
                 </div> 
             `; 
       } 
@@ -1389,31 +1619,76 @@ const $ = (id) => document.getElementById(id);
       } 
  
       function estaFichaColapsada(registro) {
+        if (modoFicha) return false;
         const contexto = claveContextoActual();
-        const modoColapsado = Boolean(colapsoPorContexto[contexto]);
+        const modoColapsado = colapsoPorContexto[contexto] !== false;
         const esExcepcion = excepcionesActuales().has(idFicha(registro));
         return modoColapsado ? !esExcepcion : esExcepcion;
       }
 
+      function fichaReferenciaVisual() {
+        const fichas = Array.from(document.querySelectorAll("#contenido .ficha"));
+        if (!fichas.length) return "";
+        const centro = window.innerHeight / 2;
+        const visible = fichas.filter((ficha) => {
+          const rect = ficha.getBoundingClientRect();
+          return rect.bottom > 80 && rect.top < window.innerHeight;
+        });
+        const candidatas = visible.length ? visible : fichas;
+        candidatas.sort((a, b) => {
+          const ra = a.getBoundingClientRect();
+          const rb = b.getBoundingClientRect();
+          return Math.abs((ra.top + ra.bottom) / 2 - centro) -
+            Math.abs((rb.top + rb.bottom) / 2 - centro);
+        });
+        return candidatas[0]?.id || "";
+      }
+
+      function enfocarFichaDespuesDeRender(registroId, destacar = true) {
+        if (!registroId) return;
+        requestAnimationFrame(() => {
+          const ficha = document.getElementById(registroId);
+          if (!ficha) return;
+          ficha.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
+          if (!destacar) return;
+          ficha.classList.remove("ficha-destacada");
+          void ficha.offsetWidth;
+          ficha.classList.add("ficha-destacada");
+          window.setTimeout(() => ficha.classList.remove("ficha-destacada"), 2000);
+        });
+      }
+
       function esconderTodasLasFichas() {
+        const referencia = fichaReferenciaVisual();
         colapsoPorContexto[claveContextoActual()] = true;
         excepcionesActuales().clear();
         guardarColapsoPorContexto();
         renderizar();
+        enfocarFichaDespuesDeRender(referencia);
       }
 
       function mostrarTodasLasFichas() {
+        const referencia = fichaReferenciaVisual();
         colapsoPorContexto[claveContextoActual()] = false;
         excepcionesActuales().clear();
         guardarColapsoPorContexto();
         renderizar();
+        enfocarFichaDespuesDeRender(referencia, false);
       }
 
       function alternarFicha(registroId) {
+        const estabaColapsada = document.getElementById(registroId)?.classList.contains("colapsada");
         const excepciones = excepcionesActuales();
         if (excepciones.has(registroId)) excepciones.delete(registroId);
         else excepciones.add(registroId);
         renderizar();
+        if (estabaColapsada === false) {
+          enfocarFichaDespuesDeRender(registroId);
+        }
+      }
+
+      function volverInicio() {
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
 
       function camposDeFicha(registro, t) {
@@ -1455,15 +1730,18 @@ const $ = (id) => document.getElementById(id);
         $("contenido").innerHTML = registros.length 
           ? registros 
               .map( 
-                (registro) => ` 
+                (registro, indiceVisual) => ` 
                     <article id="${escapar(idFicha(registro))}" class="ficha ${estaFichaColapsada(registro) ? "colapsada" : ""}" data-id="${escapar(claveRegistro(registro))}"> 
-                        <div class="ficha-encabezado"> 
-                            <div class="codigo">Op. ${registro.__opcion}</div> 
-                            <div
-                              class="nombre"
-                              data-alternar-ficha="${escapar(idFicha(registro))}"
-                              title="${estaFichaColapsada(registro) ? t.mostrarFicha : t.esconderFicha}"
-                            ><span class="indicador-ficha">${estaFichaColapsada(registro) ? "▶" : "▼"}</span>${resaltar(registro.nombre)}</div> 
+                        <div
+                          class="ficha-encabezado"
+                          data-alternar-ficha="${escapar(idFicha(registro))}"
+                          title="${estaFichaColapsada(registro) ? t.mostrarFicha : t.esconderFicha}"
+                          role="button"
+                          tabindex="0"
+                          aria-expanded="${estaFichaColapsada(registro) ? "false" : "true"}"
+                        > 
+                            <div class="codigo" title="Op. ${escapar(registro.__opcion)}">${indiceVisual + 1}</div> 
+                            <div class="nombre"><span class="indicador-ficha">${estaFichaColapsada(registro) ? "▶" : "▼"}</span>${resaltar(registro.nombre)}</div> 
                         </div> 
                         <div class="cuadricula"> 
                             ${camposDeFicha(registro, t)} 
@@ -1479,10 +1757,18 @@ const $ = (id) => document.getElementById(id);
       } 
  
       $("contenido").addEventListener("click", (evento) => {
-        const tituloFicha = evento.target.closest("[data-alternar-ficha]");
-        if (!tituloFicha) return;
+        const encabezado = evento.target.closest("[data-alternar-ficha]");
+        if (!encabezado) return;
         evento.preventDefault();
-        alternarFicha(tituloFicha.dataset.alternarFicha);
+        alternarFicha(encabezado.dataset.alternarFicha);
+      });
+
+      $("contenido").addEventListener("keydown", (evento) => {
+        if (!["Enter", " "].includes(evento.key)) return;
+        const encabezado = evento.target.closest("[data-alternar-ficha]");
+        if (!encabezado) return;
+        evento.preventDefault();
+        alternarFicha(encabezado.dataset.alternarFicha);
       });
 
       ["buscar", "filtrarProducto", "filtrarPais"].forEach( 
@@ -1634,10 +1920,31 @@ const $ = (id) => document.getElementById(id);
         abrirFichaURL({ ...registro, __opcion: codigo }); 
       }); 
  
+      function navegarAOpcion(codigo) {
+        const opcionDestino = String(codigo || "").padStart(2, "0");
+        if (!OPCIONES.some(([codigoOpcion]) => codigoOpcion === opcionDestino)) return;
+        opcion = opcionDestino;
+        ["buscar", "filtrarProducto", "filtrarPais"].forEach((id) => {
+          $(id).value = "";
+        });
+        $("tarjetaDependencia").style.display = "none";
+        construirMenu();
+        renderizar();
+        requestAnimationFrame(() => {
+          $("tituloOpcion").scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+            inline: "nearest",
+          });
+        });
+      }
+
       function mostrarVistaPrevia(enlace) {
-        const registro = encontrarRelacionado(enlace.dataset.target);
+        if (codigoOpcionEnlace(enlace)) return;
+        const registro = encontrarRelacionado(objetivoEnlace(enlace));
 
         if (!registro) {
+          $("tarjetaDependencia").style.display = "none";
           return;
         }
 
@@ -1732,13 +2039,18 @@ const $ = (id) => document.getElementById(id);
 
       document.addEventListener("mouseover", (evento) => { 
         const enlace = evento.target.closest?.(".dep-ref-inline"); 
-        if (enlace) mostrarVistaPrevia(enlace); 
+         if (enlace && !codigoOpcionEnlace(enlace)) mostrarVistaPrevia(enlace); 
       }); 
  
       document.addEventListener("click", (evento) => { 
         const enlace = evento.target.closest?.(".dep-ref-inline"); 
         if (enlace) { 
           evento.preventDefault(); 
+           const codigoOpcion = codigoOpcionEnlace(enlace);
+           if (codigoOpcion) {
+             navegarAOpcion(codigoOpcion);
+             return;
+           }
           mostrarVistaPrevia(enlace); 
         } 
         const abrir = evento.target.closest?.("[data-abrir-relacion]"); 
