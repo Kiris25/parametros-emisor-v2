@@ -263,13 +263,13 @@
     "valores": "Porcentaje entre 0% y 100%.",
     "requisitosImplementacion": "El parámetro Separa Cobro Tasa Cargos x Servicio y CxS Sobre /SF debe encontrarse configurado en S a nivel de franquicia. Además, el emisor debe utilizar el programa de cálculo TRTP0015.",
     "configuracionComportamiento": "Corresponde a una tasa anual de cargos por servicio aplicada sobre saldo financiado. Cuando este parámetro se encuentra habilitado, el sistema utiliza esta tasa en lugar del parámetro Cargos por Servicio. Una vez seleccionada la tasa, la lógica de cálculo continúa funcionando de la misma forma que el esquema estándar.",
-    "dependencias": "Funciona únicamente cuando el parámetro <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Separa Cobro Tasa Cargos x Servicio y CxS Sobre /SF está configurado en S a nivel de</span> <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"El parámetro vinculado ya no existe. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">franquicia</span>. Aplica únicamente para el esquema normal de cálculo y no es compatible con los esquemas de Resúmenes ni Planes. Requiere el uso del programa de cálculo TRTP0015.",
+    "dependencias": "Funciona únicamente cuando el parámetro <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Separa Cobro Tasa Cargos x Servicio y CxS Sobre /SF está configurado en S a nivel de</span> <a href=\"#\" class=\"dep-ref-inline\" data-target=\"aeeb61a7-7dfc-46d8-ba50-0c75cf37089a\" data-auto=\"true\" title=\"Referencia automática: Op. 05 · Franquicia\">franquicia</a>. Aplica únicamente para el esquema normal de cálculo y no es compatible con los esquemas de Resúmenes ni Planes. Requiere el uso del programa de cálculo TRTP0015.",
     "condicionesOperativas": "Actualmente se documenta su utilización en clientes como Coopemep, FPB Bank, Banco Reformador Guatemala y Mutual Alajuela.",
     "ejemploOperativo": "Si el parámetro está configurado en 12% y el emisor cumple las condiciones requeridas (franquicia configurada, esquema normal y programa TRTP0015), el sistema utilizará esta tasa para calcular los cargos por servicio sobre saldo financiado en lugar de utilizar el parámetro estándar de Cargos por Servicio.",
     "codigo": "12",
     "id": "9c5280cb-7acb-45fe-99c6-039af6240eab",
     "creadoEn": "2026-09-07T22:39:53.226Z",
-    "actualizadoEn": "2026-11-13T16:21:36.680Z"
+    "actualizadoEn": "2026-11-13T16:22:57.720Z"
   },
   {
     "nombre": "Tasa Interés Extrafinanciamiento",
@@ -280,13 +280,13 @@
     "valores": "Porcentaje entre 0% y 100%.",
     "requisitosImplementacion": "El parámetro Extrafinanciamiento debe encontrarse configurado en S.",
     "configuracionComportamiento": "Define la tasa de interés aplicada sobre las transacciones de extrafinanciamiento. Esta tasa se utiliza únicamente cuando la funcionalidad de Extrafinanciamiento se encuentra habilitada.",
-    "dependencias": "Depende del parámetro <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"El parámetro vinculado ya no existe. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Extrafinanciamiento</span>, el cual debe encontrarse configurado en S.",
+    "dependencias": "Depende del parámetro <a href=\"#\" class=\"dep-ref-inline\" data-target=\"0c45da7b-e48e-4c26-b4df-39025e7a0051\" data-auto=\"true\" title=\"Referencia automática: Op. 05 · Extrafinanciamiento\">Extrafinanciamiento</a>, el cual debe encontrarse configurado en S.",
     "condicionesOperativas": "N/A",
     "ejemploOperativo": "Si la funcionalidad se encontrara activa y el parámetro Extrafinanciamiento estuviera configurado en S, el porcentaje definido se utilizaría como tasa de interés para las transacciones de extrafinanciamiento asociadas a esa configuración.",
     "codigo": "12",
     "id": "71b7d696-4d98-4105-9427-f5469016b54a",
     "creadoEn": "2026-09-07T22:39:53.226Z",
-    "actualizadoEn": "2026-11-13T16:21:36.681Z"
+    "actualizadoEn": "2026-11-13T16:22:57.721Z"
   },
   {
     "nombre": "Cobro Membresía",
@@ -654,13 +654,13 @@
     "valores": "Valor numérico entre 0 y 9.999.999.999,99.",
     "requisitosImplementacion": "Configurar un monto máximo dentro del rango permitido cuando la operación de Override requiera control por importe. La unidad monetaria corresponde a la moneda configurada para el emisor.",
     "configuracionComportamiento": "Funcionalmente, este parámetro define un límite monetario máximo relacionado con la autorización de operaciones mediante Override. Se interpreta que el sistema utiliza este valor para controlar hasta qué importe puede aplicarse una autorización especial o excepción asociada al proceso de Override. El alcance exacto de dicho control requiere confirmación.",
-    "dependencias": "Depende de <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"El parámetro vinculado ya no existe. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Override Permitido</span> (Opción 5).\n Cuando <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"El parámetro vinculado ya no existe. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Override Permitido</span> = SI, el sistema considera el monto configurado en este parámetro.",
+    "dependencias": "Depende de <a href=\"#\" class=\"dep-ref-inline\" data-target=\"19684392-2409-40a8-bc24-b6a6ad9ca938\" data-auto=\"true\" title=\"Referencia automática: Op. 05 · Override Permitido\">Override Permitido</a> (Opción 5).\n Cuando <a href=\"#\" class=\"dep-ref-inline\" data-target=\"19684392-2409-40a8-bc24-b6a6ad9ca938\" data-auto=\"true\" title=\"Referencia automática: Op. 05 · Override Permitido\">Override Permitido</a> = SI, el sistema considera el monto configurado en este parámetro.",
     "condicionesOperativas": "El sistema compara el valor que corresponda al proceso de Override contra el monto mínimo configurado para determinar si se cumple la condición requerida.",
     "ejemploOperativo": "Si se configura un valor de 50.000, el sistema podría utilizar dicho importe como monto máximo permitido para una operación que requiera Override.",
     "codigo": "12",
     "id": "241c5820-664f-4a08-8ba7-2f9581d899ae",
     "creadoEn": "2026-09-07T22:39:53.227Z",
-    "actualizadoEn": "2026-11-13T16:21:36.700Z"
+    "actualizadoEn": "2026-11-13T16:22:57.752Z"
   },
   {
     "nombre": "Vencimiento de Cuentas Nuevas",
@@ -790,13 +790,13 @@
     "valores": "Porcentaje entre 0% y 100%.",
     "requisitosImplementacion": "Debe configurarse un porcentaje para definir la comisión aplicable a los adelantos de efectivo manuales identificados con el MCC 6010.",
     "configuracionComportamiento": "Define el porcentaje de comisión que se utilizará para calcular el cargo asociado a los adelantos de efectivo manuales. El importe calculado puede complementarse con el parámetro Monto de Comisión por Adelanto de Efectivo Manual (MCC 6010), generándose posteriormente un único movimiento de comisión.",
-    "dependencias": "Se relaciona con el parámetro <a href=\"#\" class=\"dep-ref-inline\" data-target=\"cf7a9bb0-be32-4f04-945b-d72d11e10828\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Monto de Comisión por Adelanto de Efectivo Manual (MCC 6010)\">Monto de Comisión por Adelanto de Efectivo Manual (MCC 6010)</a>. Adicionalmente, los parámetros <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"El parámetro vinculado ya no existe. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Cálculo Comisión Excluyente</span> y <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"El parámetro vinculado ya no existe. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Cálculo Comisión por MCC</span> determinan la forma en que el sistema aplica las comisiones de adelanto de efectivo.",
+    "dependencias": "Se relaciona con el parámetro <a href=\"#\" class=\"dep-ref-inline\" data-target=\"cf7a9bb0-be32-4f04-945b-d72d11e10828\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Monto de Comisión por Adelanto de Efectivo Manual (MCC 6010)\">Monto de Comisión por Adelanto de Efectivo Manual (MCC 6010)</a>. Adicionalmente, los parámetros <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"El parámetro vinculado ya no existe. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Cálculo Comisión Excluyente</span> y <a href=\"#\" class=\"dep-ref-inline\" data-target=\"d2fef107-d9d1-4c75-8a98-48768de6f8f2\" data-auto=\"true\" title=\"Referencia automática: Op. 05 · Cálculo Comisión por MCC\">Cálculo Comisión por MCC</a> determinan la forma en que el sistema aplica las comisiones de adelanto de efectivo.",
     "condicionesOperativas": "Aplica en transacciones de adelanto de efectivo manual clasificadas bajo el código MCC 6010.",
     "ejemploOperativo": "Si se configura un porcentaje de 3 % y un adelanto manual es por 100.000, el cálculo de la comisión porcentual será de 3.000 antes de considerar otras reglas o montos complementarios configurados.",
     "codigo": "12",
     "id": "f030000c-a21d-42b2-ad98-c25433978280",
     "creadoEn": "2026-09-07T22:39:53.227Z",
-    "actualizadoEn": "2026-11-13T16:21:36.705Z"
+    "actualizadoEn": "2026-11-13T16:22:57.758Z"
   },
   {
     "nombre": "Monto de Comisión por Adelanto de Efectivo Manual (MCC 6010)",
@@ -807,13 +807,13 @@
     "valores": "Valores numéricos entre 0 y 9999999999,99.",
     "requisitosImplementacion": "Debe configurarse un monto fijo para definir la comisión aplicable a los adelantos de efectivo manuales realizados en otros adquirentes.",
     "configuracionComportamiento": "Define el componente fijo de la comisión por adelantos de efectivo manuales identificados con el MCC 6010. Este monto se suma al valor calculado mediante el parámetro Porcentaje de Comisión por Adelanto de Efectivo Manual (MCC 6010) y el resultado genera un único Movimiento 29 - Comisión por Adelanto de Efectivo. El cálculo considera el tipo de cambio de compra de la moneda de la transacción; cuando la operación es en dólares se utiliza un tipo de cambio igual a 1.",
-    "dependencias": "Depende funcionalmente del parámetro <a href=\"#\" class=\"dep-ref-inline\" data-target=\"f030000c-a21d-42b2-ad98-c25433978280\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Porcentaje de Comisión por Adelanto de Efectivo Manual (MCC 6010)\">Porcentaje de Comisión por Adelanto de Efectivo Manual (MCC 6010)</a>, ya que ambos participan en el cálculo de la comisión final. Además, los parámetros <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"El parámetro vinculado ya no existe. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Cálculo Comisión Excluyente</span> y <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"El parámetro vinculado ya no existe. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Cálculo Comisión por MCC</span> pueden modificar la forma en que el sistema aplica estas comisiones.",
+    "dependencias": "Depende funcionalmente del parámetro <a href=\"#\" class=\"dep-ref-inline\" data-target=\"f030000c-a21d-42b2-ad98-c25433978280\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Porcentaje de Comisión por Adelanto de Efectivo Manual (MCC 6010)\">Porcentaje de Comisión por Adelanto de Efectivo Manual (MCC 6010)</a>, ya que ambos participan en el cálculo de la comisión final. Además, los parámetros <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"El parámetro vinculado ya no existe. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Cálculo Comisión Excluyente</span> y <a href=\"#\" class=\"dep-ref-inline\" data-target=\"d2fef107-d9d1-4c75-8a98-48768de6f8f2\" data-auto=\"true\" title=\"Referencia automática: Op. 05 · Cálculo Comisión por MCC\">Cálculo Comisión por MCC</a> pueden modificar la forma en que el sistema aplica estas comisiones.",
     "condicionesOperativas": "Aplica a transacciones de adelanto de efectivo manual clasificadas bajo el MCC 6010.",
     "ejemploOperativo": "Si se configura un monto fijo de 5 y además existe una comisión porcentual calculada de 3, el sistema utilizará ambos valores para determinar el importe final de la comisión según las reglas configuradas para el emisor.",
     "codigo": "12",
     "id": "cf7a9bb0-be32-4f04-945b-d72d11e10828",
     "creadoEn": "2026-09-07T22:39:53.227Z",
-    "actualizadoEn": "2026-11-13T16:21:36.705Z"
+    "actualizadoEn": "2026-11-13T16:22:57.759Z"
   },
   {
     "nombre": "Porcentaje de Comisión por Adelanto de Efectivo en Cajeros Automáticos \r\n(MCC 6011)",
@@ -824,13 +824,13 @@
     "valores": "Porcentaje entre 0% y 100%.",
     "requisitosImplementacion": "Debe configurarse un porcentaje para definir la comisión aplicable a los adelantos de efectivo realizados mediante cajeros automáticos clasificados bajo el MCC 6011.",
     "configuracionComportamiento": "Define el porcentaje de comisión utilizado para calcular el cargo por adelantos de efectivo efectuados en cajeros automáticos. Este porcentaje forma parte del cálculo de la comisión aplicable a las transacciones MCC 6011.",
-    "dependencias": "Se relaciona con el parámetro <a href=\"#\" class=\"dep-ref-inline\" data-target=\"f8d9ee22-a224-40fd-8339-670deece8ee6\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Monto de Comisión por Adelanto de Efectivo en Cajero Automático \n(MCC 6011)\">Monto de Comisión por Adelanto de Efectivo en Cajero Automático (MCC 6011)</a>. Para transacciones realizadas en la red de cajeros ATH de Costa Rica, este <a href=\"#\" class=\"dep-ref-inline\" data-target=\"2f7df47f-da57-4f98-96c8-d4011690b301\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Porcentaje\">porcentaje</a> se cobrará únicamente cuando el parámetro <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"El parámetro vinculado ya no existe. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Cálculo Comisión por MCC</span> se encuentre habilitado.",
+    "dependencias": "Se relaciona con el parámetro <a href=\"#\" class=\"dep-ref-inline\" data-target=\"f8d9ee22-a224-40fd-8339-670deece8ee6\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Monto de Comisión por Adelanto de Efectivo en Cajero Automático \n(MCC 6011)\">Monto de Comisión por Adelanto de Efectivo en Cajero Automático (MCC 6011)</a>. Para transacciones realizadas en la red de cajeros ATH de Costa Rica, este <a href=\"#\" class=\"dep-ref-inline\" data-target=\"2f7df47f-da57-4f98-96c8-d4011690b301\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Porcentaje\">porcentaje</a> se cobrará únicamente cuando el parámetro <a href=\"#\" class=\"dep-ref-inline\" data-target=\"d2fef107-d9d1-4c75-8a98-48768de6f8f2\" data-auto=\"true\" title=\"Referencia automática: Op. 05 · Cálculo Comisión por MCC\">Cálculo Comisión por MCC</a> se encuentre habilitado.",
     "condicionesOperativas": "Aplica a transacciones de adelanto de efectivo realizadas en cajeros automáticos identificadas con el MCC 6011.",
     "ejemploOperativo": "Si se configura un porcentaje de 2 % y el adelanto de efectivo es por 100.000, la comisión porcentual calculada será de 2.000 antes de aplicar otras reglas configuradas para el emisor.",
     "codigo": "12",
     "id": "8b508f49-4e64-4c1d-b904-ec6481cb0797",
     "creadoEn": "2026-09-07T22:39:53.227Z",
-    "actualizadoEn": "2026-11-13T16:21:36.706Z"
+    "actualizadoEn": "2026-11-13T16:22:57.762Z"
   },
   {
     "nombre": "Monto de Comisión por Adelanto de Efectivo en Cajero Automático \r\n(MCC 6011)",
@@ -841,13 +841,13 @@
     "valores": "Valores numéricos entre 0 y 9999999999,99.",
     "requisitosImplementacion": "Debe configurarse un monto fijo para definir la comisión aplicable a adelantos de efectivo realizados mediante cajeros automáticos identificados con el MCC 6011.",
     "configuracionComportamiento": "Define el componente fijo de la comisión por adelantos de efectivo en cajeros automáticos. Este monto se suma al valor calculado mediante el parámetro Porcentaje de Comisión por Adelanto de Efectivo en Cajero Automático (MCC 6011) y ambos generan un único Movimiento 29 - Comisión por Adelanto de Efectivo. El cálculo considera el tipo de cambio de compra de la moneda de la transacción y, cuando la operación es en dólares, utiliza un tipo de cambio igual a 1.",
-    "dependencias": "Depende funcionalmente del parámetro <a href=\"#\" class=\"dep-ref-inline\" data-target=\"56b437a8-1e04-41fe-9784-d8a500bc8c6e\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Porcentaje de Comisión\">Porcentaje de Comisión</a> por Adelanto de Efectivo en Cajero Automático (MCC 6011). Para transacciones realizadas en la red ATH de Costa Rica, este monto solo se cobra cuando el parámetro <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"El parámetro vinculado ya no existe. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Cálculo Comisión por MCC</span> se encuentra habilitado. Asimismo, el parámetro <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"El parámetro vinculado ya no existe. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Cálculo Comisión Excluyente</span> puede modificar la forma en que se aplica la comisión.",
+    "dependencias": "Depende funcionalmente del parámetro <a href=\"#\" class=\"dep-ref-inline\" data-target=\"56b437a8-1e04-41fe-9784-d8a500bc8c6e\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Porcentaje de Comisión\">Porcentaje de Comisión</a> por Adelanto de Efectivo en Cajero Automático (MCC 6011). Para transacciones realizadas en la red ATH de Costa Rica, este monto solo se cobra cuando el parámetro <a href=\"#\" class=\"dep-ref-inline\" data-target=\"d2fef107-d9d1-4c75-8a98-48768de6f8f2\" data-auto=\"true\" title=\"Referencia automática: Op. 05 · Cálculo Comisión por MCC\">Cálculo Comisión por MCC</a> se encuentra habilitado. Asimismo, el parámetro <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"El parámetro vinculado ya no existe. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Cálculo Comisión Excluyente</span> puede modificar la forma en que se aplica la comisión.",
     "condicionesOperativas": "Aplica a transacciones de adelanto de efectivo efectuadas en cajeros automáticos clasificadas bajo el MCC 6011.",
     "ejemploOperativo": "Si existe un monto fijo configurado de 5 y una comisión porcentual calculada de 3, ambos valores se consideran para determinar la comisión final según las reglas vigentes para el emisor.",
     "codigo": "12",
     "id": "f8d9ee22-a224-40fd-8339-670deece8ee6",
     "creadoEn": "2026-09-07T22:39:53.227Z",
-    "actualizadoEn": "2026-11-13T16:21:36.706Z"
+    "actualizadoEn": "2026-11-13T16:22:57.763Z"
   },
   {
     "nombre": "Cobrar Comisión Según Monto Informado por Incoming VISA",
