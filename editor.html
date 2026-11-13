@@ -3,7 +3,7 @@
   <head> 
     <meta charset="UTF-8" /> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
-    <title>Parámetros del Emisor - Editor V8.7</title> 
+    <title>Parámetros del Emisor - Editor V8.8</title> 
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script> 
     <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js"></script>
     <style> 
@@ -417,6 +417,11 @@
         color: #8a3b00; 
         font-weight: 800; 
         text-decoration: none; 
+      }
+      .dep-opcion-inline {
+        border-bottom-color: #2563a6;
+        background: #e8f2ff;
+        color: #174c7f;
       }
       .dep-pendiente {
         padding: 0 3px;
@@ -1199,7 +1204,15 @@
       } 
       function nombreOpcion(c) { 
         return OPCIONES.find((x) => x[0] === c)?.[1] || "Sin nombre"; 
-      } 
+      }
+      function codigoOpcionExistente(valor) {
+        const numero = Number.parseInt(String(valor || "").trim(), 10);
+        if (!Number.isInteger(numero)) return null;
+        return OPCIONES.find(([codigo]) => Number.parseInt(codigo, 10) === numero)?.[0] || null;
+      }
+      function opcionExiste(codigo) {
+        return Boolean(OPCIONES.some(([actual]) => actual === codigo));
+      }
       function ruta(c) { 
         return `data/${ambito}/op${c}.json`; 
       } 
@@ -1250,6 +1263,16 @@
         enlace.dataset.target = objetivoReferencia(registro);
         enlace.dataset.auto = "true";
         enlace.title = `Referencia automática: Op. ${registro.__opcion} · ${registro.nombre}`;
+        enlace.textContent = texto;
+        return enlace;
+      }
+      function crearVinculoOpcion(texto, codigo) {
+        const enlace = document.createElement("a");
+        enlace.href = "#";
+        enlace.className = "dep-ref-inline dep-opcion-inline";
+        enlace.dataset.optionTarget = codigo;
+        enlace.dataset.auto = "true";
+        enlace.title = `${idiomaEditor === "en" ? "Go to option" : "Ir a la opción"} ${codigo} · ${nombreOpcion(codigo)}`;
         enlace.textContent = texto;
         return enlace;
       }
@@ -1306,10 +1329,64 @@
         // Solo se retiran los creados por versiones anteriores fuera de un contexto
         // explícito; los vínculos manuales nunca se tocan.
         contenedor.querySelectorAll('a.dep-ref-inline[data-auto="true"]').forEach((enlace) => {
+          if (enlace.classList.contains("dep-opcion-inline")) {
+            const codigo = codigoOpcionExistente(enlace.dataset.optionTarget);
+            if (codigo && codigo === enlace.dataset.optionTarget) return;
+          }
           if (tieneContextoDependenciaExplicita(contenedor, enlace)) return;
           enlace.replaceWith(document.createTextNode(enlace.textContent || ""));
         });
         contenedor.normalize();
+      }
+      function patronReferenciaOpcion(global = false) {
+        const banderas = global ? "giu" : "iu";
+        return new RegExp(
+          String.raw`\b(?:opci[oó]n|option|op\.)\s*(?:(?:n(?:[úu]mero|ro\.?|\.?[oº°])\.?|no\.?|number|#)\s*)?(\d{1,3})\b`,
+          banderas,
+        );
+      }
+      function procesarReferenciasOpcion(contenedor) {
+        const caminante = document.createTreeWalker(
+          contenedor,
+          NodeFilter.SHOW_TEXT,
+          {
+            acceptNode(nodo) {
+              const padre = nodo.parentElement;
+              if (!nodo.nodeValue?.trim()) return NodeFilter.FILTER_REJECT;
+              if (padre?.closest("a.dep-ref-inline, .dep-pendiente")) return NodeFilter.FILTER_REJECT;
+              return NodeFilter.FILTER_ACCEPT;
+            },
+          },
+        );
+        const nodos = [];
+        while (caminante.nextNode()) nodos.push(caminante.currentNode);
+        nodos.forEach((nodo) => {
+          const texto = nodo.nodeValue || "";
+          const hallazgos = [];
+          const expresion = patronReferenciaOpcion(true);
+          let coincidencia;
+          while ((coincidencia = expresion.exec(texto))) {
+            const codigo = codigoOpcionExistente(coincidencia[1]);
+            if (!codigo) continue;
+            hallazgos.push({
+              inicio: coincidencia.index,
+              fin: coincidencia.index + coincidencia[0].length,
+              texto: coincidencia[0],
+              codigo,
+            });
+          }
+          if (!hallazgos.length) return;
+          const fragmento = document.createDocumentFragment();
+          let posicion = 0;
+          hallazgos.forEach((hallazgo) => {
+            if (hallazgo.inicio < posicion) return;
+            fragmento.appendChild(document.createTextNode(texto.slice(posicion, hallazgo.inicio)));
+            fragmento.appendChild(crearVinculoOpcion(hallazgo.texto, hallazgo.codigo));
+            posicion = hallazgo.fin;
+          });
+          fragmento.appendChild(document.createTextNode(texto.slice(posicion)));
+          nodo.replaceWith(fragmento);
+        });
       }
       function hashReferencia(valor) {
         let hash = 2166136261;
@@ -1604,8 +1681,11 @@
         const estadoAntes = contenedor.innerHTML.trim();
         const indice = indiceParametros();
         limpiarAnalisisAutomaticoAnterior(contenedor);
-        // Regla única de detección automática: solo referencias introducidas por una
-        // expresión gramatical inequívoca de dependencia. No se buscan nombres sueltos.
+        // Las opciones se reconocen solo cuando el número está introducido por
+        // "opción", "option" u "op." y corresponde a una opción real del repositorio.
+        procesarReferenciasOpcion(contenedor);
+        // Los parámetros se reconocen solo mediante una expresión gramatical inequívoca
+        // de dependencia. No se buscan nombres sueltos.
         procesarReferenciasDependeDe(contenedor, indice, registroActual);
         const estadoDespues = contenedor.innerHTML.trim();
         const cambioReal = estadoDespues !== estadoAntes;
@@ -2189,6 +2269,8 @@
         const enlace = e.target.closest(".dep-ref-inline");
         if (enlace) {
           e.preventDefault();
+          e.stopPropagation();
+          if (enlace.dataset.optionTarget) navegarAOpcion(enlace.dataset.optionTarget);
           return;
         }
         const interactivo = e.target.closest(
@@ -2703,7 +2785,14 @@ Ingrese un número del 1 al ${totalPosiciones}.`,
       });
       $("dependencias").addEventListener("click", (e) => {
         const pendiente = e.target.closest(".dep-pendiente");
-        if (pendiente) abrirMenuPendiente(e, pendiente);
+        if (pendiente) return abrirMenuPendiente(e, pendiente);
+        const enlaceOpcion = e.target.closest(".dep-opcion-inline[data-option-target]");
+        if (enlaceOpcion) {
+          e.preventDefault();
+          e.stopPropagation();
+          cerrarFormulario();
+          navegarAOpcion(enlaceOpcion.dataset.optionTarget);
+        }
       });
       $("contenido").addEventListener("contextmenu", (e) => {
         const pendiente = e.target.closest(".dep-pendiente");
@@ -2862,12 +2951,27 @@ Ingrese un número del 1 al ${totalPosiciones}.`,
         ) 
           cerrarMenuDependencias(); 
       }); 
+      function navegarAOpcion(codigo) {
+        const destino = codigoOpcionExistente(codigo);
+        if (!destino) return aviso("La opción indicada no existe.", true);
+        opcion = destino;
+        ["buscar", "filtrarProducto", "filtrarPais"].forEach((id) => ($(id).value = ""));
+        construirMenu();
+        renderizar();
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            const inicio = $("titulo") || $("contenido");
+            inicio?.scrollIntoView({ behavior: "smooth", block: "start" });
+          });
+        });
+        aviso(`${textoEditor("opcion")} ${destino} · ${nombreOpcion(destino)}`);
+      }
       function encontrarRelacionado(id) { 
         return todos().find((r) => objetivoReferencia(r) === id); 
       } 
       document.addEventListener("mouseover", (e) => { 
         const a = e.target.closest?.(".dep-ref-inline"); 
-        if (!a) return; 
+        if (!a || a.dataset.optionTarget) return; 
         clearTimeout(ocultarTarjeta); 
         const r = encontrarRelacionado(a.dataset.target); 
         if (!r) return; 
