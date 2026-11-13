@@ -246,14 +246,14 @@
     "valores": "Porcentaje entre 0% y 100%.",
     "que": "Define una tasa específica de cargos por servicio aplicable sobre el saldo financiado.",
     "como": "Cuando la funcionalidad se encuentra habilitada, el sistema utiliza esta tasa en lugar de la tasa definida en el parámetro Cargos por Servicio. El cálculo posterior mantiene el comportamiento estándar.",
-    "dependencias": "Requiere una configuración específica a nivel de <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"El parámetro vinculado ya no existe. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">franquicia</span> y solamente funciona con el esquema normal utilizando el programa de cálculo TRTP0015.",
+    "dependencias": "Requiere una configuración específica a nivel de <a href=\"#\" class=\"dep-ref-inline\" data-target=\"b4596698-6387-44d2-a731-78f3a1b6f4c2\" data-auto=\"true\" title=\"Referencia automática: Op. 05 · Franquicia\">franquicia</a> y solamente funciona con el esquema normal utilizando el programa de cálculo TRTP0015.",
     "cuando": "Cuando la institución requiere manejar una tasa independiente para cargos por servicio sobre saldo financiado.",
     "ejemplo": "Una institución necesita diferenciar la tasa de cargos por servicio aplicada al saldo financiado. Para ello configura este parámetro y el sistema utilizará dicha tasa en sustitución de la tasa general de cargos por servicio.",
     "notas": "La funcionalidad no aplica para esquemas de Resúmenes ni para Esquemas de Planes.",
     "codigo": "12",
     "id": "f102fd48-afe9-4b87-8088-a8881e36419e",
     "creadoEn": "2026-08-20T12:37:29.446Z",
-    "actualizadoEn": "2026-11-13T16:33:00.942Z"
+    "actualizadoEn": "2026-11-13T16:33:22.800Z"
   },
   {
     "nombre": "Tasa Interés Extrafinanciamiento",
@@ -262,14 +262,14 @@
     "valores": "Porcentaje entre 0% y 100%.",
     "que": "Define la tasa de interés aplicable a las operaciones de extrafinanciamiento.",
     "como": "El sistema utiliza el porcentaje configurado cuando la funcionalidad de extrafinanciamiento se encuentra habilitada para la cuenta o el emisor.",
-    "dependencias": "Requiere que el <a href=\"#\" class=\"dep-ref-inline\" data-target=\"b78abcfd-2364-4d0d-accb-6def91112649\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Parámetro\">parámetro</a> <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"El parámetro vinculado ya no existe. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Extrafinanciamiento</span> esté configurado en S.",
+    "dependencias": "Requiere que el <a href=\"#\" class=\"dep-ref-inline\" data-target=\"b78abcfd-2364-4d0d-accb-6def91112649\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Parámetro\">parámetro</a> <a href=\"#\" class=\"dep-ref-inline\" data-target=\"f6dd3c81-bb5b-4288-8fa7-026065986952\" data-auto=\"true\" title=\"Referencia automática: Op. 05 · Extrafinanciamiento\">Extrafinanciamiento</a> esté configurado en S.",
     "cuando": "Cuando la institución utiliza la funcionalidad de extrafinanciamiento y requiere definir una tasa de interés para dichas operaciones.",
     "ejemplo": "Una institución que utiliza extrafinanciamiento puede definir una tasa específica para este tipo de transacciones cuando la funcionalidad correspondiente se encuentra habilitada.",
     "notas": "Actualmente las tasas pueden configurarse directamente por plan de extrafinanciamiento.",
     "codigo": "12",
     "id": "633961a9-dfc7-4312-8cdf-43c556e21ab7",
     "creadoEn": "2026-08-20T12:37:29.446Z",
-    "actualizadoEn": "2026-11-13T16:33:00.943Z"
+    "actualizadoEn": "2026-11-13T16:33:22.803Z"
   },
   {
     "nombre": "Cobro de Membresía",
