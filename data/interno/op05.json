@@ -943,13 +943,13 @@
     "valores": "S = Sí / N = No",
     "requisitosImplementacion": "Este parámetro se habilita únicamente cuando el parámetro Premiación Permitida está configurado en S. Una vez habilitado, no permite valores en blanco.",
     "configuracionComportamiento": "Cuando está en N, el sistema restringe la asignación a un solo plan de premiación por cuenta y bloquea la asignación de planes adicionales. Cuando está en S, se permite la asignación de múltiples planes de premiación a una misma cuenta.",
-    "dependencias": "Dependencia directa del parámetro <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Premiación Permitida</span>. Para emisores bajo el esquema Mastercard Rewards, el parámetro debe permanecer en N y no es posible modificarlo a S.",
+    "dependencias": "Dependencia directa del parámetro <a href=\"#\" class=\"dep-ref-inline\" data-target=\"a1ca03a9-d728-4877-8a68-3557e4cfb7ae\" data-auto=\"true\" title=\"Referencia automática: Op. 05 · Premiación Permitida......:\">Premiación Permitida</a>. Para emisores bajo el esquema Mastercard Rewards, el parámetro debe permanecer en N y no es posible modificarlo a S.",
     "condicionesOperativas": "En traslados de emisor, si una cuenta con múltiples planes se intenta trasladar a un emisor que no los permite, el sistema bloquea el proceso. Si el nuevo emisor permite múltiples planes, el traslado se realiza sin restricciones.",
     "ejemploOperativo": "Emisor Crédito con Premiación Permitida = S y Múltiples Planes Premiación = S; una cuenta puede tener más de un plan de premiación asignado.",
     "codigo": "05",
     "id": "35254d77-ec55-43c3-880e-4b6b55c2b30f",
     "creadoEn": "2026-11-13T16:22:57.440Z",
-    "actualizadoEn": "2026-11-13T16:22:57.640Z"
+    "actualizadoEn": "2026-11-13T16:24:32.469Z"
   },
   {
     "nombre": "Días de Anticipación a la Fecha de Vencimiento de Pago",
@@ -1538,13 +1538,13 @@
     "valores": "S = Sí / N = No",
     "requisitosImplementacion": "Deben existir configuraciones de monto y/o porcentaje de comisión correspondientes a los adelantos de efectivo en TRT08SN0 → Opción 12 - Trabajar con, para los MCC 6010 y 6011.",
     "configuracionComportamiento": "Con S, compara los componentes de monto y porcentaje y aplica el mayor. Con N, suma ambos componentes para obtener la comisión. La lógica se utiliza para comisiones asociadas a adelantos de efectivo.",
-    "dependencias": "Se relaciona con <a href=\"#\" class=\"dep-ref-inline\" data-target=\"f030000c-a21d-42b2-ad98-c25433978280\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Porcentaje de Comisión por Adelanto de Efectivo Manual (MCC 6010)\">Porcentaje de Comisión por Adelanto de Efectivo Manual (MCC 6010)</a>, <a href=\"#\" class=\"dep-ref-inline\" data-target=\"cf7a9bb0-be32-4f04-945b-d72d11e10828\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Monto de Comisión por Adelanto de Efectivo Manual (MCC 6010)\">Monto de Comisión por Adelanto de Efectivo Manual (MCC 6010)</a>, <a href=\"#\" class=\"dep-ref-inline\" data-target=\"56b437a8-1e04-41fe-9784-d8a500bc8c6e\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Porcentaje de Comisión\">Porcentaje de Comisión</a> por Adelanto de Efectivo en Cajero Automático (MCC 6011) y <a href=\"#\" class=\"dep-ref-inline\" data-target=\"f8d9ee22-a224-40fd-8339-670deece8ee6\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Monto de Comisión por Adelanto de Efectivo en Cajero Automático \r\n(MCC 6011)\">Monto de Comisión por Adelanto de Efectivo en Cajero Automático (MCC 6011)</a>, definidos en TRT08SN0 → Opción 12 - Trabajar con. El manual confirma estos parámetro<span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">s como componentes de las comisiones de adelantos de efectivo</span>.",
+    "dependencias": "Se relaciona con <a href=\"#\" class=\"dep-ref-inline\" data-target=\"f030000c-a21d-42b2-ad98-c25433978280\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Porcentaje de Comisión por Adelanto de Efectivo Manual (MCC 6010)\">Porcentaje de Comisión por Adelanto de Efectivo Manual (MCC 6010)</a>, <a href=\"#\" class=\"dep-ref-inline\" data-target=\"cf7a9bb0-be32-4f04-945b-d72d11e10828\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Monto de Comisión por Adelanto de Efectivo Manual (MCC 6010)\">Monto de Comisión por Adelanto de Efectivo Manual (MCC 6010)</a>, <a href=\"#\" class=\"dep-ref-inline\" data-target=\"56b437a8-1e04-41fe-9784-d8a500bc8c6e\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Porcentaje de Comisión\">Porcentaje de Comisión</a> por Adelanto de Efectivo en Cajero Automático (MCC 6011) y <a href=\"#\" class=\"dep-ref-inline\" data-target=\"f8d9ee22-a224-40fd-8339-670deece8ee6\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Monto de Comisión por Adelanto de Efectivo en Cajero Automático \n(MCC 6011)\">Monto de Comisión por Adelanto de Efectivo en Cajero Automático (MCC 6011)</a>, definidos en TRT08SN0 → Opción 12 - Trabajar con. El manual confirma estos parámetro<span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">s como componentes de las comisiones de adelantos de efectivo</span>.",
     "condicionesOperativas": "La lógica se considera tanto en la liquidación Incoming como en la liquidación de la red de cajeros ATH. Si los parámetros de monto o porcentaje correspondientes están en blanco, la descripción de Opción 5 indica que no se cobra comisión.",
     "ejemploOperativo": "Para un adelanto MCC 6011, el cálculo por porcentaje produce USD 7,50 y el monto de comisión configurado corresponde a USD 5. Con Cálculo Comisión Excluyente = S, se aplica USD 7,50 por ser el mayor. Con N, el resultado sería USD 12,50 al sumar ambos componentes.",
     "codigo": "05",
     "id": "44a42665-2e97-4eb0-9810-ff9eb1219669",
     "creadoEn": "2026-11-13T16:22:57.440Z",
-    "actualizadoEn": "2026-11-13T16:22:57.664Z"
+    "actualizadoEn": "2026-11-13T16:24:32.499Z"
   },
   {
     "nombre": "Cálculo Comisión por MCC",
@@ -1844,13 +1844,13 @@
     "valores": "Cantidad de días de gracia que tendrá el tarjetahabiente para realizar el pago de contado después de cumplida la fecha de pago de contado.",
     "requisitosImplementacion": "Debe configurarse la cantidad de días adicionales que el emisor otorgará para realizar el pago de contado después de la fecha establecida.",
     "configuracionComportamiento": "Define el período adicional de gracia que posee el tarjetahabiente para efectuar el pago de contado una vez alcanzada la fecha de pago de contado. El valor configurado corresponde a la cantidad de días que se extenderá dicho plazo.",
-    "dependencias": "El parámetro <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">únicamente se visualiza</span> cuando el parámetro \"Separa Fecha Pago Cont/Mín\" de la Opción 5 del programa TRTT1SN0 se encuentra configurado en Sí.",
+    "dependencias": "El parámetro <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">únicamente se visualiza</span> cuando el parámetro \"<span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Separa Fecha Pago Cont/Mín</span>\" de la Opción 5 del programa TRTT1SN0 se encuentra configurado en Sí.",
     "condicionesOperativas": "Si el parámetro que separa la fecha de pago de contado y pago mínimo no está habilitado, este parámetro no estará disponible para configuración.",
     "ejemploOperativo": "Si la fecha de pago de contado es el día 15 y el parámetro se configura con valor 5, el tarjetahabiente dispondrá de 5 días adicionales de gracia para realizar el pago de contado.",
     "codigo": "05",
     "id": "0fe71187-0e6e-4655-8ba3-54d9435cac6e",
     "creadoEn": "2026-11-13T16:22:57.440Z",
-    "actualizadoEn": "2026-11-13T16:22:57.676Z"
+    "actualizadoEn": "2026-11-13T16:24:32.513Z"
   },
   {
     "nombre": "IV Cuota Fija *Actualmente no se utiliza*",
@@ -1878,13 +1878,13 @@
     "valores": "Cantidad de días hasta un máximo de 31 días. No permite ingresar valores superiores a 31.",
     "requisitosImplementacion": "Configurar la cantidad de días que tendrá el tarjetahabiente para realizar el pago de contado después de la fecha de corte.",
     "configuracionComportamiento": "Define la cantidad de días que tiene el tarjetahabiente para realizar el pago de contado. El sistema utiliza el número de días configurado para determinar la fecha de pago de contado. No permite valores mayores a 31 días.",
-    "dependencias": "Este parámetro <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">solo se muestra</span> cuando el parámetro \"Separa Fecha Pago Cont/Mín\" del TRTT1SN0 opción 5 se encuentra configurado en SI.\n\nRegla operativa identificada: Si la fecha de pago de contado y la fecha de <a href=\"#\" class=\"dep-ref-inline\" data-target=\"5035f594-6580-4d23-9ca6-4195de750373\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Pago Mínimo\">pago mínimo</a> quedan configuradas el mismo día de la fecha de corte, el sistema automáticamente resta un día para evitar que coincidan con la fecha de corte.",
+    "dependencias": "Este parámetro <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">solo se muestra</span> cuando el parámetro \"<span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Separa Fecha Pago Cont/Mín</span>\" del TRTT1SN0 opción 5 se encuentra configurado en SI.\n\nRegla operativa identificada: Si la fecha de pago de contado y la fecha de <a href=\"#\" class=\"dep-ref-inline\" data-target=\"5035f594-6580-4d23-9ca6-4195de750373\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Pago Mínimo\">pago mínimo</a> quedan configuradas el mismo día de la fecha de corte, el sistema automáticamente resta un día para evitar que coincidan con la fecha de corte.",
     "condicionesOperativas": "Aplica para productos de crédito que manejan separación entre la fecha de pago de contado y la fecha de pago mínimo.",
     "ejemploOperativo": "Si se configuran 20 días, el sistema calculará la fecha de pago de contado utilizando 20 días posteriores al corte. Si el cálculo provoca que la fecha de pago de contado o la fecha de pago mínimo coincidan con la fecha de corte, el sistema ajustará automáticamente la fecha restando un día.",
     "codigo": "05",
     "id": "b7fdf2fb-d63d-4a4d-9cb3-e24c81ece0c4",
     "creadoEn": "2026-11-13T16:22:57.440Z",
-    "actualizadoEn": "2026-11-13T16:22:57.677Z"
+    "actualizadoEn": "2026-11-13T16:24:32.515Z"
   },
   {
     "nombre": "Permite Prospectar Cuenta",
