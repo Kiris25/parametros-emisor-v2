@@ -3,7 +3,7 @@
   <head> 
     <meta charset="UTF-8" /> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
-    <title>Parámetros del Emisor - Editor V8.1</title> 
+    <title>Parámetros del Emisor - Editor V8.2</title> 
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script> 
     <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js"></script>
     <style> 
@@ -1289,17 +1289,25 @@
         });
       }
       function analizarDependenciaHTML(valor, registroActual = null) {
+        const original = String(valor || "").trim();
         const contenedor = document.createElement("div");
-        contenedor.innerHTML = String(valor || "");
-        const anterior = contenedor.innerHTML;
+        contenedor.innerHTML = original;
+        // Esta serialización se obtiene del mismo DOM que se analizará. Así, cambios
+        // irrelevantes de formato del JSON (entidades, comillas o espacios) no se
+        // confunden con vínculos o marcas realmente creados/eliminados.
+        const estadoAntes = contenedor.innerHTML.trim();
         const indice = indiceParametros();
         revisarVinculosExistentes(contenedor);
         resolverPendientesExistentes(contenedor, indice, registroActual);
         vincularCoincidenciasExactas(contenedor, indice, registroActual);
         marcarReferenciasPendientes(contenedor);
+        const estadoDespues = contenedor.innerHTML.trim();
+        const cambioReal = estadoDespues !== estadoAntes;
         return {
-          html: contenedor.innerHTML.trim(),
-          cambio: contenedor.innerHTML.trim() !== anterior.trim(),
+          // Si el DOM no cambió, se conserva exactamente el valor guardado. Esto
+          // evita reescrituras y marcas pendientes provocadas solo por serialización.
+          html: cambioReal ? estadoDespues : original,
+          cambio: cambioReal,
           vinculos: contenedor.querySelectorAll("a.dep-ref-inline").length,
           pendientes: contenedor.querySelectorAll(".dep-pendiente").length,
         };
@@ -1310,6 +1318,7 @@
         let pendientes = 0;
         OPCIONES.forEach(([c]) => {
           (datos[c] || []).forEach((registro) => {
+            const usaCampoAnterior = "dep" in registro;
             const original = registro.dependencias || registro.dep || "";
             if (!original) return;
             const resultado = analizarDependenciaHTML(original, {
@@ -1318,9 +1327,11 @@
             });
             vinculos += resultado.vinculos;
             pendientes += resultado.pendientes;
-            if (resultado.html === String(original).trim() && !("dep" in registro)) return;
+            // El conteo por sí mismo nunca ensucia el registro. Solo se escribe y
+            // actualiza la fecha cuando el DOM cambió de verdad o se migra "dep".
+            if (!resultado.cambio && !usaCampoAnterior) return;
             registro.dependencias = resultado.html;
-            if ("dep" in registro) delete registro.dep;
+            if (usaCampoAnterior) delete registro.dep;
             registro.actualizadoEn = new Date().toISOString();
             modificadas.add(c);
           });
