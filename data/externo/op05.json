@@ -460,14 +460,14 @@
     "valores": "S = Sí / N = No",
     "que": "Define si las cuentas asociadas al emisor pueden contar con un aumento temporal del límite de crédito.",
     "como": "Cuando el valor es Sí, el emisor permite incrementos temporales del límite de crédito bajo condiciones previamente definidas. Cuando el valor es No, no se permiten aumentos temporales del límite.",
-    "dependencias": "Si el parámetro se configura en S, deben completarse los parámetros Monto Mínimo Override y Monto Máximo Override de la Opción 12 Trabajar con (Parámetros por tipo de Cliente y Moneda).",
+    "dependencias": "Si el parámetro se configura en S, deben completarse los parámetros <a href=\"#\" class=\"dep-ref-inline\" data-target=\"44372032-6c28-4242-972f-64003b58a271\">Monto Mínimo Override</a> y <a href=\"#\" class=\"dep-ref-inline\" data-target=\"7d52a5e3-b2eb-448d-b081-a84e213b6d59\">Monto Máximo Override</a> de la Opción 12 Trabajar con (Parámetros por tipo de Cliente y Moneda).",
     "cuando": "Aplica en emisores de crédito que requieren ofrecer aumentos temporales de límite por situaciones específicas o campañas definidas.",
     "ejemplo": "Un cliente puede recibir un aumento temporal de su límite de crédito durante un período específico para cubrir una necesidad puntual, siempre que el emisor lo permita.",
     "notas": "Este parámetro habilita o deshabilita la posibilidad de aumentos temporales del límite de crédito. Las condiciones específicas dependen de la política del emisor.",
     "codigo": "05",
     "id": "8e021bec-ab3e-4a64-8d83-e5bdea5aead7",
     "creadoEn": "2026-11-13T16:33:21.958Z",
-    "actualizadoEn": "2026-11-13T17:57:53.841Z"
+    "actualizadoEn": "2026-11-13T18:55:36.191Z"
   },
   {
     "nombre": "Extrafinanciamiento",
