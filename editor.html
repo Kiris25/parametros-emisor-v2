@@ -3,7 +3,7 @@
   <head> 
     <meta charset="UTF-8" /> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
-    <title>Parámetros del Emisor - Editor V8.8</title> 
+    <title>Parámetros del Emisor - Editor V8.9</title> 
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script> 
     <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js"></script>
     <style> 
@@ -991,15 +991,19 @@
       const $ = (id) => document.getElementById(id); 
       let idiomaEditor = "es", 
         ambito = "externo", 
-        opcion = "05", 
-        datos = {}, 
+        opcion = "05",
+        datos = {},
+        datosPorAmbito = { externo: null, interno: null },
         seleccionDependencia = null, 
         elementoDependenciaActivo = null, 
         ocultarTarjeta = null,
         marcaPendienteActiva = null,
         temporizadorResaltadoFicha = null,
-        cambiosPendientes = new Set(),
-        basesLocales = {};
+        cambiosPendientesPorAmbito = { externo: new Set(), interno: new Set() },
+        basesLocalesPorAmbito = { externo: {}, interno: {} },
+        cambiosPendientes = cambiosPendientesPorAmbito.externo,
+        basesLocales = basesLocalesPorAmbito.externo,
+        sincronizacionesPendientes = new Set();
       let colapsoPorContexto = cargarColapsoPorContexto();
       const excepcionesPorContexto = {};
 
@@ -1213,9 +1217,33 @@
       function opcionExiste(codigo) {
         return Boolean(OPCIONES.some(([actual]) => actual === codigo));
       }
-      function ruta(c) { 
-        return `data/${ambito}/op${c}.json`; 
-      } 
+      function ruta(c, modalidad = ambito) {
+        return `data/${modalidad}/op${c}.json`;
+      }
+      function modalidadOpuesta(modalidad = ambito) {
+        return modalidad === "externo" ? "interno" : "externo";
+      }
+      function totalCambiosPendientes() {
+        return cambiosPendientesPorAmbito.externo.size + cambiosPendientesPorAmbito.interno.size;
+      }
+      function activarDatosAmbito(modalidad) {
+        ambito = modalidad;
+        datos = datosPorAmbito[modalidad] || {};
+        cambiosPendientes = cambiosPendientesPorAmbito[modalidad];
+        basesLocales = basesLocalesPorAmbito[modalidad];
+      }
+      function ejecutarEnAmbito(modalidad, operacion) {
+        const anterior = { ambito, datos, cambiosPendientes, basesLocales };
+        activarDatosAmbito(modalidad);
+        try {
+          return operacion();
+        } finally {
+          ambito = anterior.ambito;
+          datos = anterior.datos;
+          cambiosPendientes = anterior.cambiosPendientes;
+          basesLocales = anterior.basesLocales;
+        }
+      }
       function baseLectura() { 
         if (idiomaEditor === "es") return "./"; 
         if (location.hostname.endsWith(".github.io")) { 
@@ -1725,16 +1753,297 @@
         if (marcarCambios) modificadas.forEach(marcarCambio);
         return { modificadas, vinculos, pendientes };
       }
-      function recargarReferencias() {
-        const resultado = analizarTodasLasDependencias({ marcarCambios: true });
+      function valoresIdentidadCompartida(registro) {
+        const claves = [
+          "idCompartido", "sharedId", "identificadorCompartido", "stableId",
+          "parametroId", "parameterId", "identificador", "id",
+        ];
+        return claves
+          .map((clave) => ({ clave, valor: String(registro?.[clave] ?? "").trim() }))
+          .filter((item) => item.valor);
+      }
+      function resolverRegistroEquivalente(registro, codigo, destino) {
+        const candidatos = destino?.[codigo] || [];
+        if (!registro || !candidatos.length) return null;
+        for (const { clave, valor } of valoresIdentidadCompartida(registro)) {
+          const iguales = candidatos.filter(
+            (candidato) => String(candidato?.[clave] ?? "").trim() === valor,
+          );
+          if (iguales.length === 1) return iguales[0];
+          if (iguales.length > 1) return null;
+        }
+        const nombre = nombreComparable(registro.nombre);
+        if (!nombre) return null;
+        const iguales = candidatos.filter(
+          (candidato) => nombreComparable(candidato.nombre) === nombre,
+        );
+        return iguales.length === 1 ? iguales[0] : null;
+      }
+      function encontrarRelacionadoEnDatos(id, conjunto) {
+        for (const [codigo] of OPCIONES) {
+          const registro = (conjunto?.[codigo] || []).find((actual) => {
+            const objetivo = actual.id || `op${codigo}-${normalizar(actual.nombre).replaceAll(" ", "-")}`;
+            return objetivo === id;
+          });
+          if (registro) return { registro, codigo };
+        }
+        return null;
+      }
+      function textoYaDescartado(registro, textoCompleto, referencia, posicion) {
+        const descartes = descartesReferencia(registro);
+        const clave = claveDescarteReferencia(textoCompleto, referencia, posicion);
+        return Boolean(descartes[clave]);
+      }
+      function envolverCoincidenciasTexto(contenedor, textos, crearEnlace, registroDestino) {
+        const comparables = [...new Set(textos.map((texto) => String(texto || "").trim()).filter(Boolean))]
+          .sort((a, b) => b.length - a.length);
+        if (!comparables.length) return false;
+        const textoCompleto = contenedor.textContent || "";
+        let cambio = false;
+        // Una confirmación en la modalidad opuesta prevalece sobre una marca pendiente
+        // no descartada: se conserva el mismo texto y solo se sustituye la marca por el vínculo.
+        contenedor.querySelectorAll(".dep-pendiente").forEach((marca) => {
+          const visible = String(marca.textContent || "");
+          const inferior = visible.toLocaleLowerCase();
+          const coincidencia = comparables
+            .map((texto) => ({ texto, inicio: inferior.indexOf(texto.toLocaleLowerCase()) }))
+            .filter((item) => item.inicio >= 0)
+            .find((item) => {
+              const antes = item.inicio ? visible[item.inicio - 1] : "";
+              const despues = visible[item.inicio + item.texto.length] || "";
+              return !/[\p{L}\p{N}]/u.test(antes) && !/[\p{L}\p{N}]/u.test(despues);
+            });
+          if (!coincidencia) return;
+          const fragmento = document.createDocumentFragment();
+          fragmento.appendChild(document.createTextNode(visible.slice(0, coincidencia.inicio)));
+          fragmento.appendChild(
+            crearEnlace(visible.slice(coincidencia.inicio, coincidencia.inicio + coincidencia.texto.length)),
+          );
+          fragmento.appendChild(document.createTextNode(visible.slice(coincidencia.inicio + coincidencia.texto.length)));
+          marca.replaceWith(fragmento);
+          cambio = true;
+        });
+        contenedor.normalize();
+        const caminante = document.createTreeWalker(
+          contenedor,
+          NodeFilter.SHOW_TEXT,
+          {
+            acceptNode(nodo) {
+              if (!nodo.nodeValue?.trim()) return NodeFilter.FILTER_REJECT;
+              if (nodo.parentElement?.closest("a.dep-ref-inline, .dep-pendiente")) return NodeFilter.FILTER_REJECT;
+              return NodeFilter.FILTER_ACCEPT;
+            },
+          },
+        );
+        const nodos = [];
+        while (caminante.nextNode()) nodos.push(caminante.currentNode);
+        nodos.forEach((nodo) => {
+          const original = nodo.nodeValue || "";
+          const inferior = original.toLocaleLowerCase();
+          const hallazgos = [];
+          comparables.forEach((texto) => {
+            const buscado = texto.toLocaleLowerCase();
+            let desde = 0;
+            while (desde < inferior.length) {
+              const inicio = inferior.indexOf(buscado, desde);
+              if (inicio < 0) break;
+              const antes = inicio ? original[inicio - 1] : "";
+              const despues = original[inicio + texto.length] || "";
+              if (!/[\p{L}\p{N}]/u.test(antes) && !/[\p{L}\p{N}]/u.test(despues)) {
+                const visible = original.slice(inicio, inicio + texto.length);
+                if (!textoYaDescartado(registroDestino, textoCompleto, visible, inicio)) {
+                  hallazgos.push({ inicio, fin: inicio + texto.length, visible });
+                }
+              }
+              desde = inicio + Math.max(1, texto.length);
+            }
+          });
+          hallazgos.sort((a, b) => a.inicio - b.inicio || (b.fin - b.inicio) - (a.fin - a.inicio));
+          const elegidos = [];
+          let fin = -1;
+          hallazgos.forEach((hallazgo) => {
+            if (hallazgo.inicio < fin) return;
+            elegidos.push(hallazgo);
+            fin = hallazgo.fin;
+          });
+          if (!elegidos.length) return;
+          const fragmento = document.createDocumentFragment();
+          let posicion = 0;
+          elegidos.forEach((hallazgo) => {
+            fragmento.appendChild(document.createTextNode(original.slice(posicion, hallazgo.inicio)));
+            fragmento.appendChild(crearEnlace(hallazgo.visible));
+            posicion = hallazgo.fin;
+          });
+          fragmento.appendChild(document.createTextNode(original.slice(posicion)));
+          nodo.replaceWith(fragmento);
+          cambio = true;
+        });
+        return cambio;
+      }
+      function replicarVinculoOpcion(contenedor, enlaceOrigen, registroDestino) {
+        const codigo = codigoOpcionExistente(enlaceOrigen.dataset.optionTarget);
+        if (!codigo) return false;
+        if (contenedor.querySelector(`a.dep-opcion-inline[data-option-target="${codigo}"]`)) return false;
+        const caminante = document.createTreeWalker(
+          contenedor,
+          NodeFilter.SHOW_TEXT,
+          {
+            acceptNode(nodo) {
+              if (!nodo.nodeValue?.trim()) return NodeFilter.FILTER_REJECT;
+              if (nodo.parentElement?.closest("a.dep-ref-inline, .dep-pendiente")) return NodeFilter.FILTER_REJECT;
+              return NodeFilter.FILTER_ACCEPT;
+            },
+          },
+        );
+        const nodos = [];
+        while (caminante.nextNode()) nodos.push(caminante.currentNode);
+        let cambio = false;
+        nodos.forEach((nodo) => {
+          const texto = nodo.nodeValue || "";
+          const expresion = patronReferenciaOpcion(true);
+          const hallazgos = [];
+          let coincidencia;
+          while ((coincidencia = expresion.exec(texto))) {
+            if (codigoOpcionExistente(coincidencia[1]) !== codigo) continue;
+            hallazgos.push({ inicio: coincidencia.index, fin: coincidencia.index + coincidencia[0].length, visible: coincidencia[0] });
+          }
+          if (!hallazgos.length) return;
+          const fragmento = document.createDocumentFragment();
+          let posicion = 0;
+          hallazgos.forEach((hallazgo) => {
+            fragmento.appendChild(document.createTextNode(texto.slice(posicion, hallazgo.inicio)));
+            fragmento.appendChild(crearVinculoOpcion(hallazgo.visible, codigo));
+            posicion = hallazgo.fin;
+          });
+          fragmento.appendChild(document.createTextNode(texto.slice(posicion)));
+          nodo.replaceWith(fragmento);
+          cambio = true;
+        });
+        return cambio;
+      }
+      function sincronizarDireccion(origen, destino) {
+        const datosOrigen = datosPorAmbito[origen];
+        const datosDestino = datosPorAmbito[destino];
+        const modificadas = new Set();
+        const pendientes = new Set();
+        if (!datosOrigen || !datosDestino) return { modificadas, pendientes };
+        for (const [codigo] of OPCIONES) {
+          for (const registroOrigen of datosOrigen[codigo] || []) {
+            const htmlOrigen = String(registroOrigen.dependencias || registroOrigen.dep || "");
+            if (!htmlOrigen || !/<a\b/i.test(htmlOrigen)) continue;
+            const registroDestino = resolverRegistroEquivalente(registroOrigen, codigo, datosDestino);
+            if (!registroDestino) {
+              pendientes.add(`${origen}|${codigo}|${registroOrigen.id || nombreComparable(registroOrigen.nombre)}|registro`);
+              continue;
+            }
+            const htmlDestino = String(registroDestino.dependencias || registroDestino.dep || "");
+            if (!htmlDestino) {
+              pendientes.add(`${origen}|${codigo}|${registroOrigen.id || nombreComparable(registroOrigen.nombre)}|texto`);
+              continue;
+            }
+            const fuente = document.createElement("div");
+            fuente.innerHTML = htmlOrigen;
+            const receptor = document.createElement("div");
+            receptor.innerHTML = htmlDestino;
+            let cambio = false;
+            for (const enlaceOrigen of fuente.querySelectorAll("a.dep-ref-inline")) {
+              if (enlaceOrigen.dataset.optionTarget) {
+                const aplicado = replicarVinculoOpcion(receptor, enlaceOrigen, registroDestino);
+                cambio ||= aplicado;
+                if (!aplicado && !receptor.querySelector(`a.dep-opcion-inline[data-option-target="${enlaceOrigen.dataset.optionTarget}"]`)) {
+                  pendientes.add(`${origen}|${codigo}|${registroOrigen.id || nombreComparable(registroOrigen.nombre)}|opcion|${enlaceOrigen.dataset.optionTarget}`);
+                }
+                continue;
+              }
+              const relacionado = encontrarRelacionadoEnDatos(enlaceOrigen.dataset.target, datosOrigen);
+              if (!relacionado) continue;
+              const equivalenteDestino = resolverRegistroEquivalente(
+                relacionado.registro,
+                relacionado.codigo,
+                datosDestino,
+              );
+              if (!equivalenteDestino) {
+                pendientes.add(`${origen}|${codigo}|${registroOrigen.id || nombreComparable(registroOrigen.nombre)}|parametro|${enlaceOrigen.dataset.target}`);
+                continue;
+              }
+              const objetivoDestino = equivalenteDestino.id ||
+                `op${relacionado.codigo}-${normalizar(equivalenteDestino.nombre).replaceAll(" ", "-")}`;
+              if (receptor.querySelector(`a.dep-ref-inline[data-target="${CSS.escape(objetivoDestino)}"]`)) continue;
+              const aplicado = envolverCoincidenciasTexto(
+                receptor,
+                [enlaceOrigen.textContent, relacionado.registro.nombre, equivalenteDestino.nombre],
+                (texto) => crearVinculoAutomatico(texto, { ...equivalenteDestino, __opcion: relacionado.codigo }),
+                registroDestino,
+              );
+              cambio ||= aplicado;
+              if (!aplicado) {
+                pendientes.add(`${origen}|${codigo}|${registroOrigen.id || nombreComparable(registroOrigen.nombre)}|texto-parametro|${objetivoDestino}`);
+              }
+            }
+            const nuevo = receptor.innerHTML.trim();
+            if (cambio && nuevo !== htmlDestino.trim()) {
+              registroDestino.dependencias = nuevo;
+              if ("dep" in registroDestino) delete registroDestino.dep;
+              registroDestino.actualizadoEn = new Date().toISOString();
+              modificadas.add(codigo);
+            }
+          }
+        }
+        modificadas.forEach((codigo) => marcarCambioAmbito(destino, codigo));
+        return { modificadas, pendientes };
+      }
+      async function sincronizarVinculosBidireccionales({ analizar = true } = {}) {
+        await Promise.all([
+          asegurarAmbitoCargado("externo"),
+          asegurarAmbitoCargado("interno"),
+        ]);
+        if (analizar) {
+          for (const modalidad of ["externo", "interno"]) {
+            ejecutarEnAmbito(modalidad, () =>
+              analizarTodasLasDependencias({ marcarCambios: true }),
+            );
+          }
+        }
+        const ida = sincronizarDireccion("externo", "interno");
+        const vuelta = sincronizarDireccion("interno", "externo");
+        sincronizacionesPendientes = new Set([...ida.pendientes, ...vuelta.pendientes]);
+        return {
+          modificadas: {
+            externo: vuelta.modificadas,
+            interno: ida.modificadas,
+          },
+          pendientes: sincronizacionesPendientes,
+        };
+      }
+      async function recargarReferencias() {
+        const vista = ambito;
+        await Promise.all([asegurarAmbitoCargado("externo"), asegurarAmbitoCargado("interno")]);
+        const resultados = {};
+        for (const modalidad of ["externo", "interno"]) {
+          resultados[modalidad] = ejecutarEnAmbito(modalidad, () =>
+            analizarTodasLasDependencias({ marcarCambios: true }),
+          );
+        }
+        // Replica vínculos existentes y los que el análisis acaba de confirmar.
+        const sincronizacion = await sincronizarVinculosBidireccionales({ analizar: false });
+        activarDatosAmbito(vista);
         renderizar();
-        if (resultado.modificadas.size) {
+        actualizarInterfazCambios();
+        const modificadas = new Set([
+          ...resultados.externo.modificadas,
+          ...resultados.interno.modificadas,
+          ...sincronizacion.modificadas.externo,
+          ...sincronizacion.modificadas.interno,
+        ]);
+        const vinculos = resultados.externo.vinculos + resultados.interno.vinculos;
+        const pendientes = resultados.externo.pendientes + resultados.interno.pendientes;
+        if (modificadas.size) {
           aviso(
-            `${resultado.modificadas.size} opción(es) actualizada(s): ${resultado.vinculos} vínculo(s) y ${resultado.pendientes} pendiente(s). Guarde los cambios para publicar.`,
+            `${modificadas.size} opción(es) actualizada(s): ${vinculos} vínculo(s), ${pendientes} pendiente(s) y ${sincronizacion.pendientes.size} sincronización(es) por reintentar. Guarde los cambios para publicar.`,
           );
         } else {
           aviso(
-            `Referencias revisadas: ${resultado.vinculos} vínculo(s) y ${resultado.pendientes} pendiente(s). No hubo cambios nuevos.`,
+            `Referencias revisadas: ${vinculos} vínculo(s), ${pendientes} pendiente(s) y ${sincronizacion.pendientes.size} sincronización(es) por reintentar. No hubo cambios nuevos.`,
           );
         }
       }
@@ -1796,16 +2105,16 @@
       function serializarBase(valor) {
         return JSON.stringify(valor ?? []);
       }
-      function serializarOpcion(c) {
-        return serializarBase(datos[c] || []);
+      function serializarOpcion(c, modalidad = ambito) {
+        return serializarBase(datosPorAmbito[modalidad]?.[c] || []);
       }
-      function clavePublicacionLocal(c) {
-        return `peEditorPublicacion|${idiomaEditor}|${ambito}|op${c}`;
+      function clavePublicacionLocal(c, modalidad = ambito) {
+        return `peEditorPublicacion|${idiomaEditor}|${modalidad}|op${c}`;
       }
-      function guardarPublicacionLocal(c, contenido, metadatos = {}) {
+      function guardarPublicacionLocal(c, contenido, metadatos = {}, modalidad = ambito) {
         try {
           localStorage.setItem(
-            clavePublicacionLocal(c),
+            clavePublicacionLocal(c, modalidad),
             JSON.stringify({
               datos: contenido,
               serializado: serializarBase(contenido),
@@ -1813,7 +2122,7 @@
               propietario: github.propietario || "",
               repositorio: github.repositorio || "",
               rama: github.rama || "main",
-              ruta: ruta(c),
+              ruta: ruta(c, modalidad),
               sha: metadatos.sha || "",
             }),
           );
@@ -1821,13 +2130,13 @@
           console.warn("No se pudo conservar la referencia local publicada.", error);
         }
       }
-      function leerPublicacionLocal(c) {
+      function leerPublicacionLocal(c, modalidad = ambito) {
         try {
           const guardada = JSON.parse(
-            localStorage.getItem(clavePublicacionLocal(c)) || "null",
+            localStorage.getItem(clavePublicacionLocal(c, modalidad)) || "null",
           );
           if (!guardada || !Array.isArray(guardada.datos)) return null;
-          if (guardada.ruta !== ruta(c)) return null;
+          if (guardada.ruta !== ruta(c, modalidad)) return null;
           const detectado = github.propietario ? github : detectarRepositorio();
           if (
             detectado?.propietario &&
@@ -1849,13 +2158,13 @@
         const bytes = Uint8Array.from(binario, (caracter) => caracter.charCodeAt(0));
         return new TextDecoder().decode(bytes);
       }
-      async function leerDesdeGitHub(c) {
+      async function leerDesdeGitHub(c, modalidad = ambito) {
         const token = localStorage.getItem("peToken") || github.token || "";
         const repositorio = github.propietario ? github : detectarRepositorio();
         if (!token || !repositorio?.propietario || !repositorio?.repositorio) return null;
         const api =
           `https://api.github.com/repos/${encodeURIComponent(repositorio.propietario)}/` +
-          `${encodeURIComponent(repositorio.repositorio)}/contents/${ruta(c)}`;
+          `${encodeURIComponent(repositorio.repositorio)}/contents/${ruta(c, modalidad)}`;
         const respuesta = await fetch(
           `${api}?ref=${encodeURIComponent(repositorio.rama || "main")}&v=${Date.now()}`,
           {
@@ -1869,64 +2178,83 @@
         );
         if (respuesta.status === 404) return [];
         if (!respuesta.ok) {
-          throw new Error(`GitHub no pudo leer ${ruta(c)} (${respuesta.status}).`);
+          throw new Error(`GitHub no pudo leer ${ruta(c, modalidad)} (${respuesta.status}).`);
         }
         const archivo = await respuesta.json();
         if (!archivo.content || archivo.encoding !== "base64") return null;
         const contenido = JSON.parse(decodificarBase64Unicode(archivo.content));
         if (!Array.isArray(contenido)) return [];
-        const publicada = leerPublicacionLocal(c);
+        const publicada = leerPublicacionLocal(c, modalidad);
         if (publicada && serializarBase(contenido) === publicada.serializado) {
-          localStorage.removeItem(clavePublicacionLocal(c));
+          localStorage.removeItem(clavePublicacionLocal(c, modalidad));
         }
         return contenido;
       }
-      async function leer(c) {
+      async function leer(c, modalidad = ambito) {
         try {
-          const contenidoGitHub = await leerDesdeGitHub(c);
+          const contenidoGitHub = await leerDesdeGitHub(c, modalidad);
           if (contenidoGitHub !== null) return contenidoGitHub;
         } catch (error) {
           console.warn(error);
         }
         try {
-          const url = `${baseLectura()}${ruta(c)}?v=${Date.now()}`;
+          const url = `${baseLectura()}${ruta(c, modalidad)}?v=${Date.now()}`;
           const respuesta = await fetch(url, { cache: "no-store" });
           if (respuesta.status === 404) return [];
           if (!respuesta.ok) throw new Error(`${url} (${respuesta.status})`);
           const contenido = await respuesta.json();
           const remoto = Array.isArray(contenido) ? contenido : [];
-          const publicada = leerPublicacionLocal(c);
+          const publicada = leerPublicacionLocal(c, modalidad);
           const reciente =
             publicada && Date.now() - Number(publicada.guardadoEn || 0) < 30 * 60 * 1000;
           if (reciente && serializarBase(remoto) !== publicada.serializado) {
             return structuredClone(publicada.datos);
           }
           if (publicada && serializarBase(remoto) === publicada.serializado) {
-            localStorage.removeItem(clavePublicacionLocal(c));
+            localStorage.removeItem(clavePublicacionLocal(c, modalidad));
           }
           return remoto;
         } catch (error) {
           console.warn(error);
-          const publicada = leerPublicacionLocal(c);
+          const publicada = leerPublicacionLocal(c, modalidad);
           if (publicada) return structuredClone(publicada.datos);
           return [];
         }
       }
-      function establecerBasesCargadas() {
-        basesLocales = Object.fromEntries(
-          OPCIONES.map(([c]) => [c, serializarOpcion(c)]),
+      function establecerBasesCargadas(modalidad = ambito, limpiarCambios = true) {
+        const conjunto = datosPorAmbito[modalidad] || {};
+        basesLocalesPorAmbito[modalidad] = Object.fromEntries(
+          OPCIONES.map(([c]) => [c, serializarBase(conjunto[c] || [])]),
         );
-        cambiosPendientes.clear();
-        $("botonGuardar").disabled = true;
+        if (limpiarCambios) cambiosPendientesPorAmbito[modalidad].clear();
+        if (modalidad === ambito) {
+          basesLocales = basesLocalesPorAmbito[modalidad];
+          cambiosPendientes = cambiosPendientesPorAmbito[modalidad];
+        }
+        $("botonGuardar").disabled = totalCambiosPendientes() === 0;
       }
-      async function cargarTodo() { 
-        $("estado").textContent = "Cargando todas las opciones..."; 
-        const pares = await Promise.all( 
-          OPCIONES.map(async ([c]) => [c, await leer(c)]), 
-        ); 
-        datos = Object.fromEntries(pares);
-        establecerBasesCargadas();
+      async function cargarDatosAmbito(modalidad, { forzar = false } = {}) {
+        if (!forzar && datosPorAmbito[modalidad]) return datosPorAmbito[modalidad];
+        const pares = await Promise.all(
+          OPCIONES.map(async ([c]) => [c, await leer(c, modalidad)]),
+        );
+        datosPorAmbito[modalidad] = Object.fromEntries(pares);
+        establecerBasesCargadas(modalidad, true);
+        return datosPorAmbito[modalidad];
+      }
+      async function asegurarAmbitoCargado(modalidad) {
+        return cargarDatosAmbito(modalidad, { forzar: false });
+      }
+      async function cargarTodo({ forzar = true } = {}) {
+        $("estado").textContent = "Cargando todas las opciones...";
+        await cargarDatosAmbito(ambito, { forzar });
+        activarDatosAmbito(ambito);
         const analisis = analizarTodasLasDependencias({ marcarCambios: !modoFicha });
+        if (!modoFicha) {
+          const vista = ambito;
+          await sincronizarVinculosBidireccionales();
+          activarDatosAmbito(vista);
+        }
         renderizar();
         if (cambiosPendientes.size) {
           $("estado").className = "estado";
@@ -1938,22 +2266,17 @@
           $("estado").textContent =
             `${ambito === "externo" ? "Externo" : "Interno"} · ${todos().length} registros cargados · ${analisis.pendientes} referencia(s) pendiente(s) de revisión.`;
         }
-      } 
+      }
       async function cambiarAmbito(v) {
         if (v === ambito) return;
-        if (cambiosPendientes.size) {
-          aviso(
-            "Guarde los cambios pendientes antes de cambiar entre Externo e Interno.",
-            true,
-          );
-          return;
-        }
-        ambito = v; 
-        $("externo").classList.toggle("activa", v === "externo"); 
+        await asegurarAmbitoCargado(v);
+        activarDatosAmbito(v);
+        $("externo").classList.toggle("activa", v === "externo");
         $("interno").classList.toggle("activa", v === "interno");
         construirMenu();
-        await cargarTodo(); 
-      } 
+        renderizar();
+        actualizarInterfazCambios();
+      }
       function registrosVisibles() { 
         if (modoFicha) { 
           return todos().filter( 
@@ -2362,7 +2685,7 @@
           (x, i) => i !== omitir && clave(x, c) === clave(r, c), 
         ); 
       } 
-      $("formulario").addEventListener("submit", (e) => { 
+      $("formulario").addEventListener("submit", async (e) => { 
         e.preventDefault(); 
         const i = Number($("indiceEdicion").value), 
           origen = $("opcionOrigen").value, 
@@ -2419,6 +2742,9 @@
         marcarCambio(origen); 
         if (destino !== origen) marcarCambio(destino);
         analizarTodasLasDependencias({ marcarCambios: true });
+        const vista = ambito;
+        await sincronizarVinculosBidireccionales();
+        activarDatosAmbito(vista);
         renderizar(); 
       }); 
       function duplicarRegistro(c, i) {
@@ -2477,28 +2803,49 @@ Ingrese un número del 1 al ${totalPosiciones}.`,
         } 
         return null; 
       } 
+      function resumenCambiosPendientes() {
+        const partes = [];
+        for (const modalidad of ["externo", "interno"]) {
+          const opciones = [...cambiosPendientesPorAmbito[modalidad]];
+          if (opciones.length) {
+            partes.push(`${modalidad === "externo" ? "Externo" : "Interno"}: ${opciones.map((c) => "op" + c).join(", ")}`);
+          }
+        }
+        return partes.join(" · ");
+      }
       function actualizarInterfazCambios() {
-        $("botonGuardar").disabled = cambiosPendientes.size === 0;
-        if (!cambiosPendientes.size) {
+        const total = totalCambiosPendientes();
+        $("botonGuardar").disabled = total === 0;
+        if (!total) {
           $("estado").className = "estado ok";
           $("estado").textContent = "No hay cambios pendientes.";
           return;
         }
         $("estado").className = "estado";
-        $("estado").textContent =
-          `Cambios pendientes en ${[...cambiosPendientes].map((x) => "op" + x).join(", ")}.`;
+        $("estado").textContent = `Cambios pendientes en ${resumenCambiosPendientes()}.`;
       }
-      function marcarCambio(c) {
-        if (!(c in basesLocales)) basesLocales[c] = serializarBase([]);
-        if (serializarOpcion(c) === basesLocales[c]) cambiosPendientes.delete(c);
-        else cambiosPendientes.add(c);
+      function marcarCambioAmbito(modalidad, c) {
+        const base = basesLocalesPorAmbito[modalidad];
+        const pendientes = cambiosPendientesPorAmbito[modalidad];
+        if (!(c in base)) base[c] = serializarBase([]);
+        if (serializarOpcion(c, modalidad) === base[c]) pendientes.delete(c);
+        else pendientes.add(c);
         actualizarInterfazCambios();
       }
-      function confirmarOpcionGuardada(c, serializadoGuardado, contenidoGuardado, metadatos) {
-        basesLocales[c] = serializadoGuardado;
-        guardarPublicacionLocal(c, contenidoGuardado, metadatos);
-        if (serializarOpcion(c) === serializadoGuardado) cambiosPendientes.delete(c);
-        else cambiosPendientes.add(c);
+      function marcarCambio(c) {
+        marcarCambioAmbito(ambito, c);
+      }
+      function confirmarOpcionGuardada(c, serializadoGuardado, contenidoGuardado, metadatos, modalidad = ambito) {
+        const base = basesLocalesPorAmbito[modalidad];
+        const pendientes = cambiosPendientesPorAmbito[modalidad];
+        base[c] = serializadoGuardado;
+        guardarPublicacionLocal(c, contenidoGuardado, metadatos, modalidad);
+        if (serializarOpcion(c, modalidad) === serializadoGuardado) pendientes.delete(c);
+        else pendientes.add(c);
+        if (modalidad === ambito) {
+          basesLocales = base;
+          cambiosPendientes = pendientes;
+        }
         actualizarInterfazCambios();
       }
       function configurarGitHub() { 
@@ -2572,52 +2919,53 @@ Ingrese un número del 1 al ${totalPosiciones}.`,
           aviso(error.message, true); 
         } 
       } 
-      async function guardarCambios() { 
-        if (!cambiosPendientes.size) return aviso("No hay cambios pendientes."); 
-        const detectado = detectarRepositorio(); 
-        if (!github.propietario && detectado) 
-          github = { 
-            ...detectado, 
-            token: localStorage.getItem("peToken") || "", 
-          }; 
-        if (!github.propietario || !github.token) { 
-          configurarGitHub(); 
-          return; 
-        } 
-        $("botonGuardar").disabled = true; 
-        const opciones = [...cambiosPendientes]; 
-        let guardadas = 0; 
-        try { 
-          for (const c of opciones) {
-            const resultado = await guardarOpcion(c);
+      async function guardarCambios() {
+        if (!totalCambiosPendientes()) return aviso("No hay cambios pendientes.");
+        const detectado = detectarRepositorio();
+        if (!github.propietario && detectado)
+          github = {
+            ...detectado,
+            token: localStorage.getItem("peToken") || "",
+          };
+        if (!github.propietario || !github.token) {
+          configurarGitHub();
+          return;
+        }
+        $("botonGuardar").disabled = true;
+        const tareas = ["externo", "interno"].flatMap((modalidad) =>
+          [...cambiosPendientesPorAmbito[modalidad]].map((c) => ({ modalidad, c })),
+        );
+        let guardadas = 0;
+        try {
+          for (const { modalidad, c } of tareas) {
+            const resultado = await guardarOpcion(c, modalidad);
             confirmarOpcionGuardada(
               c,
               resultado.serializado,
               resultado.contenido,
               { sha: resultado.sha },
+              modalidad,
             );
             guardadas++;
           }
-          if (cambiosPendientes.size) {
+          if (totalCambiosPendientes()) {
             $("estado").className = "estado";
             $("estado").textContent =
-              `${guardadas} archivo(s) guardado(s). Hay cambios nuevos pendientes en ` +
-              `${[...cambiosPendientes].map((x) => "op" + x).join(", ")}.`;
+              `${guardadas} archivo(s) guardado(s). Hay cambios nuevos pendientes en ${resumenCambiosPendientes()}.`;
             aviso("Se guardó la versión enviada, pero hay cambios posteriores pendientes.");
           } else {
             $("estado").className = "estado ok";
-            $("estado").textContent =
-              `${guardadas} archivo(s) guardado(s). No hay cambios pendientes.`;
+            $("estado").textContent = `${guardadas} archivo(s) guardado(s). No hay cambios pendientes.`;
             aviso("Cambios guardados y publicados para el visor.");
           }
-        } catch (error) { 
-          $("estado").className = "estado error"; 
-          $("estado").textContent = error.message; 
-          aviso(error.message, true); 
+        } catch (error) {
+          $("estado").className = "estado error";
+          $("estado").textContent = error.message;
+          aviso(error.message, true);
         } finally {
-          $("botonGuardar").disabled = cambiosPendientes.size === 0;
-        } 
-      } 
+          $("botonGuardar").disabled = totalCambiosPendientes() === 0;
+        }
+      }
       function base64Unicode(s) { 
         const a = new TextEncoder().encode(s); 
         let b = ""; 
@@ -2625,11 +2973,11 @@ Ingrese un número del 1 al ${totalPosiciones}.`,
           b += String.fromCharCode(...a.subarray(i, i + 32768)); 
         return btoa(b); 
       } 
-      async function guardarOpcion(c) {
-        const p = ruta(c),
+      async function guardarOpcion(c, modalidad = ambito) {
+        const p = ruta(c, modalidad),
           api = `https://api.github.com/repos/${encodeURIComponent(github.propietario)}/${encodeURIComponent(github.repositorio)}/contents/${p}`,
           h = cabecerasGitHub(),
-          contenido = structuredClone(datos[c] || []),
+          contenido = structuredClone(datosPorAmbito[modalidad]?.[c] || []),
           serializado = serializarBase(contenido);
         $("estado").className = "estado";
         $("estado").textContent = `Guardando ${p}...`;
@@ -2829,7 +3177,7 @@ Ingrese un número del 1 al ${totalPosiciones}.`,
         r.actualizadoEn = new Date().toISOString(); 
         marcarCambio(c); 
       }); 
-      $("contenido").addEventListener("focusout", (e) => {
+      $("contenido").addEventListener("focusout", async (e) => {
         const el = e.target.closest(".dependencia-inline");
         if (!el) return;
         const c = el.dataset.depOpcion;
@@ -2844,6 +3192,9 @@ Ingrese un número del 1 al ${totalPosiciones}.`,
         registro.dependencias = resultado.html;
         registro.actualizadoEn = new Date().toISOString();
         marcarCambio(c);
+        const vista = ambito;
+        await sincronizarVinculosBidireccionales();
+        activarDatosAmbito(vista);
         if (resultado.pendientes) {
           aviso(`${resultado.pendientes} referencia(s) pendiente(s) de revisión.`);
         }
@@ -2890,7 +3241,7 @@ Ingrese un número del 1 al ${totalPosiciones}.`,
               .join("") 
           : '<div class="ayuda">No hay coincidencias. Escriba otra búsqueda.</div>'; 
       } 
-      $("menuDependencias").addEventListener("click", (e) => { 
+      $("menuDependencias").addEventListener("click", async (e) => { 
         const b = e.target.closest("[data-vincular]"); 
         if (!b) return; 
         e.preventDefault(); 
@@ -2937,7 +3288,11 @@ Ingrese un número del 1 al ${totalPosiciones}.`,
             marcarCambio(c); 
           } 
         } 
-        cerrarMenuDependencias(); 
+        cerrarMenuDependencias();
+        const vista = ambito;
+        await sincronizarVinculosBidireccionales();
+        activarDatosAmbito(vista);
+        renderizar();
       }); 
       function cerrarMenuDependencias() { 
         $("menuDependencias").style.display = "none"; 
@@ -3218,6 +3573,11 @@ Ingrese un número del 1 al ${totalPosiciones}.`,
         if (nuevos || actualizados || noIncluidos.length || filas.length) marcarCambio(c);
         analizarTodasLasDependencias({ marcarCambios: true });
         renderizar();
+        const vista = ambito;
+        sincronizarVinculosBidireccionales().then(() => {
+          activarDatosAmbito(vista);
+          renderizar();
+        }).catch((error) => console.warn(error));
         aviso(
           `${nuevos} nuevos agregados · ${actualizados} actualizados · ${sinCambios} sin cambios · ${ignorados} filas ignoradas · orden del Excel aplicado.`,
         );
@@ -3790,7 +4150,7 @@ Ingrese un número del 1 al ${totalPosiciones}.`,
       }
 
       async function cambiarIdiomaEditor(nuevoIdioma) { 
-        if (cambiosPendientes.size) { 
+        if (totalCambiosPendientes()) { 
           aviso( 
             "Guarde o descarte los cambios pendientes antes de cambiar de idioma.", 
             true, 
@@ -3810,7 +4170,11 @@ Ingrese un número del 1 al ${totalPosiciones}.`,
           repositorio: "", 
           rama: "main", 
           token: localStorage.getItem("peToken") || "", 
-        }; 
+        };
+        datosPorAmbito = { externo: null, interno: null };
+        cambiosPendientesPorAmbito = { externo: new Set(), interno: new Set() };
+        basesLocalesPorAmbito = { externo: {}, interno: {} };
+        activarDatosAmbito(ambito);
         await cargarTodo(); 
       } 
       async function cargarEtiquetas() { 
@@ -3898,7 +4262,7 @@ Ingrese un número del 1 al ${totalPosiciones}.`,
           ); 
       } 
       window.addEventListener("beforeunload", (e) => { 
-        if (cambiosPendientes.size) { 
+        if (totalCambiosPendientes()) { 
           e.preventDefault(); 
           e.returnValue = ""; 
         } 
