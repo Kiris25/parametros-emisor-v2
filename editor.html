@@ -3,7 +3,7 @@
   <head> 
     <meta charset="UTF-8" /> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
-    <title>Parámetros del Emisor - Editor V8.5</title> 
+    <title>Parámetros del Emisor - Editor V8.6</title> 
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script> 
     <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js"></script>
     <style> 
@@ -386,6 +386,8 @@
         background: #fff3cd;
         color: #714300;
         font-weight: 800;
+        cursor: pointer;
+        touch-action: manipulation;
       }
       .dep-pendiente::before {
         content: "⚠ ";
@@ -1223,6 +1225,52 @@
         marca.textContent = texto;
         return marca;
       }
+      function patronDependenciaExplicita(global = false) {
+        const banderas = global ? "giu" : "iu";
+        return new RegExp(
+          String.raw`\b(?:(?:depende|dependen|dependa|dependan|dependía|dependían|dependió|dependieron|dependerá|dependerán|dependiendo|depender)\s+de|(?:es|son|está|están)\s+dependientes?\s+de|(?:depends?|depending)\s+on|(?:is|are)\s+dependent\s+on)\b`,
+          banderas,
+        );
+      }
+      function siguienteElementoSignificativo(nodo) {
+        let siguiente = nodo?.nextSibling;
+        while (siguiente?.nodeType === Node.TEXT_NODE && !siguiente.nodeValue?.trim()) {
+          siguiente = siguiente.nextSibling;
+        }
+        return siguiente;
+      }
+      function tieneContextoDependenciaExplicita(contenedor, elemento) {
+        try {
+          const rango = document.createRange();
+          rango.selectNodeContents(contenedor);
+          rango.setEndBefore(elemento);
+          const prefijo = rango.toString().slice(-180);
+          let ultima = null;
+          for (const coincidencia of prefijo.matchAll(patronDependenciaExplicita(true))) ultima = coincidencia;
+          if (!ultima) return false;
+          const cola = prefijo.slice((ultima.index || 0) + ultima[0].length);
+          return /^\s*(?:(?:(?:el|la)\s+(?:par[aá]metro|parameter|referencia)\s+)|(?:(?:par[aá]metro|parameter|referencia)\s*[:#-]\s*))?$/iu.test(cola);
+        } catch (error) {
+          console.warn(error);
+          return false;
+        }
+      }
+      function limpiarAnalisisAutomaticoAnterior(contenedor) {
+        // Las marcas pendientes se vuelven a evaluar siempre. Si no están precedidas
+        // por una expresión explícita de dependencia, desaparecen como falso positivo.
+        contenedor.querySelectorAll(".dep-pendiente").forEach((marca) => {
+          marca.replaceWith(document.createTextNode(marca.textContent || ""));
+        });
+        contenedor.normalize();
+        // Los vínculos automáticos confirmados se conservan para no reanalizarlos.
+        // Solo se retiran los creados por versiones anteriores fuera de un contexto
+        // explícito; los vínculos manuales nunca se tocan.
+        contenedor.querySelectorAll('a.dep-ref-inline[data-auto="true"]').forEach((enlace) => {
+          if (tieneContextoDependenciaExplicita(contenedor, enlace)) return;
+          enlace.replaceWith(document.createTextNode(enlace.textContent || ""));
+        });
+        contenedor.normalize();
+      }
       function hashReferencia(valor) {
         let hash = 2166136261;
         for (const caracter of String(valor || "")) {
@@ -1295,12 +1343,12 @@
         nodos.forEach((nodo) => {
           const texto = nodo.nodeValue || "";
           const hallazgos = [];
-          const expresion = /\bdepende\s+de\b/giu;
+          const expresion = patronDependenciaExplicita(true);
           let coincidencia;
           while ((coincidencia = expresion.exec(texto))) {
             let extraida = extraerReferenciaDependeDe(texto, coincidencia.index + coincidencia[0].length);
             if (!extraida) {
-              const siguiente = nodo.nextSibling;
+              const siguiente = siguienteElementoSignificativo(nodo);
               if (siguiente?.nodeType === Node.ELEMENT_NODE && siguiente.matches?.("a.dep-ref-inline, .dep-pendiente")) continue;
               extraida = {
                 referencia: coincidencia[0],
@@ -1515,11 +1563,10 @@
         // confunden con vínculos o marcas realmente creados/eliminados.
         const estadoAntes = contenedor.innerHTML.trim();
         const indice = indiceParametros();
-        revisarVinculosExistentes(contenedor);
-        resolverPendientesExistentes(contenedor, indice, registroActual);
+        limpiarAnalisisAutomaticoAnterior(contenedor);
+        // Regla única de detección automática: solo referencias introducidas por una
+        // expresión gramatical inequívoca de dependencia. No se buscan nombres sueltos.
         procesarReferenciasDependeDe(contenedor, indice, registroActual);
-        vincularCoincidenciasExactas(contenedor, indice, registroActual);
-        marcarReferenciasPendientes(contenedor);
         const estadoDespues = contenedor.innerHTML.trim();
         const cambioReal = estadoDespues !== estadoAntes;
         return {
@@ -2029,7 +2076,7 @@
         $("estado").textContent = `Mostrando ${a.length} registro(s).`; 
       } 
       $("contenido").addEventListener("click", (e) => {
-        const pendiente = e.target.closest(".dep-pendiente-parcial");
+        const pendiente = e.target.closest(".dep-pendiente");
         if (pendiente) {
           abrirMenuPendiente(e, pendiente);
           return;
@@ -2536,7 +2583,7 @@ Ingrese un número del 1 al ${totalPosiciones}.`,
         }
       });
       document.addEventListener("pointerdown", (e) => {
-        if (!$("menuPendiente").contains(e.target) && !e.target.closest(".dep-pendiente-parcial")) {
+        if (!$("menuPendiente").contains(e.target) && !e.target.closest(".dep-pendiente")) {
           cerrarMenuPendiente();
         }
       });
@@ -2564,16 +2611,16 @@ Ingrese un número del 1 al ${totalPosiciones}.`,
         setTimeout(() => $("buscarDependencia").focus(), 0); 
       } 
       $("dependencias").addEventListener("contextmenu", (e) => {
-        const pendiente = e.target.closest(".dep-pendiente-parcial");
+        const pendiente = e.target.closest(".dep-pendiente");
         if (pendiente) return abrirMenuPendiente(e, pendiente);
         abrirMenuDependencias(e, $("dependencias"));
       });
       $("dependencias").addEventListener("click", (e) => {
-        const pendiente = e.target.closest(".dep-pendiente-parcial");
+        const pendiente = e.target.closest(".dep-pendiente");
         if (pendiente) abrirMenuPendiente(e, pendiente);
       });
       $("contenido").addEventListener("contextmenu", (e) => {
-        const pendiente = e.target.closest(".dep-pendiente-parcial");
+        const pendiente = e.target.closest(".dep-pendiente");
         if (pendiente) return abrirMenuPendiente(e, pendiente);
         const el = e.target.closest(".dependencia-inline");
         if (el) abrirMenuDependencias(e, el);
