@@ -102,14 +102,14 @@
     "valores": "Define cuánto puede exceder una cuenta su límite de crédito para seguir realizando transacciones.",
     "que": "Define cuánto puede excederse el límite de crédito de una cuenta para seguir realizando transacciones.",
     "como": "El sistema permite que la cuenta continúe operando por encima del límite de crédito hasta el porcentaje configurado. Este valor se usa internamente en el proceso de autorización.",
-    "dependencias": "Se relaciona con el parámetro \"<a href=\"#\" class=\"dep-ref-inline\" data-target=\"ad37cd99-1225-453f-a75c-daae9f25b54e\">Inactivar en sobregiro</a>\", el cual determina si la cuenta cambia de estado una vez superado el límite autorizado.",
+    "dependencias": "Se relaciona con el <a href=\"#\" class=\"dep-ref-inline\" data-target=\"b78abcfd-2364-4d0d-accb-6def91112649\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Parámetro\">parámetro</a> \"<span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"El parámetro vinculado ya no existe. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Inactivar en sobregiro</span>\", el cual determina si la cuenta cambia de estado una vez superado el límite autorizado.",
     "cuando": "Cuando una cuenta supera su límite de crédito y aún se permite consumir dentro del margen adicional autorizado.",
     "ejemplo": "Si el límite es 1,000 y el porcentaje configurado es 20%, la cuenta podrá seguir operando hasta 1,200 antes de restringirse.",
     "notas": "El monto adicional por sobregiro no se visualiza como disponible en las consultas del sistema.",
     "codigo": "12",
     "id": "9f6cf61d-53a8-49d8-a66b-6c11ce92150c",
     "creadoEn": "2026-08-20T12:37:29.446Z",
-    "actualizadoEn": "2026-08-20T12:39:00.988Z"
+    "actualizadoEn": "2026-11-13T16:21:19.580Z"
   },
   {
     "nombre": "Porcentaje Cobro de Membresía",
@@ -118,14 +118,14 @@
     "valores": "Porcentaje entre 0% y 100%.",
     "que": "Define qué porcentaje del costo de la membresía será cobrado.",
     "como": "El sistema calcula el monto a cobrar aplicando el porcentaje configurado sobre el valor total de la membresía.",
-    "dependencias": "Este parámetro solo tiene efecto si el cobro de membresía está habilitado mediante el parámetro “<a href=\"#\" class=\"dep-ref-inline\" data-target=\"abb65a9e-9504-4bff-adde-9f4ab57bfebd\">Cobro de Membresía</a>” . Si dicho parámetro está desactivado, no se realiza ningún cobro, aunque el porcentaje sea mayor a 0%.",
+    "dependencias": "Este <a href=\"#\" class=\"dep-ref-inline\" data-target=\"b78abcfd-2364-4d0d-accb-6def91112649\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Parámetro\">parámetro</a> solo tiene efecto si el <a href=\"#\" class=\"dep-ref-inline\" data-target=\"abb65a9e-9504-4bff-adde-9f4ab57bfebd\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Cobro de Membresía\">cobro de membresía</a> está habilitado mediante el <a href=\"#\" class=\"dep-ref-inline\" data-target=\"b78abcfd-2364-4d0d-accb-6def91112649\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Parámetro\">parámetro</a> “<a href=\"#\" class=\"dep-ref-inline\" data-target=\"abb65a9e-9504-4bff-adde-9f4ab57bfebd\">Cobro de Membresía</a>” . Si dicho <a href=\"#\" class=\"dep-ref-inline\" data-target=\"b78abcfd-2364-4d0d-accb-6def91112649\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Parámetro\">parámetro</a> está desactivado, no se realiza ningún cobro, aunque el <a href=\"#\" class=\"dep-ref-inline\" data-target=\"8cc5e68d-0400-4f93-ab6b-cbb4db4078b3\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Porcentaje\">porcentaje</a> sea mayor a 0%.",
     "cuando": "Cuando el sistema está configurado para generar cargos de membresía en la cuenta.",
     "ejemplo": "Si la membresía es de 100 y el porcentaje es 100%, se cobra el total. Si el porcentaje es 0%, no se cobra. Si el cobro de membresía está desactivado, no se cobra nada en ningún caso.",
     "notas": "Este parámetro permite definir estrategias comerciales, como cobros parciales o promociones. Sin embargo, su efecto depende de que el cobro de membresía esté activado.",
     "codigo": "12",
     "id": "f84500a3-5857-4e9b-a120-d63a992e0293",
     "creadoEn": "2026-08-20T12:37:29.446Z",
-    "actualizadoEn": "2026-08-20T13:06:53.117Z"
+    "actualizadoEn": "2026-11-13T16:21:10.247Z"
   },
   {
     "nombre": "Porcentaje Máximo de Adelantos",
@@ -134,14 +134,14 @@
     "valores": "Porcentaje entre 0% y 100%.",
     "que": "Define el porcentaje máximo del límite de crédito que puede utilizarse para realizar adelantos de efectivo en un mes.",
     "como": "El valor configurado establece el tope de adelantos sobre el límite de crédito. Por ejemplo, si se configura un porcentaje determinado, ese porcentaje representa el máximo que podría retirarse como adelanto dentro del mes, siempre que la cuenta cumpla las condiciones aplicables.",
-    "dependencias": "Este parámetro solo aplica si la cuenta tiene crédito disponible y está en clase A o B. Si la cuenta está en clase C o peor, no se otorgarán adelantos de efectivo, aunque tenga límite disponible.",
+    "dependencias": "Este <a href=\"#\" class=\"dep-ref-inline\" data-target=\"b78abcfd-2364-4d0d-accb-6def91112649\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Parámetro\">parámetro</a> solo aplica si la cuenta tiene crédito disponible y está en clase A o B. Si la cuenta está en clase C o peor, no se otorgarán adelantos de efectivo, aunque tenga límite disponible.",
     "cuando": "Cuando la entidad desea controlar el máximo mensual de adelantos de efectivo permitido sobre el límite de crédito de la cuenta.",
     "ejemplo": "Si una cuenta tiene límite disponible y está en una clase permitida (A o B), el sistema considerará el porcentaje configurado para determinar hasta cuánto puede retirarse en adelantos durante el mes. Si la cuenta no cumple esa condición de clase, el adelanto no se concede.",
     "notas": "Las clases de cuenta representan la clasificación del comportamiento de pago según la cantidad de importes vencidos. Las clases A y B corresponden a mejor comportamiento de pago, mientras que C o inferiores reflejan mayor nivel de incumplimiento.\r\nPara este parámetro, solo las cuentas en clase A o B podrán realizar adelantos de efectivo.",
     "codigo": "12",
     "id": "64f407b6-4f9f-4247-b922-43d1c98c4442",
     "creadoEn": "2026-08-20T12:37:29.446Z",
-    "actualizadoEn": "2026-08-20T12:37:29.446Z"
+    "actualizadoEn": "2026-11-13T16:21:10.247Z"
   },
   {
     "nombre": "Tasa Mora Cobro Judicial",
@@ -166,14 +166,14 @@
     "valores": "Porcentaje entre 0% y 100%.",
     "que": "Define el porcentaje de interés moratorio que se aplicará cuando el cliente no cubre el pago mínimo de su cuenta.",
     "como": "Si el cliente no paga completamente el mínimo requerido, el sistema aplica esta tasa sobre el monto pendiente del pago mínimo por cada período vencido.",
-    "dependencias": "Aplica únicamente cuando existe un pago mínimo pendiente. Si el cliente cumple con el pago mínimo, esta tasa no se genera.",
+    "dependencias": "Aplica únicamente cuando existe un <a href=\"#\" class=\"dep-ref-inline\" data-target=\"9b8fc5be-18a9-47ae-b3ba-9d046d7d7720\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Pago Mínimo\">pago mínimo</a> pendiente. Si el cliente cumple con el <a href=\"#\" class=\"dep-ref-inline\" data-target=\"9b8fc5be-18a9-47ae-b3ba-9d046d7d7720\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Pago Mínimo\">pago mínimo</a>, esta tasa no se genera.",
     "cuando": "En situaciones donde la cuenta presenta incumplimiento en el pago mínimo en uno o más períodos.",
     "ejemplo": "Si el cliente debía pagar un mínimo de 100 y solo paga 60, el sistema calculará intereses de mora sobre los 40 pendientes utilizando la tasa configurada.",
     "notas": "Esta tasa se aplica únicamente sobre el monto del pago mínimo no cubierto. Si el cliente paga el mínimo completo, no se generarán intereses moratorios.",
     "codigo": "12",
     "id": "3717ca8d-cbc4-44e8-bec7-88f351666b8e",
     "creadoEn": "2026-08-20T12:37:29.446Z",
-    "actualizadoEn": "2026-08-20T12:37:29.446Z"
+    "actualizadoEn": "2026-11-13T16:21:10.249Z"
   },
   {
     "nombre": "Tasa de Interés por Saldos a Favor",
@@ -230,14 +230,14 @@
     "valores": "Porcentaje entre 0% y 100%.",
     "que": "Define el porcentaje mínimo del pago de contado que debe ser cubierto para aplicar los beneficios correspondientes.",
     "como": "El sistema utiliza el porcentaje configurado para determinar si el pago realizado cumple con el mínimo requerido y calcula la reversión proporcional de los cargos bonificables.",
-    "dependencias": "Debe utilizarse junto con el parámetro Monto del Pago de Contado a Cubrir.",
+    "dependencias": "Debe utilizarse junto con el <a href=\"#\" class=\"dep-ref-inline\" data-target=\"b78abcfd-2364-4d0d-accb-6def91112649\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Parámetro\">parámetro</a> Monto del Pago de Contado a Cubrir.",
     "cuando": "Cuando existen beneficios o cargos bonificables asociados al cumplimiento del pago de contado.",
     "ejemplo": "Si la entidad exige cubrir un 80% del pago de contado y el cliente cumple ese requisito, el sistema aplicará la reversión de cargos bonificables según la proporción establecida.",
     "notas": "La reversión de cargos bonificables depende tanto del porcentaje configurado como del monto efectivamente cubierto por el cliente.",
     "codigo": "12",
     "id": "fdf0fd16-f417-4abc-a529-cbe22411cc22",
     "creadoEn": "2026-08-20T12:37:29.446Z",
-    "actualizadoEn": "2026-08-20T12:37:29.446Z"
+    "actualizadoEn": "2026-11-13T16:21:10.251Z"
   },
   {
     "nombre": "C x S S/Saldo Financ. (Cargos por Servicio sobre saldo financiado)",
@@ -246,14 +246,14 @@
     "valores": "Porcentaje entre 0% y 100%.",
     "que": "Define una tasa específica de cargos por servicio aplicable sobre el saldo financiado.",
     "como": "Cuando la funcionalidad se encuentra habilitada, el sistema utiliza esta tasa en lugar de la tasa definida en el parámetro Cargos por Servicio. El cálculo posterior mantiene el comportamiento estándar.",
-    "dependencias": "Requiere una configuración específica a nivel de franquicia y solamente funciona con el esquema normal utilizando el programa de cálculo TRTP0015.",
+    "dependencias": "Requiere una configuración específica a nivel de <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"El parámetro vinculado ya no existe. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">franquicia</span> y solamente funciona con el esquema normal utilizando el programa de cálculo TRTP0015.",
     "cuando": "Cuando la institución requiere manejar una tasa independiente para cargos por servicio sobre saldo financiado.",
     "ejemplo": "Una institución necesita diferenciar la tasa de cargos por servicio aplicada al saldo financiado. Para ello configura este parámetro y el sistema utilizará dicha tasa en sustitución de la tasa general de cargos por servicio.",
     "notas": "La funcionalidad no aplica para esquemas de Resúmenes ni para Esquemas de Planes.",
     "codigo": "12",
     "id": "f102fd48-afe9-4b87-8088-a8881e36419e",
     "creadoEn": "2026-08-20T12:37:29.446Z",
-    "actualizadoEn": "2026-08-20T12:37:29.446Z"
+    "actualizadoEn": "2026-11-13T16:21:19.585Z"
   },
   {
     "nombre": "Tasa Interés Extrafinanciamiento",
@@ -262,14 +262,14 @@
     "valores": "Porcentaje entre 0% y 100%.",
     "que": "Define la tasa de interés aplicable a las operaciones de extrafinanciamiento.",
     "como": "El sistema utiliza el porcentaje configurado cuando la funcionalidad de extrafinanciamiento se encuentra habilitada para la cuenta o el emisor.",
-    "dependencias": "Requiere que el parámetro Extrafinanciamiento esté configurado en S.",
+    "dependencias": "Requiere que el <a href=\"#\" class=\"dep-ref-inline\" data-target=\"b78abcfd-2364-4d0d-accb-6def91112649\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Parámetro\">parámetro</a> <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"El parámetro vinculado ya no existe. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Extrafinanciamiento</span> esté configurado en S.",
     "cuando": "Cuando la institución utiliza la funcionalidad de extrafinanciamiento y requiere definir una tasa de interés para dichas operaciones.",
     "ejemplo": "Una institución que utiliza extrafinanciamiento puede definir una tasa específica para este tipo de transacciones cuando la funcionalidad correspondiente se encuentra habilitada.",
     "notas": "Actualmente las tasas pueden configurarse directamente por plan de extrafinanciamiento.",
     "codigo": "12",
     "id": "633961a9-dfc7-4312-8cdf-43c556e21ab7",
     "creadoEn": "2026-08-20T12:37:29.446Z",
-    "actualizadoEn": "2026-08-20T12:37:29.446Z"
+    "actualizadoEn": "2026-11-13T16:21:19.585Z"
   },
   {
     "nombre": "Cobro de Membresía",
@@ -278,14 +278,14 @@
     "valores": "S = Sí / N = No",
     "que": "Define si el sistema realizará el cobro de membresía para las cuentas asociadas al producto.",
     "como": "Cuando está configurado en S, se habilita el cobro de membresía utilizando los porcentajes definidos para titulares, adicionales o ambos. Cuando está configurado en N, no se realiza ningún cobro de membresía.",
-    "dependencias": "Requiere la configuración de los parámetros Porcentaje Cobro Membresía Titular y/o Porcentaje Cobro Membresía Adicional cuando el cobro está activo.",
+    "dependencias": "Requiere la configuración de los parámetros <a href=\"#\" class=\"dep-ref-inline\" data-target=\"8cc5e68d-0400-4f93-ab6b-cbb4db4078b3\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Porcentaje\">Porcentaje</a> Cobro Membresía Titular y/o <a href=\"#\" class=\"dep-ref-inline\" data-target=\"8cc5e68d-0400-4f93-ab6b-cbb4db4078b3\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Porcentaje\">Porcentaje</a> Cobro Membresía Adicional cuando el cobro está activo.",
     "cuando": "Cuando la institución financiera desea aplicar cargos por concepto de membresía a sus productos de crédito.",
     "ejemplo": "Un banco decide cobrar membresía únicamente a las tarjetas adicionales. En ese caso configura Cobro Membresía = S y define un porcentaje de cobro para las tarjetas adicionales.",
     "notas": "Si el cobro de membresía no está habilitado, los porcentajes de cobro asociados deben permanecer en 0.",
     "codigo": "12",
     "id": "abb65a9e-9504-4bff-adde-9f4ab57bfebd",
     "creadoEn": "2026-08-20T12:37:29.446Z",
-    "actualizadoEn": "2026-08-20T12:37:29.446Z"
+    "actualizadoEn": "2026-11-13T16:21:10.252Z"
   },
   {
     "nombre": "Código Cuenta Contable (Uso Evertec)",
@@ -326,14 +326,14 @@
     "valores": "Valores numéricos desde 1 hasta 9.999.999.999,99, expresados en la moneda definida para el emisor.",
     "que": "Define el monto base utilizado para calcular el cobro de membresía aplicable a la tarjeta titular.",
     "como": "El monto configurado se utiliza junto con la configuración de cobro de membresía y el porcentaje de cobro para determinar el importe de membresía que corresponde aplicar a la tarjeta titular.",
-    "dependencias": "La aplicación de este parámetro depende de Cobro de Membresía y Porcentaje Cobro Membresía. Si el cobro de membresía está deshabilitado, no se genera el cargo y los parámetros asociados al cálculo pueden permanecer sin configurar.",
+    "dependencias": "La aplicación de este <a href=\"#\" class=\"dep-ref-inline\" data-target=\"b78abcfd-2364-4d0d-accb-6def91112649\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Parámetro\">parámetro</a> depende de <a href=\"#\" class=\"dep-ref-inline\" data-target=\"abb65a9e-9504-4bff-adde-9f4ab57bfebd\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Cobro de Membresía\">Cobro de Membresía</a> y <a href=\"#\" class=\"dep-ref-inline\" data-target=\"8cc5e68d-0400-4f93-ab6b-cbb4db4078b3\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Porcentaje\">Porcentaje</a> Cobro Membresía. Si el <a href=\"#\" class=\"dep-ref-inline\" data-target=\"abb65a9e-9504-4bff-adde-9f4ab57bfebd\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Cobro de Membresía\">cobro de membresía</a> está deshabilitado, no se genera el cargo y los <a href=\"#\" class=\"dep-ref-inline\" data-target=\"b78abcfd-2364-4d0d-accb-6def91112649\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Parámetro\">parámetro</a><span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">s asociados al cálculo pueden permanecer sin configurar</span>.",
     "cuando": "Cuando la entidad requiere definir y aplicar cargos de membresía para tarjetas titulares.",
     "ejemplo": "Si se habilita el cobro de membresía, el monto definido en este parámetro se utiliza como base para determinar el cargo correspondiente. Si el cobro no está habilitado, no se genera ningún cargo de membresía.",
     "notas": "Se recomienda revisar conjuntamente la configuración de Costo Membresía Titular, Cobro de Membresía y Porcentaje Cobro Membresía, ya que los tres parámetros participan en el proceso de cálculo de la membresía.",
     "codigo": "12",
     "id": "b223fe76-a3f4-4e7f-9374-aceffbc07494",
     "creadoEn": "2026-08-20T12:37:29.446Z",
-    "actualizadoEn": "2026-08-20T12:37:29.446Z"
+    "actualizadoEn": "2026-11-13T16:21:19.586Z"
   },
   {
     "nombre": "Costo de Membresía Adicional",
@@ -342,14 +342,14 @@
     "valores": "Valores numéricos desde 1 hasta 9.999.999.999,99, expresados en la moneda definida para el emisor.",
     "que": "Define el monto base de membresía que se utilizará para calcular el cargo correspondiente a cada tarjeta adicional.",
     "como": "El valor configurado sirve como base para determinar el importe de membresía de las tarjetas adicionales cuando el cobro de membresía se encuentra habilitado para el emisor.",
-    "dependencias": "Su funcionamiento depende de los parámetros Cobro de Membresía y Porcentaje Cobro Membresía. Cuando el cobro de membresía está deshabilitado, este parámetro no genera ningún efecto. Cuando está habilitado, el monto configurado se utiliza para calcular el cargo correspondiente a cada tarjeta adicional.",
+    "dependencias": "Su funcionamiento depende de los parámetros <a href=\"#\" class=\"dep-ref-inline\" data-target=\"abb65a9e-9504-4bff-adde-9f4ab57bfebd\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Cobro de Membresía\">Cobro de Membresía</a> y <a href=\"#\" class=\"dep-ref-inline\" data-target=\"8cc5e68d-0400-4f93-ab6b-cbb4db4078b3\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Porcentaje\">Porcentaje</a> Cobro Membresía. Cuando el <a href=\"#\" class=\"dep-ref-inline\" data-target=\"abb65a9e-9504-4bff-adde-9f4ab57bfebd\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Cobro de Membresía\">cobro de membresía</a> está deshabilitado, este <a href=\"#\" class=\"dep-ref-inline\" data-target=\"b78abcfd-2364-4d0d-accb-6def91112649\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Parámetro\">parámetro</a> no genera ningún efecto. Cuando está habilitado, el monto configurado se utiliza para calcular el cargo correspondiente a cada tarjeta adicional.",
     "cuando": "Cuando se requiere cobrar membresía a las tarjetas adicionales asociadas a productos de crédito.",
     "ejemplo": "Si el emisor aplica cargos de membresía a las tarjetas adicionales, el valor configurado en este parámetro se utiliza como base para determinar el importe que corresponde cobrar.",
     "notas": "",
     "codigo": "12",
     "id": "15ad374d-a3d7-47d9-bbc6-112982bb11a2",
     "creadoEn": "2026-08-20T12:37:29.446Z",
-    "actualizadoEn": "2026-08-20T12:37:29.446Z"
+    "actualizadoEn": "2026-11-13T16:21:10.254Z"
   },
   {
     "nombre": "Costo de la Reposición",
