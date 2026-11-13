@@ -3,7 +3,7 @@
   <head> 
     <meta charset="UTF-8" /> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
-    <title>Parámetros del Emisor - Editor V8.4</title> 
+    <title>Parámetros del Emisor - Editor V8.5</title> 
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script> 
     <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js"></script>
     <style> 
@@ -139,7 +139,7 @@
         top: 0; 
         z-index: 80; 
         display: grid; 
-        grid-template-columns: 2fr 1fr 1fr auto auto auto; 
+        grid-template-columns: 2fr 1fr 1fr repeat(5, auto); 
         gap: 8px; 
         padding: 11px 20px;        background: var(--fondo); 
         border-bottom: 1px solid var(--borde); 
@@ -316,7 +316,8 @@
         padding: 6px 8px; 
         font-size: 11px; 
       }
-      .boton-home {
+      .boton-home,
+      .boton-referencias {
         min-width: 42px;
         padding: 9px 10px;
         white-space: nowrap;
@@ -390,6 +391,15 @@
         content: "⚠ ";
         color: #b26a00;
         font-size: 0.9em;
+      }
+      .dep-pendiente-parcial {
+        border-bottom-color: #d64545;
+        background: #ffe1e1;
+        color: #8f1d1d;
+        cursor: pointer;
+      }
+      .dep-pendiente-parcial::before {
+        color: #c62828;
       }
       .indicador-pendiente {
         flex: 0 0 auto;
@@ -486,9 +496,15 @@
         border-radius: 18px; 
         background: #fff; 
       }
-      #menuTitulo {
-        width: 220px;
+      #menuTitulo,
+      #menuPendiente {
+        width: 260px;
         padding: 12px;
+      }
+      .acciones-pendiente {
+        display: flex;
+        gap: 7px;
+        margin-top: 10px;
       }
       .menu-contextual strong { 
         display: block; 
@@ -741,6 +757,9 @@
       <button id="btnMostrarTodos" class="boton boton-naranja" onclick="mostrarTodasLasFichas()">
         Mostrar todos
       </button>
+      <button id="btnRecargarReferencias" class="boton boton-referencias" type="button" onclick="recargarReferencias()" title="Buscar nuevamente referencias sin confirmar">
+        ↻ Referencias
+      </button>
       <button id="btnHome" class="boton boton-home" type="button" onclick="irInicio()" title="Volver al inicio" aria-label="Volver al inicio">
         ⌂ Home
       </button> 
@@ -864,6 +883,7 @@
     </div> 
     <div id="menuDependencias" class="menu-contextual"></div>
     <div id="menuTitulo" class="menu-contextual"></div>
+    <div id="menuPendiente" class="menu-contextual"></div>
     <div id="tarjetaDependencia" class="tarjeta-flotante"></div> 
     <div id="toast" class="toast" hidden></div> 
  
@@ -929,7 +949,8 @@
         datos = {}, 
         seleccionDependencia = null, 
         elementoDependenciaActivo = null, 
-        ocultarTarjeta = null, 
+        ocultarTarjeta = null,
+        marcaPendienteActiva = null,
         cambiosPendientes = new Set(),
         basesLocales = {};
       let colapsoPorContexto = cargarColapsoPorContexto();
@@ -1033,6 +1054,7 @@
           esconderFicha: "Esconder ficha",
           home: "⌂ Home",
           editarTitulo: "Editar título",
+          recargarReferencias: "↻ Referencias",
         }, 
         en: { 
           titulo: "Issuer Parameters", 
@@ -1069,6 +1091,7 @@
           esconderFicha: "Hide card",
           home: "⌂ Home",
           editarTitulo: "Edit title",
+          recargarReferencias: "↻ References",
         }, 
       }; 
  
@@ -1099,6 +1122,10 @@
         $("btnMostrarTodos").textContent = textoEditor("mostrarTodos");
         $("btnHome").textContent = textoEditor("home");
         $("btnHome").title = idiomaEditor === "en" ? "Back to top" : "Volver al inicio";
+        $("btnRecargarReferencias").textContent = textoEditor("recargarReferencias");
+        $("btnRecargarReferencias").title = idiomaEditor === "en"
+          ? "Search unresolved references again"
+          : "Buscar nuevamente referencias sin confirmar";
       } 
  
       function escapar(v) { 
@@ -1184,13 +1211,142 @@
         enlace.textContent = texto;
         return enlace;
       }
-      function crearPendiente(texto, motivo = "Referencia sin coincidencia exacta") {
+      function crearPendiente(texto, motivo = "Referencia sin coincidencia exacta", opciones = {}) {
         const marca = document.createElement("span");
-        marca.className = "dep-pendiente";
-        marca.dataset.estado = "pendiente";
-        marca.title = `${motivo}. Seleccione el texto y haga clic derecho para vincularlo manualmente.`;
+        marca.className = "dep-pendiente" + (opciones.parcial ? " dep-pendiente-parcial" : "");
+        marca.dataset.estado = opciones.estado || "pendiente";
+        if (opciones.claveDescarte) marca.dataset.claveDescarte = opciones.claveDescarte;
+        if (opciones.consulta) marca.dataset.consulta = opciones.consulta;
+        marca.title = opciones.parcial
+          ? `${motivo}. Haga clic para corregir o descartar.`
+          : `${motivo}. Seleccione el texto y haga clic derecho para vincularlo manualmente.`;
         marca.textContent = texto;
         return marca;
+      }
+      function hashReferencia(valor) {
+        let hash = 2166136261;
+        for (const caracter of String(valor || "")) {
+          hash ^= caracter.charCodeAt(0);
+          hash = Math.imul(hash, 16777619);
+        }
+        return (hash >>> 0).toString(36);
+      }
+      function descartesReferencia(registro) {
+        const descartes = registro?.referenciasDescartadas;
+        return descartes && typeof descartes === "object" && !Array.isArray(descartes)
+          ? descartes
+          : {};
+      }
+      function claveDescarteReferencia(textoCompleto, referencia, posicion) {
+        return hashReferencia(`${textoCompleto}|${referencia}|${posicion}`);
+      }
+      function buscarParciales(referencia, indice, registroActual) {
+        const consulta = nombreComparable(referencia);
+        if (!consulta) return [];
+        const palabras = consulta.split(" ").filter((palabra) => palabra.length > 2);
+        return indice
+          .flatMap((entrada) => candidatosSinActual(entrada.registros, registroActual))
+          .map((registro) => {
+            const nombre = nombreComparable(registro.nombre);
+            const comunes = palabras.filter((palabra) => nombre.includes(palabra)).length;
+            const proporcion = palabras.length ? comunes / palabras.length : 0;
+            const parcial = nombre.includes(consulta) || consulta.includes(nombre) || proporcion >= 0.5;
+            return { registro, puntaje: parcial ? comunes + (nombre.includes(consulta) ? 3 : 0) : 0 };
+          })
+          .filter((item) => item.puntaje > 0)
+          .sort((a, b) => b.puntaje - a.puntaje)
+          .map((item) => item.registro);
+      }
+      function extraerReferenciaDependeDe(texto, finExpresion) {
+        const resto = texto.slice(finExpresion);
+        const prefijo = resto.match(
+          /^\s*(?:(?:(?:el|la)\s+(?:par[aá]metro|parameter|referencia)\s+)|(?:(?:par[aá]metro|parameter|referencia)\s*[:#-]\s*))?/iu,
+        )?.[0] || "";
+        const desde = finExpresion + prefijo.length;
+        const segmento = texto.slice(desde);
+        const entreComillas = segmento.match(/^["“'«]([^"”'»\n]{1,140})["”'»]/u);
+        const bruto = entreComillas ? entreComillas[1] : (segmento.match(/^([^,;.\n]{1,140})/u)?.[1] || "");
+        const referencia = recortarReferenciaPendiente(bruto);
+        if (!referencia) return null;
+        const desplazamiento = segmento.indexOf(referencia);
+        return {
+          referencia,
+          inicio: desde + Math.max(0, desplazamiento),
+          fin: desde + Math.max(0, desplazamiento) + referencia.length,
+        };
+      }
+      function procesarReferenciasDependeDe(contenedor, indice, registroActual) {
+        const textoCompleto = contenedor.textContent || "";
+        const descartes = descartesReferencia(registroActual);
+        const caminante = document.createTreeWalker(
+          contenedor,
+          NodeFilter.SHOW_TEXT,
+          {
+            acceptNode(nodo) {
+              const padre = nodo.parentElement;
+              if (!nodo.nodeValue?.trim()) return NodeFilter.FILTER_REJECT;
+              if (padre?.closest("a.dep-ref-inline, .dep-pendiente")) return NodeFilter.FILTER_REJECT;
+              return NodeFilter.FILTER_ACCEPT;
+            },
+          },
+        );
+        const nodos = [];
+        while (caminante.nextNode()) nodos.push(caminante.currentNode);
+        nodos.forEach((nodo) => {
+          const texto = nodo.nodeValue || "";
+          const hallazgos = [];
+          const expresion = /\bdepende\s+de\b/giu;
+          let coincidencia;
+          while ((coincidencia = expresion.exec(texto))) {
+            let extraida = extraerReferenciaDependeDe(texto, coincidencia.index + coincidencia[0].length);
+            if (!extraida) {
+              const siguiente = nodo.nextSibling;
+              if (siguiente?.nodeType === Node.ELEMENT_NODE && siguiente.matches?.("a.dep-ref-inline, .dep-pendiente")) continue;
+              extraida = {
+                referencia: coincidencia[0],
+                inicio: coincidencia.index,
+                fin: coincidencia.index + coincidencia[0].length,
+                faltante: true,
+              };
+            }
+            const clave = claveDescarteReferencia(textoCompleto, extraida.referencia, extraida.inicio);
+            if (descartes[clave]) continue;
+            const comparable = nombreComparable(extraida.referencia);
+            const entradaExacta = indice.find((item) => item.comparable === comparable);
+            const exactos = entradaExacta
+              ? candidatosSinActual(entradaExacta.registros, registroActual)
+              : [];
+            hallazgos.push({ ...extraida, clave, exactos });
+          }
+          if (!hallazgos.length) return;
+          const fragmento = document.createDocumentFragment();
+          let posicion = 0;
+          hallazgos.forEach((hallazgo) => {
+            if (hallazgo.inicio < posicion) return;
+            fragmento.appendChild(document.createTextNode(texto.slice(posicion, hallazgo.inicio)));
+            if (hallazgo.exactos.length === 1 && !hallazgo.faltante) {
+              fragmento.appendChild(crearVinculoAutomatico(hallazgo.referencia, hallazgo.exactos[0]));
+            } else {
+              const parciales = hallazgo.faltante ? [] : buscarParciales(hallazgo.referencia, indice, registroActual);
+              const motivo = hallazgo.faltante
+                ? 'La expresión "depende de" no contiene una referencia posterior'
+                : parciales.length
+                  ? "Solo se encontraron coincidencias parciales"
+                  : "No se encontró una coincidencia exacta";
+              fragmento.appendChild(
+                crearPendiente(hallazgo.referencia, motivo, {
+                  parcial: true,
+                  estado: parciales.length ? "parcial" : "sin-coincidencia",
+                  claveDescarte: hallazgo.clave,
+                  consulta: hallazgo.referencia,
+                }),
+              );
+            }
+            posicion = hallazgo.fin;
+          });
+          fragmento.appendChild(document.createTextNode(texto.slice(posicion)));
+          nodo.replaceWith(fragmento);
+        });
       }
       function candidatosSinActual(registros, registroActual) {
         const actual = registroActual ? objetivoReferencia(registroActual) : "";
@@ -1233,6 +1389,7 @@
         while (caminante.nextNode()) nodos.push(caminante.currentNode);
         nodos.forEach((nodo) => {
           const texto = nodo.nodeValue || "";
+          if (/\bdepende\s+de\b/iu.test(texto)) return;
           const hallazgos = [];
           indice.forEach((entrada) => {
             if (entrada.nombre.length < 3) return;
@@ -1323,6 +1480,7 @@
         const patron = /\b(?:parámetr(?:o|os)|parameter(?:s)?|referencia(?:s)?(?:\s+al)?|ref\.?)\s*(?:[:#-]\s*)?(?:["“'«]([^"”'»\n]{2,100})["”'»]|([^,;.\n]{2,100}))/giu;
         nodos.forEach((nodo) => {
           const texto = nodo.nodeValue || "";
+          if (/\bdepende\s+de\b/iu.test(texto)) return;
           const hallazgos = [];
           let coincidencia;
           patron.lastIndex = 0;
@@ -1359,6 +1517,7 @@
         const indice = indiceParametros();
         revisarVinculosExistentes(contenedor);
         resolverPendientesExistentes(contenedor, indice, registroActual);
+        procesarReferenciasDependeDe(contenedor, indice, registroActual);
         vincularCoincidenciasExactas(contenedor, indice, registroActual);
         marcarReferenciasPendientes(contenedor);
         const estadoDespues = contenedor.innerHTML.trim();
@@ -1398,6 +1557,19 @@
         });
         if (marcarCambios) modificadas.forEach(marcarCambio);
         return { modificadas, vinculos, pendientes };
+      }
+      function recargarReferencias() {
+        const resultado = analizarTodasLasDependencias({ marcarCambios: true });
+        renderizar();
+        if (resultado.modificadas.size) {
+          aviso(
+            `${resultado.modificadas.size} opción(es) actualizada(s): ${resultado.vinculos} vínculo(s) y ${resultado.pendientes} pendiente(s). Guarde los cambios para publicar.`,
+          );
+        } else {
+          aviso(
+            `Referencias revisadas: ${resultado.vinculos} vínculo(s) y ${resultado.pendientes} pendiente(s). No hubo cambios nuevos.`,
+          );
+        }
       }
       function aviso(m, error = false) { 
         $("toast").textContent = m; 
@@ -1724,7 +1896,7 @@
         return `<div class="campo ${clase}"><div class="etiqueta">${t}</div><div class="texto editable-ficha" contenteditable="true" data-campo="${k}" data-opcion="${c}" data-indice="${i}">${resaltar(v)}</div></div>`; 
       } 
       function campoDependencia(c, i, v) { 
-        return `<div class="campo"><div class="etiqueta">${textoEditor("dependencias")}</div><div class="texto dependencia-inline" contenteditable="true" data-dep-opcion="${c}" data-dep-indice="${i}" title="Edite directamente. Seleccione texto y haga clic derecho para vincularlo.">${resaltarHTML(dependenciaVisible(v))}</div><div class="ayuda">🔗 vínculo automático · ⚠ pendiente de revisión · seleccione texto y haga clic derecho para vincular manualmente.</div></div>`; 
+        return `<div class="campo"><div class="etiqueta">${textoEditor("dependencias")}</div><div class="texto dependencia-inline" contenteditable="true" data-dep-opcion="${c}" data-dep-indice="${i}" title="Edite directamente. Seleccione texto y haga clic derecho para vincularlo.">${resaltarHTML(dependenciaVisible(v))}</div><div class="ayuda">🔗 vínculo confirmado · ⚠ pendiente de revisión · haga clic en una marca roja para Corregir o Descartar.</div></div>`; 
       } 
       function indiceReal(r) { 
         return (datos[r.__opcion] || []).findIndex( 
@@ -1857,6 +2029,11 @@
         $("estado").textContent = `Mostrando ${a.length} registro(s).`; 
       } 
       $("contenido").addEventListener("click", (e) => {
+        const pendiente = e.target.closest(".dep-pendiente-parcial");
+        if (pendiente) {
+          abrirMenuPendiente(e, pendiente);
+          return;
+        }
         const alternar = e.target.closest("[data-alternar-ficha]");
         if (alternar) {
           e.preventDefault();
@@ -1882,7 +2059,7 @@
           return;
         }
         const interactivo = e.target.closest(
-          'button, a, input, textarea, select, [contenteditable="true"], .acciones-ficha',
+          'button, a, input, textarea, select, [contenteditable="true"], .acciones-ficha, .dep-pendiente',
         );
         if (interactivo || modoFicha) return;
         const ficha = e.target.closest(".ficha[data-ficha-id]");
@@ -1923,7 +2100,8 @@
         $("indiceEdicion").value = -1; 
         $("opcionOrigen").value = c; 
         opcionesFormulario(c); 
-        $("dependencias").innerHTML = ""; 
+        $("dependencias").innerHTML = "";
+        $("dependencias").dataset.descartes = "{}";
         $("tituloFormulario").textContent = "Nuevo registro"; 
         $("modalRegistro").hidden = false; 
       } 
@@ -1940,6 +2118,7 @@
           : ["nombre", "producto", "pais", "valores", "que", "como", "cuando", "ejemplo", "notas"];
         campos.forEach((k) => { if ($(k)) $(k).value = r[k] ?? ""; });
         $("dependencias").innerHTML = r.dependencias || r.dep || "";
+        $("dependencias").dataset.descartes = JSON.stringify(descartesReferencia(r));
         $("tituloFormulario").textContent = "Editar registro";
         $("modalRegistro").hidden = false;
       }
@@ -1986,6 +2165,12 @@
           creadoEn: anterior?.creadoEn || ahora,
           actualizadoEn: ahora
         };
+        try {
+          const descartes = JSON.parse($("dependencias").dataset.descartes || "{}");
+          if (Object.keys(descartes).length) base.referenciasDescartadas = descartes;
+        } catch (error) {
+          console.warn(error);
+        }
         const r = ambito === "interno"
           ? {
               ...base,
@@ -2275,6 +2460,86 @@ Ingrese un número del 1 al ${totalPosiciones}.`,
         if (!el.contains(r.commonAncestorContainer)) return null; 
         return { rango: r.cloneRange(), texto: r.toString() }; 
       } 
+      function cerrarMenuPendiente() {
+        $("menuPendiente").style.display = "none";
+        $("menuPendiente").replaceChildren();
+        marcaPendienteActiva = null;
+      }
+      function abrirMenuPendiente(e, marca) {
+        e.preventDefault();
+        e.stopPropagation();
+        cerrarMenuDependencias();
+        marcaPendienteActiva = marca;
+        const menu = $("menuPendiente");
+        menu.style.display = "block";
+        menu.style.left = Math.min(e.clientX, window.innerWidth - 275) + "px";
+        menu.style.top = Math.min(e.clientY, window.innerHeight - 180) + "px";
+        menu.innerHTML = `<strong>Pendiente de revisión</strong><div class="ayuda">${escapar(marca.textContent)}</div><div class="acciones-pendiente"><button type="button" class="boton boton-naranja" data-corregir-pendiente>Corregir</button><button type="button" class="boton boton-rojo" data-descartar-pendiente>Descartar</button></div>`;
+      }
+      function abrirCorreccionPendiente(marca, x, y) {
+        const contenedor = marca.closest(".dependencia-inline, #dependencias");
+        if (!contenedor) return;
+        const rango = document.createRange();
+        rango.selectNodeContents(marca);
+        seleccionDependencia = { rango: rango.cloneRange(), texto: marca.textContent };
+        elementoDependenciaActivo = contenedor;
+        cerrarMenuPendiente();
+        const menu = $("menuDependencias");
+        menu.style.display = "block";
+        menu.style.left = Math.min(x, window.innerWidth - 390) + "px";
+        menu.style.top = Math.min(y, window.innerHeight - 360) + "px";
+        menu.innerHTML = `<strong>Corregir referencia</strong><div class="ayuda">Texto: ${escapar(marca.textContent)}</div><input id="buscarDependencia" placeholder="Buscar parámetro u opción..." value="${escapar(marca.dataset.consulta || marca.textContent)}"><div id="resultadosDependencia" class="resultados-dependencia"></div>`;
+        $("buscarDependencia").addEventListener("input", () =>
+          mostrarResultadosDependencia($("buscarDependencia").value),
+        );
+        mostrarResultadosDependencia($("buscarDependencia").value);
+        setTimeout(() => $("buscarDependencia").focus(), 0);
+      }
+      function descartarPendiente(marca) {
+        const contenedor = marca.closest(".dependencia-inline, #dependencias");
+        if (!contenedor) return;
+        const clave = marca.dataset.claveDescarte || claveDescarteReferencia(
+          contenedor.textContent || "",
+          marca.textContent || "",
+          0,
+        );
+        const texto = marca.textContent || "";
+        marca.replaceWith(document.createTextNode(texto));
+        contenedor.normalize();
+        if (contenedor.classList.contains("dependencia-inline")) {
+          const c = contenedor.dataset.depOpcion;
+          const i = Number(contenedor.dataset.depIndice);
+          const registro = datos[c]?.[i];
+          if (registro) {
+            registro.referenciasDescartadas ||= {};
+            registro.referenciasDescartadas[clave] = { texto, descartadoEn: new Date().toISOString() };
+            registro.dependencias = contenedor.innerHTML.trim();
+            registro.actualizadoEn = new Date().toISOString();
+            marcarCambio(c);
+          }
+        } else {
+          let descartes = {};
+          try { descartes = JSON.parse(contenedor.dataset.descartes || "{}"); } catch {}
+          descartes[clave] = { texto, descartadoEn: new Date().toISOString() };
+          contenedor.dataset.descartes = JSON.stringify(descartes);
+        }
+        cerrarMenuPendiente();
+        aviso("Referencia descartada. No reaparecerá mientras el texto no cambie.");
+      }
+      $("menuPendiente").addEventListener("click", (e) => {
+        if (!marcaPendienteActiva) return;
+        if (e.target.closest("[data-corregir-pendiente]")) {
+          const marca = marcaPendienteActiva;
+          abrirCorreccionPendiente(marca, e.clientX, e.clientY);
+        } else if (e.target.closest("[data-descartar-pendiente]")) {
+          descartarPendiente(marcaPendienteActiva);
+        }
+      });
+      document.addEventListener("pointerdown", (e) => {
+        if (!$("menuPendiente").contains(e.target) && !e.target.closest(".dep-pendiente-parcial")) {
+          cerrarMenuPendiente();
+        }
+      });
       function abrirMenuDependencias(e, el) { 
         e.preventDefault(); 
         e.stopPropagation(); 
@@ -2298,13 +2563,21 @@ Ingrese un número del 1 al ${totalPosiciones}.`,
         mostrarResultadosDependencia(sel.texto); 
         setTimeout(() => $("buscarDependencia").focus(), 0); 
       } 
-      $("dependencias").addEventListener("contextmenu", (e) => 
-        abrirMenuDependencias(e, $("dependencias")), 
-      ); 
-      $("contenido").addEventListener("contextmenu", (e) => { 
-        const el = e.target.closest(".dependencia-inline"); 
-        if (el) abrirMenuDependencias(e, el); 
-      }); 
+      $("dependencias").addEventListener("contextmenu", (e) => {
+        const pendiente = e.target.closest(".dep-pendiente-parcial");
+        if (pendiente) return abrirMenuPendiente(e, pendiente);
+        abrirMenuDependencias(e, $("dependencias"));
+      });
+      $("dependencias").addEventListener("click", (e) => {
+        const pendiente = e.target.closest(".dep-pendiente-parcial");
+        if (pendiente) abrirMenuPendiente(e, pendiente);
+      });
+      $("contenido").addEventListener("contextmenu", (e) => {
+        const pendiente = e.target.closest(".dep-pendiente-parcial");
+        if (pendiente) return abrirMenuPendiente(e, pendiente);
+        const el = e.target.closest(".dependencia-inline");
+        if (el) abrirMenuDependencias(e, el);
+      });
       $("contenido").addEventListener("input", (e) => { 
         const el = e.target.closest("[data-campo]"); 
         if (!el) return; 
@@ -2363,6 +2636,10 @@ Ingrese un número del 1 al ${totalPosiciones}.`,
           codigo: destino,
           __opcion: destino,
           nombre: $("nombre").value.trim(),
+          referenciasDescartadas: (() => {
+            try { return JSON.parse($("dependencias").dataset.descartes || "{}"); }
+            catch { return {}; }
+          })(),
         });
         $("dependencias").innerHTML = resultado.html;
         if (resultado.pendientes) {
@@ -2423,6 +2700,9 @@ Ingrese un número del 1 al ${totalPosiciones}.`,
             true, 
           ); 
         } 
+        if (elementoDependenciaActivo?.id === "dependencias") {
+          elementoDependenciaActivo.innerHTML = elementoDependenciaActivo.innerHTML.trim();
+        }
         if ( 
           elementoDependenciaActivo?.classList.contains("dependencia-inline") 
         ) { 
