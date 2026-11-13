@@ -8,13 +8,13 @@
     "valores": "Tipo de Cliente",
     "requisitosImplementacion": "Debe seleccionarse uno de los tipos de cliente disponibles dentro del catálogo definido por Siscard. No es posible crear nuevos tipos de cliente distintos a los actualmente existentes.",
     "configuracionComportamiento": "Permite definir parámetros específicos según el tipo de cliente, el emisor y la moneda. Esta clasificación puede utilizarse para administrar condiciones diferenciadas como tasas, plazos y configuraciones específicas aplicables a determinados segmentos de clientes.",
-    "dependencias": "Requiere que exista previamente una configuración de Tipo de Cliente en la Opción 5.",
+    "dependencias": "Requiere que exista previamente una configuración de <a href=\"#\" class=\"dep-ref-inline\" data-target=\"ccaeb0e0-6bcc-4331-8a18-cef2ae51c571\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Tipo de Cliente\">Tipo de Cliente</a> en la Opción 5.",
     "condicionesOperativas": "La clasificación por tipo de cliente permite que un mismo emisor maneje configuraciones diferenciadas para distintos grupos de clientes.",
     "ejemploOperativo": "Un emisor puede configurar condiciones distintas para los tipos de cliente Cliente VIP, Cliente General y Cliente Preferencial. Al asociar una cuenta a uno de estos tipos, el sistema aplicará las configuraciones definidas para dicho segmento, permitiendo administrar tasas, plazos u otras características diferenciadas.",
     "codigo": "12",
     "id": "256d5ebd-3e55-4b07-9aa1-0e9ac7342f35",
     "creadoEn": "2026-09-07T22:39:53.226Z",
-    "actualizadoEn": "2026-09-07T22:39:53.226Z"
+    "actualizadoEn": "2026-11-13T16:21:34.284Z"
   },
   {
     "nombre": "Moneda",
@@ -25,13 +25,13 @@
     "valores": "DO = Dólar\r\nMoneda Local",
     "requisitosImplementacion": "El emisor debe trabajar obligatoriamente con dos monedas, independientemente de que el país opere comercialmente con una sola moneda.",
     "configuracionComportamiento": "Define las monedas con las que trabajará el emisor para el tipo de cliente configurado. La parametrización permite administrar configuraciones específicas por emisor, moneda y tipo de cliente.",
-    "dependencias": "Siempre deben configurarse dos monedas: DO (Dólar) y la moneda local del país correspondiente.",
+    "dependencias": "Siempre deben configurarse dos monedas: DO (Dólar) y la <a href=\"#\" class=\"dep-ref-inline\" data-target=\"978577d0-c499-4575-8a2f-26e0f4678f49\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Moneda\">moneda</a> local del país correspondiente.",
     "condicionesOperativas": "La configuración se realiza a nivel de emisor y tipo de cliente, permitiendo administrar parámetros distintos según la moneda seleccionada.",
     "ejemploOperativo": "Un emisor de Costa Rica trabaja con DO (USD) y CRC (Colones Costarricenses). Aunque el producto se comercialice principalmente en colones, el sistema requiere mantener configuradas ambas monedas para la administración de parámetros asociados al tipo de cliente.",
     "codigo": "12",
     "id": "0b0aa99a-5459-4749-8070-28af356aa02d",
     "creadoEn": "2026-09-07T22:39:53.226Z",
-    "actualizadoEn": "2026-09-07T22:39:53.226Z"
+    "actualizadoEn": "2026-11-13T16:21:34.284Z"
   },
   {
     "nombre": "Cargos por Servicio",
@@ -42,13 +42,13 @@
     "valores": "Porcentaje de 1% a 100%.",
     "requisitosImplementacion": "Configurar el porcentaje correspondiente cuando se requiera definir la tasa anual de interés corriente para la combinación de emisor, tipo de cliente y moneda.",
     "configuracionComportamiento": "Corresponde a la tasa anual de interés corriente aplicable al producto de crédito. El valor configurado representa el porcentaje que será utilizado como tasa anual para la configuración correspondiente.",
-    "dependencias": "No se identifican dependencias funcionales ni restricciones adicionales en la referencia suministrada.",
+    "dependencias": "No se identifican dependencias funcionales ni restricciones adicionales en la ref<span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">erencia</span> <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">suministrada</span>.",
     "condicionesOperativas": "Aplica para productos de crédito y puede configurarse con un porcentaje entre 1% y 100%, o dejarse en blanco si corresponde según la configuración del emisor.",
     "ejemploOperativo": "Si para un tipo de cliente se configura el valor 24%, ese porcentaje queda definido como la tasa anual de interés corriente para esa configuración.",
     "codigo": "12",
     "id": "5eebd5ad-c175-4a56-b3fa-5c038c3b158d",
     "creadoEn": "2026-09-07T22:39:53.226Z",
-    "actualizadoEn": "2026-09-07T22:39:53.226Z"
+    "actualizadoEn": "2026-11-13T16:21:36.671Z"
   },
   {
     "nombre": "Tasa Financiamiento",
@@ -110,13 +110,13 @@
     "valores": "Porcentaje entre 0% y 100%.",
     "requisitosImplementacion": "Configurar el porcentaje de sobregiro permitido sobre el límite de crédito de la cuenta.",
     "configuracionComportamiento": "Especifica el porcentaje adicional sobre el límite de crédito que puede utilizar una cuenta para continuar realizando transacciones una vez consumido su límite disponible. Este porcentaje únicamente se refleja en el disponible manejado por el autorizador y no se visualiza en las pantallas de consulta del sistema.",
-    "dependencias": "Si el emisor tiene configurado el parámetro Inactivar en Sobregiro = Sí, la cuenta pasará a estado de sobregiro cuando exceda el porcentaje de sobregiro autorizado.",
+    "dependencias": "Si el <a href=\"#\" class=\"dep-ref-inline\" data-target=\"16690257-a814-4aa8-88ba-8aa8fc73221a\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Emisor\">emisor</a> tiene configurado el parámetro <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Inactivar en Sobregiro = Sí</span>, la cuenta pasará a estado de sobregiro cuando exceda el <a href=\"#\" class=\"dep-ref-inline\" data-target=\"2f7df47f-da57-4f98-96c8-d4011690b301\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Porcentaje\">porcentaje</a> de sobregiro autorizado.",
     "condicionesOperativas": "El porcentaje configurado afecta el disponible utilizado en el proceso de autorización de transacciones, pero no modifica la información mostrada en las consultas del sistema.",
     "ejemploOperativo": "Si una cuenta posee un límite de crédito de $1,000 y el parámetro se configura en 10%, el autorizador permitirá transacciones hasta alcanzar un sobregiro adicional de $100. Si además el emisor utiliza el parámetro Inactivar en Sobregiro = Sí, la cuenta pasará a estado de sobregiro una vez superado ese monto autorizado.",
     "codigo": "12",
     "id": "e70c3d5f-6df7-47b6-8240-29e4830fbd3d",
     "creadoEn": "2026-09-07T22:39:53.226Z",
-    "actualizadoEn": "2026-09-07T22:39:53.226Z"
+    "actualizadoEn": "2026-11-13T16:21:36.674Z"
   },
   {
     "nombre": "Porcentaje Cobro de Membresía",
@@ -144,13 +144,13 @@
     "valores": "Porcentaje entre 0% y 100%.",
     "requisitosImplementacion": "Configurar el porcentaje máximo del límite de crédito que podrá utilizarse para adelantos de efectivo.",
     "configuracionComportamiento": "Define el porcentaje máximo del límite de crédito que el tarjetahabiente puede retirar como adelanto de efectivo durante un mes. La funcionalidad aplica únicamente cuando la cuenta posee disponible suficiente y se encuentra clasificada como A o B.",
-    "dependencias": "Las cuentas clasificadas como A o B pueden utilizar adelantos de efectivo según el porcentaje configurado. Las cuentas clasificadas como C o categorías inferiores no podrán recibir adelantos de efectivo, aunque dispongan de límite de crédito disponible.",
+    "dependencias": "Las cuentas clasificadas como A o B pueden utilizar adelantos de efectivo según el <a href=\"#\" class=\"dep-ref-inline\" data-target=\"2f7df47f-da57-4f98-96c8-d4011690b301\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Porcentaje\">porcentaje</a> configurado. Las cuentas clasificadas como C o categorías inferiores no podrán recibir adelantos de efectivo, aunque dispongan de límite de crédito disponible.",
     "condicionesOperativas": "El porcentaje configurado limita el monto máximo que puede utilizarse mediante adelantos de efectivo durante el período mensual.",
     "ejemploOperativo": "Si una cuenta posee un límite de crédito de $10,000 y el parámetro está configurado en 30%, el monto máximo disponible para adelantos de efectivo durante el mes será de $3,000. Esta funcionalidad únicamente aplicará si la cuenta se encuentra clasificada como A o B.",
     "codigo": "12",
     "id": "b2a9b4a9-fe8f-4d3a-bdeb-3d59324c505b",
     "creadoEn": "2026-09-07T22:39:53.226Z",
-    "actualizadoEn": "2026-09-07T22:39:53.226Z"
+    "actualizadoEn": "2026-11-13T16:21:34.290Z"
   },
   {
     "nombre": "Tasa Mora Cobro Judicial",
@@ -229,13 +229,13 @@
     "valores": "Porcentaje entre 0% y 100%.",
     "requisitosImplementacion": "Configurar la tasa anual de interés aplicable sobre importes vencidos.",
     "configuracionComportamiento": "Define la tasa anual de interés que se cobra sobre los importes vencidos de una cuenta. Este cobro es adicional a los intereses moratorios. Cuando corresponde su aplicación, el sistema genera el movimiento 14 = Recargo cuota vencida.",
-    "dependencias": "No se identifican dependencias funcionales en la referencia suministrada.",
+    "dependencias": "No se identifican dependencias funcionales en la ref<span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">erencia</span> <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">suministrada</span>.",
     "condicionesOperativas": "La tasa aplica sobre los importes vencidos y constituye un cargo adicional a los intereses moratorios ya generados.",
     "ejemploOperativo": "Si una cuenta mantiene un importe vencido y el parámetro está configurado en 12%, el sistema aplicará la tasa anual correspondiente sobre dicho importe vencido y generará el movimiento 14 = Recargo cuota vencida.",
     "codigo": "12",
     "id": "f55ccd46-8c08-45db-97b3-60eebb78f5ef",
     "creadoEn": "2026-09-07T22:39:53.226Z",
-    "actualizadoEn": "2026-09-07T22:39:53.226Z"
+    "actualizadoEn": "2026-11-13T16:21:36.678Z"
   },
   {
     "nombre": "Porcentaje del Pago de Contado a Cubrir",
@@ -246,13 +246,13 @@
     "valores": "Porcentaje entre 0% y 100%.",
     "requisitosImplementacion": "Debe configurarse en conjunto con el parámetro Monto del Pago de Contado a Cubrir.",
     "configuracionComportamiento": "Define el porcentaje mínimo del pago de contado que debe ser cubierto por el tarjetahabiente. Los cargos por servicio que sean bonificables se reversarán en la misma proporción del pago de contado efectivamente cubierto.",
-    "dependencias": "Trabaja en conjunto con el parámetro Monto del Pago de Contado a Cubrir.",
+    "dependencias": "Trabaja en conjunto con el parámetro <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Monto del Pago de Contado a Cubrir</span>.",
     "condicionesOperativas": "Aplica para productos de crédito que utilicen la funcionalidad de bonificación o reversión de cargos asociados al pago de contado.",
     "ejemploOperativo": "Si el porcentaje configurado es 80%, el cliente deberá cubrir al menos dicho porcentaje del pago de contado para que el sistema considere la reversión proporcional de los cargos por servicio bonificables.",
     "codigo": "12",
     "id": "10343e23-918b-492f-bc2f-82c4c01b4165",
     "creadoEn": "2026-09-07T22:39:53.226Z",
-    "actualizadoEn": "2026-09-07T22:39:53.226Z"
+    "actualizadoEn": "2026-11-13T16:21:34.293Z"
   },
   {
     "nombre": "C x S S/Saldo Financ. (Cargos por Servicio sobre saldo financiado)",
@@ -263,13 +263,13 @@
     "valores": "Porcentaje entre 0% y 100%.",
     "requisitosImplementacion": "El parámetro Separa Cobro Tasa Cargos x Servicio y CxS Sobre /SF debe encontrarse configurado en S a nivel de franquicia. Además, el emisor debe utilizar el programa de cálculo TRTP0015.",
     "configuracionComportamiento": "Corresponde a una tasa anual de cargos por servicio aplicada sobre saldo financiado. Cuando este parámetro se encuentra habilitado, el sistema utiliza esta tasa en lugar del parámetro Cargos por Servicio. Una vez seleccionada la tasa, la lógica de cálculo continúa funcionando de la misma forma que el esquema estándar.",
-    "dependencias": "Funciona únicamente cuando el parámetro Separa Cobro Tasa Cargos x Servicio y CxS Sobre /SF está configurado en S a nivel de franquicia. Aplica únicamente para el esquema normal de cálculo y no es compatible con los esquemas de Resúmenes ni Planes. Requiere el uso del programa de cálculo TRTP0015.",
+    "dependencias": "Funciona únicamente cuando el parámetro <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Separa Cobro Tasa Cargos x Servicio y CxS Sobre /SF está configurado en S a nivel de</span> <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"El parámetro vinculado ya no existe. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">franquicia</span>. Aplica únicamente para el esquema normal de cálculo y no es compatible con los esquemas de Resúmenes ni Planes. Requiere el uso del programa de cálculo TRTP0015.",
     "condicionesOperativas": "Actualmente se documenta su utilización en clientes como Coopemep, FPB Bank, Banco Reformador Guatemala y Mutual Alajuela.",
     "ejemploOperativo": "Si el parámetro está configurado en 12% y el emisor cumple las condiciones requeridas (franquicia configurada, esquema normal y programa TRTP0015), el sistema utilizará esta tasa para calcular los cargos por servicio sobre saldo financiado en lugar de utilizar el parámetro estándar de Cargos por Servicio.",
     "codigo": "12",
     "id": "9c5280cb-7acb-45fe-99c6-039af6240eab",
     "creadoEn": "2026-09-07T22:39:53.226Z",
-    "actualizadoEn": "2026-09-07T22:39:53.226Z"
+    "actualizadoEn": "2026-11-13T16:21:36.680Z"
   },
   {
     "nombre": "Tasa Interés Extrafinanciamiento",
@@ -280,13 +280,13 @@
     "valores": "Porcentaje entre 0% y 100%.",
     "requisitosImplementacion": "El parámetro Extrafinanciamiento debe encontrarse configurado en S.",
     "configuracionComportamiento": "Define la tasa de interés aplicada sobre las transacciones de extrafinanciamiento. Esta tasa se utiliza únicamente cuando la funcionalidad de Extrafinanciamiento se encuentra habilitada.",
-    "dependencias": "Depende del parámetro Extrafinanciamiento, el cual debe encontrarse configurado en S.",
+    "dependencias": "Depende del parámetro <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"El parámetro vinculado ya no existe. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Extrafinanciamiento</span>, el cual debe encontrarse configurado en S.",
     "condicionesOperativas": "N/A",
     "ejemploOperativo": "Si la funcionalidad se encontrara activa y el parámetro Extrafinanciamiento estuviera configurado en S, el porcentaje definido se utilizaría como tasa de interés para las transacciones de extrafinanciamiento asociadas a esa configuración.",
     "codigo": "12",
     "id": "71b7d696-4d98-4105-9427-f5469016b54a",
     "creadoEn": "2026-09-07T22:39:53.226Z",
-    "actualizadoEn": "2026-09-07T22:39:53.226Z"
+    "actualizadoEn": "2026-11-13T16:21:36.681Z"
   },
   {
     "nombre": "Cobro Membresía",
@@ -297,13 +297,13 @@
     "valores": "S = Sí / N = No",
     "requisitosImplementacion": "Si se configura en S, debe definirse el porcentaje de cobro correspondiente mediante los parámetros Porcentaje Cobro Membresía Titular y/o Porcentaje Cobro Membresía Adicional, según la necesidad del emisor, con valores mayores a 0.",
     "configuracionComportamiento": "Indica si la membresía debe cobrarse o no a las cuentas del emisor. Cuando el valor es S, el sistema permite realizar el cobro de membresía utilizando los porcentajes configurados para tarjetas titulares, adicionales o ambos casos. Cuando el valor es N, no se realiza el cobro de membresía.",
-    "dependencias": "Trabaja en conjunto con los parámetros Porcentaje Cobro Membresía Titular y Porcentaje Cobro Membresía Adicional. Si el parámetro está en S, dichos parámetros deben tener valores mayores a 0. Si el parámetro está en N, ambos parámetros deben permanecer en 0.",
+    "dependencias": "Trabaja en conjunto con los parámetros <a href=\"#\" class=\"dep-ref-inline\" data-target=\"2f7df47f-da57-4f98-96c8-d4011690b301\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Porcentaje\">Porcentaje</a> Cobro Membresía Titular y <a href=\"#\" class=\"dep-ref-inline\" data-target=\"2f7df47f-da57-4f98-96c8-d4011690b301\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Porcentaje\">Porcentaje</a> Cobro Membresía Adicional. Si el parámetro <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">está en S</span>, dichos parámetro<span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">s deben tener valores mayores a 0</span>. Si el parámetro <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">está en N</span>, ambos parámetro<span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">s deben permanecer en 0</span>.",
     "condicionesOperativas": "Aplica para productos de crédito que utilizan cobro de membresía.",
     "ejemploOperativo": "Si el banco desea cobrar la membresía únicamente a las tarjetas titulares, puede configurar Cobro Membresía = S y asignar un porcentaje mayor a 0 en Porcentaje Cobro Membresía Titular. Si no desea realizar ningún cobro de membresía, debe configurar el parámetro en N, manteniendo los parámetros de porcentaje en 0.",
     "codigo": "12",
     "id": "3575b20a-6f25-4127-81ef-af72cc38f944",
     "creadoEn": "2026-09-07T22:39:53.226Z",
-    "actualizadoEn": "2026-09-07T22:39:53.226Z"
+    "actualizadoEn": "2026-11-13T16:21:34.295Z"
   },
   {
     "nombre": "Código Cta. Contable",
@@ -348,13 +348,13 @@
     "valores": "Valores numéricos desde 1 hasta 9.999.999.999,99, expresados en la moneda definida para el emisor.",
     "requisitosImplementacion": "Definir el monto base de la membresía en la moneda configurada para el emisor. La configuración debe realizarse conjuntamente con Cobro de Membresía y Porcentaje Cobro Membresía, ya que estos parámetros determinan si el cargo se encuentra habilitado y qué proporción del monto debe aplicarse.",
     "configuracionComportamiento": "Establece el monto base utilizado para calcular el cobro de membresía de la tarjeta titular. Cobro de Membresía habilita o deshabilita la aplicación del cargo, mientras que Porcentaje Cobro Membresía determina la proporción del monto base que se cobrará. Por tanto, el importe resultante se obtiene aplicando el porcentaje configurado sobre el valor definido en Costo Membresía Titular, siempre que el cobro de membresía esté habilitado. \r\nSi Cobro de Membresía = NO, el parámetro no es obligatorio y permite blancos.",
-    "dependencias": "Si Cobro de Membresía = NO, este parámetro no es obligatorio y permite blancos.\r\n\r\nSi Cobro de Membresía = SÍ, este parámetro debe configurarse, ya que define el monto base de la membresía de la tarjeta titular. Su valor se evalúa conjuntamente con Porcentaje Cobro Membresía para determinar el importe aplicable al cargo de membresía.",
+    "dependencias": "Si Cobro de Membresía = NO, este parámetro <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">no</span> es obligatorio y permite blancos.\n\nSi Cobro de Membresía = SÍ, este parámetro debe configurarse, ya que define el monto base de la membresía de la tarjeta titular. Su valor se evalúa conjuntamente con <a href=\"#\" class=\"dep-ref-inline\" data-target=\"2f7df47f-da57-4f98-96c8-d4011690b301\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Porcentaje\">Porcentaje</a> <a href=\"#\" class=\"dep-ref-inline\" data-target=\"3575b20a-6f25-4127-81ef-af72cc38f944\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Cobro Membresía\">Cobro Membresía</a> para determinar el importe aplicable al cargo de membresía.",
     "condicionesOperativas": "El parámetro solo tiene efecto cuando el cobro de membresía se encuentra habilitado. Si el cobro está desactivado, el valor configurado no participa en ningún cálculo de membresía.",
     "ejemploOperativo": "Si el costo de membresía de la tarjeta titular es 100 y el porcentaje de cobro es 50 %, el importe de membresía a aplicar correspondería a una porción del monto base definida por dicho porcentaje, siempre que Cobro de Membresía se encuentre habilitado. Si Cobro de Membresía = NO, no se genera el cargo y ambos parámetros pueden permanecer sin valor.",
     "codigo": "12",
     "id": "3030eaf4-3e86-46fa-bf45-f19e262a48ba",
     "creadoEn": "2026-09-07T22:39:53.227Z",
-    "actualizadoEn": "2026-09-07T22:39:53.227Z"
+    "actualizadoEn": "2026-11-13T16:21:34.296Z"
   },
   {
     "nombre": "Costo de la  Membresía Adicional",
@@ -365,13 +365,13 @@
     "valores": "Valores numéricos desde 1 hasta 9.999.999.999,99, expresados en la moneda definida para el emisor.",
     "requisitosImplementacion": "Definir el monto base de membresía aplicable a cada tarjeta adicional. La configuración debe realizarse considerando conjuntamente los parámetros Cobro de Membresía y Porcentaje Cobro Membresía.",
     "configuracionComportamiento": "Define el monto base que se utilizará para calcular el cargo de membresía de cada tarjeta adicional asociada a la cuenta. El valor configurado participa en el cálculo del cobro cuando la funcionalidad de membresía se encuentra habilitada.",
-    "dependencias": "Si Cobro de Membresía = NO, este parámetro no es obligatorio y permite blancos, ya que no se aplicarán cargos por membresía a las tarjetas adicionales. \r\nSi Cobro de Membresía = SÍ, este parámetro debe configurarse, ya que define el monto base de membresía para cada tarjeta adicional. Su valor se evalúa junto con Porcentaje Cobro Membresía, el cual determina la proporción del monto base que será utilizada para calcular el cargo de membresía. Costo Membresía Adicional, Porcentaje Cobro Membresía y Cobro de Membresía forman parte de una misma lógica funcional y deben configurarse de manera conjunta.",
+    "dependencias": "Si Cobro de Membresía = NO, este parámetro <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">no</span> es obligatorio y permite blancos, ya que no se aplicarán cargos por membresía a las tarjetas adicionales. \nSi Cobro de Membresía = SÍ, este parámetro debe configurarse, ya que define el monto base de membresía para cada tarjeta adicional. Su valor se evalúa junto con <a href=\"#\" class=\"dep-ref-inline\" data-target=\"2f7df47f-da57-4f98-96c8-d4011690b301\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Porcentaje\">Porcentaje</a> <a href=\"#\" class=\"dep-ref-inline\" data-target=\"3575b20a-6f25-4127-81ef-af72cc38f944\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Cobro Membresía\">Cobro Membresía</a>, el cual determina la proporción del monto base que será utilizada para calcular el cargo de membresía. Costo Membresía Adicional, <a href=\"#\" class=\"dep-ref-inline\" data-target=\"2f7df47f-da57-4f98-96c8-d4011690b301\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Porcentaje\">Porcentaje</a> <a href=\"#\" class=\"dep-ref-inline\" data-target=\"3575b20a-6f25-4127-81ef-af72cc38f944\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Cobro Membresía\">Cobro Membresía</a> y Cobro de Membresía forman parte de una misma lógica funcional y deben configurarse de manera conjunta.",
     "condicionesOperativas": "El parámetro únicamente produce efecto cuando el cobro de membresía está habilitado. Cuando el cobro se encuentra deshabilitado, el valor configurado no participa en el cálculo de cargos para tarjetas adicionales.",
     "ejemploOperativo": "Para una tarjeta adicional, el sistema toma el monto definido en Costo Membresía Adicional como base de cálculo y aplica la configuración establecida en Porcentaje Cobro Membresía, siempre que Cobro de Membresía se encuentre habilitado.",
     "codigo": "12",
     "id": "b2436260-d190-4e58-8241-30de23baaf7c",
     "creadoEn": "2026-09-07T22:39:53.227Z",
-    "actualizadoEn": "2026-09-07T22:39:53.227Z"
+    "actualizadoEn": "2026-11-13T16:21:34.297Z"
   },
   {
     "nombre": "Costo de la Reposición",
@@ -416,13 +416,13 @@
     "valores": "Monto entre 0 y 9,999,999,999.99.",
     "requisitosImplementacion": "Configurar el monto mínimo a partir del cual el sistema debe congelar los abonos realizados mediante cheque.",
     "configuracionComportamiento": "Define el monto mínimo que debe alcanzar un abono realizado con cheque para que el sistema aplique el proceso de congelamiento correspondiente. El valor se registra en la moneda configurada para la cuenta.",
-    "dependencias": "No se identifican dependencias funcionales ni restricciones en la referencia suministrada.",
+    "dependencias": "No se identifican dependencias funcionales ni restricciones en la ref<span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">erencia</span> <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">suministrada</span>.",
     "condicionesOperativas": "Aplica sobre abonos efectuados mediante cheque.",
     "ejemploOperativo": "Si el parámetro se configura en $500, cualquier abono con cheque igual o superior a ese monto quedará sujeto al proceso de congelamiento definido por la institución.",
     "codigo": "12",
     "id": "716a6b26-85e8-4c25-acb3-218cf3176aab",
     "creadoEn": "2026-09-07T22:39:53.227Z",
-    "actualizadoEn": "2026-09-07T22:39:53.227Z"
+    "actualizadoEn": "2026-11-13T16:21:36.688Z"
   },
   {
     "nombre": "Monto Mínimo Arreglo de Pago",
@@ -450,13 +450,13 @@
     "valores": "Valores numéricos desde 0 hasta 9.999.999.999,99.",
     "requisitosImplementacion": "Definir el importe máximo que puede permanecer pendiente sobre el pago mínimo vencido sin provocar la inactivación de la cuenta por mora.",
     "configuracionComportamiento": "Establece el monto máximo permitido de diferencia entre el pago mínimo exigido y el pago efectivamente realizado por el cliente después de la fecha de vencimiento del pago. Si la diferencia pendiente es igual o inferior al importe configurado, la cuenta puede evitar la inactivación automática al estatus 11 (Bloqueada con un Importe Vencido). El parámetro solo es evaluado cuando contiene un valor superior a cero. Cuando el valor es cero, el sistema asume que esta validación no debe aplicarse.",
-    "dependencias": "Opera de forma independiente del parámetro de porcentaje de pago mínimo al descubierto. Ambos criterios son evaluados por separado. La validación se realiza utilizando el monto del pago mínimo vigente al momento de la ejecución del proceso de control posterior al vencimiento.",
+    "dependencias": "Opera de forma independiente del parámetro <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">de</span> <a href=\"#\" class=\"dep-ref-inline\" data-target=\"2f7df47f-da57-4f98-96c8-d4011690b301\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Porcentaje\">porcentaje</a> de <a href=\"#\" class=\"dep-ref-inline\" data-target=\"5035f594-6580-4d23-9ca6-4195de750373\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Pago Mínimo\">pago mínimo</a> al descubierto. Ambos criterios son evaluados por separado. La validación se realiza utilizando el monto del <a href=\"#\" class=\"dep-ref-inline\" data-target=\"5035f594-6580-4d23-9ca6-4195de750373\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Pago Mínimo\">pago mínimo</a> vigente al momento de la ejecución del proceso de control posterior al vencimiento.",
     "condicionesOperativas": "La evaluación ocurre únicamente después de la fecha de vencimiento de pago. El sistema compara el monto pendiente contra el valor configurado para determinar si corresponde aplicar la inactivación por mora.",
     "ejemploOperativo": "Si el pago mínimo corresponde a 100,00 y el parámetro está configurado en 5,00, una cuenta que mantenga un saldo pendiente de 4,00 sobre el pago mínimo podría evitar la inactivación por estatus 11.",
     "codigo": "12",
     "id": "fafb40e3-6323-4678-8ff5-e7c66c7b037c",
     "creadoEn": "2026-09-07T22:39:53.227Z",
-    "actualizadoEn": "2026-09-07T22:39:53.227Z"
+    "actualizadoEn": "2026-11-13T16:21:34.301Z"
   },
   {
     "nombre": "Monto Pago de Contado a Cubrir",
@@ -467,13 +467,13 @@
     "valores": "Valores numéricos desde 0 hasta 9.999.999.999,99.",
     "requisitosImplementacion": "Definir el importe máximo que puede quedar pendiente sobre el pago de contado y aun así considerar que la obligación fue cubierta para efectos del cálculo de créditos del ciclo.",
     "configuracionComportamiento": "Establece una tolerancia monetaria sobre el pago de contado. Permite que una diferencia pendiente, dentro del límite configurado, sea tratada como totalmente cubierta durante el proceso que calcula los créditos asociados al corte. Si el campo permanece en blanco, el sistema lo interpreta como valor cero, por lo que no existiría margen monetario adicional de tolerancia.",
-    "dependencias": "Opera conjuntamente con el parámetro \"Porcentaje del Pago de Contado a Cubrir\". La lógica funcional identificada indica que ambos parámetros participan en la determinación de si el pago de contado se considera suficientemente cubierto para efectos del cálculo de créditos.",
+    "dependencias": "Opera conjuntamente con el parámetro \"<a href=\"#\" class=\"dep-ref-inline\" data-target=\"10343e23-918b-492f-bc2f-82c4c01b4165\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Porcentaje del Pago de Contado a Cubrir\">Porcentaje del Pago de Contado a Cubrir</a>\". La lógica funcional identificada indica que ambos parámetro<span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">s participan en la determinación de</span> si el pago de contado se considera suficientemente cubierto para efectos del cálculo de créditos.",
     "condicionesOperativas": "No admite valores negativos. Debe configurarse dentro del rango permitido. Un valor en blanco equivale a cero.",
     "ejemploOperativo": "La validación se utiliza durante el proceso de cálculo de créditos del corte. El monto configurado representa una tolerancia sobre la diferencia pendiente respecto al pago de contado requerido.",
     "codigo": "12",
     "id": "a4846fc7-e495-4276-a85e-c31574f39fdd",
     "creadoEn": "2026-09-07T22:39:53.227Z",
-    "actualizadoEn": "2026-09-07T22:39:53.227Z"
+    "actualizadoEn": "2026-11-13T16:21:34.301Z"
   },
   {
     "nombre": "Período para Acumular Puntos",
@@ -484,13 +484,13 @@
     "valores": "Valores numéricos entre 0 y 99 meses.",
     "requisitosImplementacion": "Definir la cantidad de meses durante los cuales los puntos permanecen vigentes dentro del programa de acumulación.",
     "configuracionComportamiento": "Funcionalmente, este parámetro establece el período de vigencia de los puntos acumulados. Su aplicación está condicionada a que el parámetro Puntuación Permitida se encuentre configurado en \"S\". Cuando la acumulación de puntos no está habilitada, este parámetro no produce efecto por sí solo.",
-    "dependencias": "Depende directamente del parámetro Puntuación Permitida. Este parámetro actúa como habilitador de la funcionalidad de puntos, mientras que Período para Acumular Puntos define la duración o vigencia asociada a dichos puntos. Si Puntuación Permitida está configurado en \"N\", el valor definido en este parámetro deja de ser utilizado.",
+    "dependencias": "Depende directamente del parámetro <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Puntuación Permitida</span>. Este parámetro <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">actúa como habilitador de la funcionalidad de puntos</span>, mientras que Período para Acumular Puntos define la duración o vigencia asociada a dichos puntos. Si Puntuación Permitida está configurado en \"N\", el valor definido en este parámetro <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">deja de ser utilizado</span>.",
     "condicionesOperativas": "La vigencia definida se expresa en meses y se aplica únicamente cuando la funcionalidad de puntos se encuentra activa.",
     "ejemploOperativo": "Si el parámetro se configura en 24, los puntos podrían mantenerse vigentes durante 24 meses a partir de la fecha determinada por la lógica del programa de puntos. La forma exacta de cálculo de la vigencia requiere validación.",
     "codigo": "12",
     "id": "4fe8a2fd-18d0-4249-a8ba-39bb94abad2e",
     "creadoEn": "2026-09-07T22:39:53.227Z",
-    "actualizadoEn": "2026-09-07T22:39:53.227Z"
+    "actualizadoEn": "2026-11-13T16:21:34.302Z"
   },
   {
     "nombre": "Pago Mínimo",
@@ -501,13 +501,13 @@
     "valores": "Valores numéricos desde 0 hasta 9.999.999.999,99.",
     "requisitosImplementacion": "Definir el monto mínimo absoluto que podrá exigirse como pago mínimo en cada ciclo de facturación.",
     "configuracionComportamiento": "Funcionalmente, este parámetro establece un importe mínimo de referencia para el cálculo del pago mínimo de la cuenta. No obstante, el pago mínimo calculado nunca puede exceder el saldo adeudado de la cuenta. Cuando el importe configurado es superior al saldo pendiente, el sistema utiliza el saldo de la cuenta como pago mínimo exigido.",
-    "dependencias": "La aplicación del parámetro depende del saldo actual de la cuenta. El valor configurado opera como un límite mínimo de cobro, pero la deuda real de la cuenta prevalece cuando es inferior al monto definido.",
+    "dependencias": "La aplicación del parámetro <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">depende del saldo actual de la cuenta</span>. El valor configurado opera como un <a href=\"#\" class=\"dep-ref-inline\" data-target=\"c12260bb-9a49-46db-b08a-b1524c142e7f\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Límite mínimo\">límite mínimo</a> de cobro, pero la deuda real de la cuenta prevalece cuando es inferior al monto definido.",
     "condicionesOperativas": "La evaluación se realiza durante el cálculo del pago mínimo correspondiente al corte. El sistema compara el importe configurado con el saldo de la cuenta y utiliza el menor de ambos valores como pago mínimo final.",
     "ejemploOperativo": "Si el parámetro está configurado en 40,00 y el saldo de la cuenta es 35,00, el pago mínimo será 35,00 debido a que el saldo adeudado es inferior al monto configurado.",
     "codigo": "12",
     "id": "5035f594-6580-4d23-9ca6-4195de750373",
     "creadoEn": "2026-09-07T22:39:53.227Z",
-    "actualizadoEn": "2026-09-07T22:39:53.227Z"
+    "actualizadoEn": "2026-11-13T16:21:34.303Z"
   },
   {
     "nombre": "Comisión por Tarjeta Titular",
@@ -518,13 +518,13 @@
     "valores": "Valores numéricos desde 0 hasta 9.999.999.999,99.",
     "requisitosImplementacion": "Definir el monto de comisión que se reconocerá por la venta de cada tarjeta titular.",
     "configuracionComportamiento": "Establece el importe de comisión que debe pagarse al vendedor por cada tarjeta titular colocada o vendida. El valor se expresa en la moneda correspondiente al emisor y representa el monto unitario utilizado para el reconocimiento de la comisión.",
-    "dependencias": "No se identifican dependencias funcionales asociadas. El parámetro produce efecto por sí solo al definir el monto de comisión aplicable a cada tarjeta titular vendida.",
+    "dependencias": "No se identifican dependencias funcionales asociadas. El parámetro <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">produce efecto por sí solo al definir el</span> <a href=\"#\" class=\"dep-ref-inline\" data-target=\"eff37974-87da-46b8-af5c-a9b18c9627dc\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Monto de Comisión\">monto de comisión</a> aplicable a cada tarjeta titular vendida.",
     "condicionesOperativas": "La comisión se determina considerando la cantidad de tarjetas titulares vendidas y el importe definido en este parámetro.",
     "ejemploOperativo": "Si el parámetro se configura en 10,00 y se venden 50 tarjetas titulares, el cálculo de comisiones considerará un importe unitario de 10,00 por cada tarjeta titular registrada.",
     "codigo": "12",
     "id": "69c34dda-1314-4ee7-8c2c-99ac61bd0858",
     "creadoEn": "2026-09-07T22:39:53.227Z",
-    "actualizadoEn": "2026-09-07T22:39:53.227Z"
+    "actualizadoEn": "2026-11-13T16:21:34.303Z"
   },
   {
     "nombre": "Costo Deterioro",
@@ -535,13 +535,13 @@
     "valores": "Valores numéricos desde 0 hasta 9.999.999.999,99.",
     "requisitosImplementacion": "Definir el importe que se cobrará al tarjetahabiente por la reposición de una tarjeta debido a deterioro físico.",
     "configuracionComportamiento": "Establece el monto que será cargado al tarjetahabiente cuando se procese una reposición de tarjeta por deterioro. El importe configurado representa el cargo aplicable a cada solicitud de reposición asociada a esta causa específica.",
-    "dependencias": "No se identifican dependencias funcionales directas. El parámetro produce efecto por sí solo al definir el costo de reposición por deterioro. Su aplicación está asociada a procesos que gestionan reposiciones de tarjetas por desgaste, daño o deterioro físico.",
+    "dependencias": "No se identifican dependencias funcionales directas. El parámetro <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">produce efecto por sí solo al definir el costo de reposición por deterioro</span>. Su aplicación está asociada a procesos que gestionan reposiciones de tarjetas por desgaste, daño o deterioro físico.",
     "condicionesOperativas": "El cargo se aplica únicamente cuando la reposición de la tarjeta corresponde al motivo de deterioro. No se documenta su utilización para otros tipos de reposición.",
     "ejemploOperativo": "Si el parámetro está configurado en 15,00, cada reposición de tarjeta registrada por deterioro generará un cargo de 15,00 en la moneda correspondiente del emisor.",
     "codigo": "12",
     "id": "44006a09-1545-4ca4-b987-0ccc90a88c87",
     "creadoEn": "2026-09-07T22:39:53.227Z",
-    "actualizadoEn": "2026-09-07T22:39:53.227Z"
+    "actualizadoEn": "2026-11-13T16:21:34.304Z"
   },
   {
     "nombre": "Monto Gracia Margen",
@@ -552,13 +552,13 @@
     "valores": "Valores numéricos desde 0 hasta 9.999.999.999,99.",
     "requisitosImplementacion": "Definir un monto de tolerancia absoluto sobre el pago mínimo para evitar la generación de importe vencido cuando la diferencia pendiente sea reducida.",
     "configuracionComportamiento": "Este parámetro establece una tolerancia monetaria que permite considerar cubierto el pago mínimo aun cuando exista una diferencia pendiente. Si el monto dejado al descubierto es igual o inferior al valor configurado, el sistema evita la generación de importe vencido, tanto en monto como en cantidad. La validación de este parámetro se realiza antes de evaluar los parámetros relacionados con monto y porcentaje del pago mínimo no cubierto.",
-    "dependencias": "Opera conjuntamente con los parámetros Monto Pago Mínimo al Descubierto y Porcentaje de Pago Mínimo No Cubierto. El sistema primero valida el Monto Gracia Margen. Si la diferencia pendiente supera esta tolerancia, evalúa los parámetros de monto y porcentaje para determinar si corresponde generar importe vencido. La documentación indica que se utiliza el criterio más restrictivo entre el monto y el porcentaje permitidos.",
+    "dependencias": "Opera conjuntamente con los parámetros <a href=\"#\" class=\"dep-ref-inline\" data-target=\"fafb40e3-6323-4678-8ff5-e7c66c7b037c\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Monto Pago Mínimo al Descubierto\">Monto Pago Mínimo al Descubierto</a> y <a href=\"#\" class=\"dep-ref-inline\" data-target=\"2f7df47f-da57-4f98-96c8-d4011690b301\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Porcentaje\">Porcentaje</a> de <a href=\"#\" class=\"dep-ref-inline\" data-target=\"5035f594-6580-4d23-9ca6-4195de750373\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Pago Mínimo\">Pago Mínimo</a> No Cubierto. El sistema primero valida el Monto Gracia Margen. Si la diferencia pendiente supera esta tolerancia, evalúa los parámetro<span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">s de monto y</span> <a href=\"#\" class=\"dep-ref-inline\" data-target=\"2f7df47f-da57-4f98-96c8-d4011690b301\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Porcentaje\">porcentaje</a> para determinar si corresponde generar importe vencido. La documentación indica que se utiliza el criterio más restrictivo entre el monto y el <a href=\"#\" class=\"dep-ref-inline\" data-target=\"2f7df47f-da57-4f98-96c8-d4011690b301\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Porcentaje\">porcentaje</a> permitidos.",
     "condicionesOperativas": "La validación se aplica cuando existe una diferencia entre el pago mínimo requerido y el pago realizado por el cliente. El parámetro actúa como el primer nivel de tolerancia antes de que intervengan las demás reglas relacionadas con pagos mínimos no cubiertos.",
     "ejemploOperativo": "Monto Gracia Margen = 10. Pago mínimo = 800. El cliente deja pendiente 15. Como la diferencia supera el margen de gracia, el sistema continúa evaluando los parámetros de porcentaje y monto de pago mínimo al descubierto para determinar si corresponde generar importe vencido.",
     "codigo": "12",
     "id": "d571d826-718f-4b48-b1ba-7cbd77fc1225",
     "creadoEn": "2026-09-07T22:39:53.227Z",
-    "actualizadoEn": "2026-09-07T22:39:53.227Z"
+    "actualizadoEn": "2026-11-13T16:21:34.305Z"
   },
   {
     "nombre": "Monto Máximo sin Importe Vencido",
@@ -569,13 +569,13 @@
     "valores": "Valores numéricos desde 0 hasta 9.999.999.999,99.",
     "requisitosImplementacion": "Definir el monto máximo que puede quedar pendiente para evitar la generación de cantidad de importe vencido (IV), aun cuando sí se genere monto de importe vencido.",
     "configuracionComportamiento": "Establece una tolerancia adicional que permite evitar la generación de cantidad de importe vencido asociada al incumplimiento del pago mínimo. Cuando la diferencia pendiente supera el parámetro Monto Gracia Margen, el sistema puede generar monto de importe vencido; sin embargo, si la diferencia se encuentra dentro del límite definido por este parámetro, no se genera la cantidad de importe vencido utilizada para procesos de inactivación de cuentas.",
-    "dependencias": "Depende directamente del parámetro Monto Gracia Margen. Este parámetro únicamente entra en consideración cuando la diferencia pendiente es superior al monto definido como gracia margen. Funcionalmente, ambos parámetros forman parte de una secuencia de validaciones cuyo objetivo es determinar el impacto del incumplimiento parcial del pago mínimo.",
+    "dependencias": "Depende directamente del parámetro <a href=\"#\" class=\"dep-ref-inline\" data-target=\"d571d826-718f-4b48-b1ba-7cbd77fc1225\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Monto Gracia Margen\">Monto Gracia Margen</a>. Este parámetro <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">únicamente entra en consideración</span> cuando la diferencia pendiente es superior al monto definido como gracia margen. Funcionalmente, ambos parámetro<span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">s forman parte de una secuencia de validaciones cuyo objetivo</span> es determinar el impacto del incumplimiento parcial del <a href=\"#\" class=\"dep-ref-inline\" data-target=\"5035f594-6580-4d23-9ca6-4195de750373\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Pago Mínimo\">pago mínimo</a>.",
     "condicionesOperativas": "La evaluación se realiza cuando el cliente no cubre totalmente el pago mínimo. Primero se valida el Monto Gracia Margen y posteriormente este parámetro para determinar si corresponde registrar cantidad de importe vencido que pueda afectar el estatus de la cuenta.",
     "ejemploOperativo": "Si el Monto Gracia Margen es 5,00 y el cliente deja pendiente 8,00, podría generarse monto de importe vencido. No obstante, si el valor configurado en este parámetro permite tolerar esa diferencia, no se generaría la cantidad de importe vencido utilizada para la inactivación de la cuenta.",
     "codigo": "12",
     "id": "09122769-4d90-4a7b-a1c4-b9534eccac4d",
     "creadoEn": "2026-09-07T22:39:53.227Z",
-    "actualizadoEn": "2026-09-07T22:39:53.227Z"
+    "actualizadoEn": "2026-11-13T16:21:34.305Z"
   },
   {
     "nombre": "Monto Máximo para Saldar",
@@ -586,13 +586,13 @@
     "valores": "Valores numéricos desde 0 hasta 9.999.999.999,99.",
     "requisitosImplementacion": "Definir el saldo máximo permitido para que el sistema genere automáticamente un movimiento de ajuste y deje la cuenta con saldo cero cuando esta se encuentre inactiva.",
     "configuracionComportamiento": "Establece el límite máximo de saldo que puede ser ajustado automáticamente mediante la generación de un movimiento de débito o crédito, según corresponda, con el objetivo de dejar la cuenta en cero. Esta funcionalidad aplica únicamente para cuentas que se encuentran en estado inactivo.",
-    "dependencias": "Depende de la configuración mantenida en la Opción 31 del programa TRT08SN0 - Estados para saldar montos. Los estados definidos en dicha opción determinan cuáles cuentas pueden participar en este proceso, mientras que este parámetro establece el monto máximo permitido para efectuar el ajuste automático. Si la cuenta no se encuentra en uno de los estados configurados para saldar montos, este parámetro no produce efecto por sí solo.",
+    "dependencias": "Depende de la configuración mantenida en la Opción 31 del programa TRT08SN0 - Estados para saldar montos. Los estados definidos en dicha opción determinan cuáles cuentas pueden participar en este proceso, mientras que este parámetro <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">establece el monto máximo permitido</span> para efectuar el ajuste automático. Si la cuenta no se encuentra en uno de los estados configurados para saldar montos, este parámetro <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">no produce efecto por sí solo</span>.",
     "condicionesOperativas": "La cuenta debe encontrarse inactiva y en uno de los estados autorizados para saldar montos. El sistema evaluará el saldo pendiente y, si se encuentra dentro del límite configurado, podrá generar el movimiento correspondiente para dejar la cuenta en cero.",
     "ejemploOperativo": "Si el parámetro está configurado en 20,00 y una cuenta inactiva presenta un saldo pendiente de 15,00, el sistema podrá generar el movimiento de ajuste correspondiente para dejar la cuenta en cero, siempre que el estado de la cuenta esté habilitado en la Opción 31 del TRT08SN0.",
     "codigo": "12",
     "id": "c946ef27-3d3c-4f66-a4e3-fe5dee48f003",
     "creadoEn": "2026-09-07T22:39:53.227Z",
-    "actualizadoEn": "2026-09-07T22:39:53.227Z"
+    "actualizadoEn": "2026-11-13T16:21:34.306Z"
   },
   {
     "nombre": "Monto Mínimo para Pase a Cobro Judicial",
@@ -603,13 +603,13 @@
     "valores": "Valores numéricos desde 0 hasta 9.999.999.999,99.",
     "requisitosImplementacion": "Definir el saldo mínimo que debe mantener una cuenta para que pueda ser trasladada al proceso de Cobro Judicial.",
     "configuracionComportamiento": "Establece el monto mínimo de saldo requerido para que el sistema permita enviar una cuenta al proceso de Cobro Judicial. La cuenta únicamente podrá ser considerada para dicho proceso cuando el saldo cumpla o supere el importe configurado en este parámetro.",
-    "dependencias": "El parámetro actúa como criterio de elegibilidad para el traslado a Cobro Judicial. Si el saldo de la cuenta no alcanza el monto definido, el sistema no permitirá realizar el pase, independientemente de que la cuenta cumpla otras condiciones de morosidad o gestión de cobro.",
+    "dependencias": "El parámetro <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">actúa como criterio de elegibilidad</span> para el traslado a Cobro Judicial. Si el saldo de la cuenta no alcanza el monto definido, el sistema no permitirá realizar el pase, independientemente de que la cuenta cumpla otras condiciones de morosidad o gestión de cobro.",
     "condicionesOperativas": "Durante el proceso de evaluación para Cobro Judicial, el sistema compara el saldo de la cuenta contra el monto configurado. Solo las cuentas que cumplan el mínimo requerido podrán ser trasladadas.",
     "ejemploOperativo": "Si el parámetro está configurado en 500,00 y la cuenta posee un saldo de 450,00, el sistema no permitirá el traslado a Cobro Judicial. Si el saldo es de 600,00, la cuenta podrá ser considerada para el proceso, sujeto al cumplimiento de las demás condiciones aplicables.",
     "codigo": "12",
     "id": "96fbc961-01d0-4106-90fd-c241530b0a88",
     "creadoEn": "2026-09-07T22:39:53.227Z",
-    "actualizadoEn": "2026-09-07T22:39:53.227Z"
+    "actualizadoEn": "2026-11-13T16:21:34.307Z"
   },
   {
     "nombre": "Monto para Otorgar 1 Punto",
@@ -620,13 +620,13 @@
     "valores": "Valores numéricos desde 0 hasta 9.999.999.999,99.",
     "requisitosImplementacion": "Definir el monto de consumo o transacción requerido para acreditar un punto dentro del programa de premiación correspondiente.",
     "configuracionComportamiento": "Establece la equivalencia monetaria necesaria para otorgar un punto al tarjetahabiente. Por ejemplo, si se define un importe específico, el sistema asigna un punto cada vez que se alcanza dicho monto en transacciones elegibles. La documentación indica que este parámetro corresponde al esquema antiguo de premiación y que actualmente no debería utilizarse; sin embargo, existen configuraciones activas en algunos clientes, por lo que su vigencia funcional requiere confirmación.",
-    "dependencias": "Aplica únicamente cuando la cuenta participa en un programa de puntos. Si la cuenta no forma parte de un esquema de acumulación de puntos, este parámetro no produce efecto.",
+    "dependencias": "Aplica únicamente cuando la cuenta participa en un programa de puntos. Si la cuenta no forma parte de un esquema de acumulación de puntos, este parámetro <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">no produce efecto</span>.",
     "condicionesOperativas": "El valor configurado determina la relación entre monto transaccionado y puntos otorgados. La forma exacta de acumulación depende del funcionamiento del programa de puntos asociado.",
     "ejemploOperativo": "Si el parámetro se configura en 100,00, el sistema podría otorgar un punto por cada 100,00 de monto acumulado en transacciones elegibles, sujeto a las reglas del programa de puntos. Este comportamiento específico requiere validación.",
     "codigo": "12",
     "id": "5e3739c6-47dd-4a6a-9edf-b7a36803c491",
     "creadoEn": "2026-09-07T22:39:53.227Z",
-    "actualizadoEn": "2026-09-07T22:39:53.227Z"
+    "actualizadoEn": "2026-11-13T16:21:34.308Z"
   },
   {
     "nombre": "Monto Mínimo Override",
@@ -637,13 +637,13 @@
     "valores": "Valores numéricos desde 0 hasta 9.999.999.999,99.",
     "requisitosImplementacion": "Definir el monto mínimo requerido para que pueda aplicarse un Override.",
     "configuracionComportamiento": "Establece el importe mínimo que debe cumplir una operación, cálculo o condición asociada al proceso de Override para que este sea otorgado o reconocido por el sistema. Funcionalmente, actúa como un límite mínimo de elegibilidad.",
-    "dependencias": "Este parámetro no produce un resultado por sí solo. Su función es definir un umbral mínimo para un proceso relacionado con Override. La naturaleza exacta del Override y los procesos involucrados requieren validación.",
+    "dependencias": "Este parámetro <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">no produce un resultado por sí solo</span>. Su función es definir un umbral mínimo para un proceso relacionado con Override. La naturaleza exacta del Override y los procesos involucrados requieren validación.",
     "condicionesOperativas": "El sistema compara el valor que corresponda al proceso de Override contra el monto mínimo configurado para determinar si se cumple la condición requerida.",
     "ejemploOperativo": "Si el monto mínimo configurado es 100,00, únicamente las operaciones o condiciones que cumplan con dicho importe podrían ser consideradas para el proceso de Override correspondiente.",
     "codigo": "12",
     "id": "90081486-e16a-4ee8-9b19-91fd434404c9",
     "creadoEn": "2026-09-07T22:39:53.227Z",
-    "actualizadoEn": "2026-09-07T22:39:53.227Z"
+    "actualizadoEn": "2026-11-13T16:21:34.308Z"
   },
   {
     "nombre": "Monto Máximo Override",
@@ -654,13 +654,13 @@
     "valores": "Valor numérico entre 0 y 9.999.999.999,99.",
     "requisitosImplementacion": "Configurar un monto máximo dentro del rango permitido cuando la operación de Override requiera control por importe. La unidad monetaria corresponde a la moneda configurada para el emisor.",
     "configuracionComportamiento": "Funcionalmente, este parámetro define un límite monetario máximo relacionado con la autorización de operaciones mediante Override. Se interpreta que el sistema utiliza este valor para controlar hasta qué importe puede aplicarse una autorización especial o excepción asociada al proceso de Override. El alcance exacto de dicho control requiere confirmación.",
-    "dependencias": "Depende de Override Permitido (Opción 5).\r\n Cuando Override Permitido = SI, el sistema considera el monto configurado en este parámetro.",
+    "dependencias": "Depende de <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"El parámetro vinculado ya no existe. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Override Permitido</span> (Opción 5).\n Cuando <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"El parámetro vinculado ya no existe. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Override Permitido</span> = SI, el sistema considera el monto configurado en este parámetro.",
     "condicionesOperativas": "El sistema compara el valor que corresponda al proceso de Override contra el monto mínimo configurado para determinar si se cumple la condición requerida.",
     "ejemploOperativo": "Si se configura un valor de 50.000, el sistema podría utilizar dicho importe como monto máximo permitido para una operación que requiera Override.",
     "codigo": "12",
     "id": "241c5820-664f-4a08-8ba7-2f9581d899ae",
     "creadoEn": "2026-09-07T22:39:53.227Z",
-    "actualizadoEn": "2026-09-07T22:39:53.227Z"
+    "actualizadoEn": "2026-11-13T16:21:36.700Z"
   },
   {
     "nombre": "Vencimiento de Cuentas Nuevas",
@@ -722,13 +722,13 @@
     "valores": "Valores numéricos entre 0 y 9999999999,99.",
     "requisitosImplementacion": "Debe configurarse un monto máximo para limitar el recargo aplicado por devolución de cheques de bancos locales.",
     "configuracionComportamiento": "El sistema calcula inicialmente un recargo equivalente al 5% del monto del cheque devuelto. Posteriormente valida los límites mínimo y máximo configurados para determinar el monto final que será cargado a la cuenta.",
-    "dependencias": "Trabaja en conjunto con el parámetro Monto Mínimo de Recargo por Cheque Devuelto (Movimiento 35), ubicado en la Opción 12, Subopción 5. Ambos valores delimitan el resultado del cálculo del 5 % sobre el cheque devuelto.",
+    "dependencias": "Trabaja en conjunto con el parámetro <a href=\"#\" class=\"dep-ref-inline\" data-target=\"58f7f3c3-d21f-4aae-b9c5-233e09d65a32\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Monto Mínimo de Recargo por Cheque Devuelto (Movimiento 35)\">Monto Mínimo de Recargo por Cheque Devuelto (Movimiento 35)</a>, ubicado en la Opción 12, Subopción 5. Ambos valores delimitan el resultado del cálculo del 5 % sobre el cheque devuelto.",
     "condicionesOperativas": "Aplica cuando se registra la devolución de un cheque de banco local en moneda local o internacional y corresponde generar el recargo asociado.",
     "ejemploOperativo": "Si el 5% del cheque devuelto genera un recargo de 5.000 y el monto máximo configurado es 3.000, el sistema aplicará únicamente 3.000 como cargo.",
     "codigo": "12",
     "id": "ee2cf0d7-e580-45c6-87a9-f0f9b0ca2bcb",
     "creadoEn": "2026-09-07T22:39:53.227Z",
-    "actualizadoEn": "2026-09-07T22:39:53.227Z"
+    "actualizadoEn": "2026-11-13T16:21:34.313Z"
   },
   {
     "nombre": "Monto Mínimo de Recargo por Cheque Devuelto (Movimiento 35)",
@@ -739,13 +739,13 @@
     "valores": "Porcentaje entre 0% y 100%.",
     "requisitosImplementacion": "Debe configurarse un monto mínimo para limitar el recargo aplicado por devolución de cheques de bancos locales.",
     "configuracionComportamiento": "El sistema calcula inicialmente un recargo equivalente al 5% del monto del cheque devuelto. Posteriormente valida los límites mínimo y máximo configurados para determinar el monto final que será cargado a la cuenta.",
-    "dependencias": "Trabaja en conjunto con el parámetro Monto Máximo de Recargo por Cheque Devuelto (Movimiento 35), ubicado en la Opción 12, Subopción 5. Ambos valores delimitan el resultado del cálculo del 5 % sobre el cheque devuelto.",
+    "dependencias": "Trabaja en conjunto con el parámetro <a href=\"#\" class=\"dep-ref-inline\" data-target=\"ee2cf0d7-e580-45c6-87a9-f0f9b0ca2bcb\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Monto Máximo de Recargo por Cheque Devuelto (Movimiento 35)\">Monto Máximo de Recargo por Cheque Devuelto (Movimiento 35)</a>, ubicado en la Opción 12, Subopción 5. Ambos valores delimitan el resultado del cálculo del 5 % sobre el cheque devuelto.",
     "condicionesOperativas": "Aplica cuando se registra la devolución de un cheque de banco local en moneda local o internacional y corresponde generar el recargo asociado.",
     "ejemploOperativo": "Si el cheque devuelto es por 15.000, el 5 % equivale a 750. Si el monto mínimo está configurado en 1.000, el sistema cobra 1.000, por ser el límite mínimo aplicable.",
     "codigo": "12",
     "id": "58f7f3c3-d21f-4aae-b9c5-233e09d65a32",
     "creadoEn": "2026-09-07T22:39:53.227Z",
-    "actualizadoEn": "2026-09-07T22:39:53.227Z"
+    "actualizadoEn": "2026-11-13T16:21:34.313Z"
   },
   {
     "nombre": "Días para Descongelar Cheques Internacionales",
@@ -773,13 +773,13 @@
     "valores": "Valores numéricos entre 0 y 9999999999,99.",
     "requisitosImplementacion": "Debe configurarse un monto máximo dentro del rango permitido cuando se requiera limitar el recargo aplicable por la devolución de cheques emitidos por bancos internacionales.",
     "configuracionComportamiento": "El sistema calcula un recargo equivalente al 5 % del monto del cheque devuelto. Posteriormente compara el resultado con el monto definido en este parámetro y, si el cálculo lo supera, aplica únicamente el monto máximo configurado.",
-    "dependencias": "Este parámetro establece el límite superior del recargo generado sobre cheques internacionales. El cálculo base corresponde al 5 % del monto del cheque devuelto.",
+    "dependencias": "Este parámetro <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">establece el límite superior del recargo generado sobre cheques internacionales</span>. El cálculo base corresponde al 5 % del monto del cheque devuelto.",
     "condicionesOperativas": "Aplica cuando se registra la devolución de un cheque emitido por un banco extranjero y corresponde generar el recargo asociado.",
     "ejemploOperativo": "Si un cheque devuelto por 100.000 genera un recargo calculado de 5.000 y el parámetro tiene configurado un máximo de 3.000, el sistema aplicará únicamente 3.000 como cargo.",
     "codigo": "12",
     "id": "800e1b71-5795-4edf-adfd-37857aa9797a",
     "creadoEn": "2026-09-07T22:39:53.227Z",
-    "actualizadoEn": "2026-09-07T22:39:53.227Z"
+    "actualizadoEn": "2026-11-13T16:21:34.316Z"
   },
   {
     "nombre": "Porcentaje de Comisión por Adelanto de Efectivo Manual (MCC 6010)",
@@ -790,13 +790,13 @@
     "valores": "Porcentaje entre 0% y 100%.",
     "requisitosImplementacion": "Debe configurarse un porcentaje para definir la comisión aplicable a los adelantos de efectivo manuales identificados con el MCC 6010.",
     "configuracionComportamiento": "Define el porcentaje de comisión que se utilizará para calcular el cargo asociado a los adelantos de efectivo manuales. El importe calculado puede complementarse con el parámetro Monto de Comisión por Adelanto de Efectivo Manual (MCC 6010), generándose posteriormente un único movimiento de comisión.",
-    "dependencias": "Se relaciona con el parámetro Monto de Comisión por Adelanto de Efectivo Manual (MCC 6010). Adicionalmente, los parámetros Cálculo Comisión Excluyente y Cálculo Comisión por MCC determinan la forma en que el sistema aplica las comisiones de adelanto de efectivo.",
+    "dependencias": "Se relaciona con el parámetro <a href=\"#\" class=\"dep-ref-inline\" data-target=\"cf7a9bb0-be32-4f04-945b-d72d11e10828\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Monto de Comisión por Adelanto de Efectivo Manual (MCC 6010)\">Monto de Comisión por Adelanto de Efectivo Manual (MCC 6010)</a>. Adicionalmente, los parámetros <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"El parámetro vinculado ya no existe. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Cálculo Comisión Excluyente</span> y <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"El parámetro vinculado ya no existe. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Cálculo Comisión por MCC</span> determinan la forma en que el sistema aplica las comisiones de adelanto de efectivo.",
     "condicionesOperativas": "Aplica en transacciones de adelanto de efectivo manual clasificadas bajo el código MCC 6010.",
     "ejemploOperativo": "Si se configura un porcentaje de 3 % y un adelanto manual es por 100.000, el cálculo de la comisión porcentual será de 3.000 antes de considerar otras reglas o montos complementarios configurados.",
     "codigo": "12",
     "id": "f030000c-a21d-42b2-ad98-c25433978280",
     "creadoEn": "2026-09-07T22:39:53.227Z",
-    "actualizadoEn": "2026-09-07T22:39:53.227Z"
+    "actualizadoEn": "2026-11-13T16:21:36.705Z"
   },
   {
     "nombre": "Monto de Comisión por Adelanto de Efectivo Manual (MCC 6010)",
@@ -807,13 +807,13 @@
     "valores": "Valores numéricos entre 0 y 9999999999,99.",
     "requisitosImplementacion": "Debe configurarse un monto fijo para definir la comisión aplicable a los adelantos de efectivo manuales realizados en otros adquirentes.",
     "configuracionComportamiento": "Define el componente fijo de la comisión por adelantos de efectivo manuales identificados con el MCC 6010. Este monto se suma al valor calculado mediante el parámetro Porcentaje de Comisión por Adelanto de Efectivo Manual (MCC 6010) y el resultado genera un único Movimiento 29 - Comisión por Adelanto de Efectivo. El cálculo considera el tipo de cambio de compra de la moneda de la transacción; cuando la operación es en dólares se utiliza un tipo de cambio igual a 1.",
-    "dependencias": "Depende funcionalmente del parámetro Porcentaje de Comisión por Adelanto de Efectivo Manual (MCC 6010), ya que ambos participan en el cálculo de la comisión final. Además, los parámetros Cálculo Comisión Excluyente y Cálculo Comisión por MCC pueden modificar la forma en que el sistema aplica estas comisiones.",
+    "dependencias": "Depende funcionalmente del parámetro <a href=\"#\" class=\"dep-ref-inline\" data-target=\"f030000c-a21d-42b2-ad98-c25433978280\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Porcentaje de Comisión por Adelanto de Efectivo Manual (MCC 6010)\">Porcentaje de Comisión por Adelanto de Efectivo Manual (MCC 6010)</a>, ya que ambos participan en el cálculo de la comisión final. Además, los parámetros <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"El parámetro vinculado ya no existe. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Cálculo Comisión Excluyente</span> y <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"El parámetro vinculado ya no existe. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Cálculo Comisión por MCC</span> pueden modificar la forma en que el sistema aplica estas comisiones.",
     "condicionesOperativas": "Aplica a transacciones de adelanto de efectivo manual clasificadas bajo el MCC 6010.",
     "ejemploOperativo": "Si se configura un monto fijo de 5 y además existe una comisión porcentual calculada de 3, el sistema utilizará ambos valores para determinar el importe final de la comisión según las reglas configuradas para el emisor.",
     "codigo": "12",
     "id": "cf7a9bb0-be32-4f04-945b-d72d11e10828",
     "creadoEn": "2026-09-07T22:39:53.227Z",
-    "actualizadoEn": "2026-09-07T22:39:53.227Z"
+    "actualizadoEn": "2026-11-13T16:21:36.705Z"
   },
   {
     "nombre": "Porcentaje de Comisión por Adelanto de Efectivo en Cajeros Automáticos \r\n(MCC 6011)",
@@ -824,13 +824,13 @@
     "valores": "Porcentaje entre 0% y 100%.",
     "requisitosImplementacion": "Debe configurarse un porcentaje para definir la comisión aplicable a los adelantos de efectivo realizados mediante cajeros automáticos clasificados bajo el MCC 6011.",
     "configuracionComportamiento": "Define el porcentaje de comisión utilizado para calcular el cargo por adelantos de efectivo efectuados en cajeros automáticos. Este porcentaje forma parte del cálculo de la comisión aplicable a las transacciones MCC 6011.",
-    "dependencias": "Se relaciona con el parámetro Monto de Comisión por Adelanto de Efectivo en Cajero Automático (MCC 6011). Para transacciones realizadas en la red de cajeros ATH de Costa Rica, este porcentaje se cobrará únicamente cuando el parámetro Cálculo Comisión por MCC se encuentre habilitado.",
+    "dependencias": "Se relaciona con el parámetro <a href=\"#\" class=\"dep-ref-inline\" data-target=\"f8d9ee22-a224-40fd-8339-670deece8ee6\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Monto de Comisión por Adelanto de Efectivo en Cajero Automático \n(MCC 6011)\">Monto de Comisión por Adelanto de Efectivo en Cajero Automático (MCC 6011)</a>. Para transacciones realizadas en la red de cajeros ATH de Costa Rica, este <a href=\"#\" class=\"dep-ref-inline\" data-target=\"2f7df47f-da57-4f98-96c8-d4011690b301\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Porcentaje\">porcentaje</a> se cobrará únicamente cuando el parámetro <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"El parámetro vinculado ya no existe. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Cálculo Comisión por MCC</span> se encuentre habilitado.",
     "condicionesOperativas": "Aplica a transacciones de adelanto de efectivo realizadas en cajeros automáticos identificadas con el MCC 6011.",
     "ejemploOperativo": "Si se configura un porcentaje de 2 % y el adelanto de efectivo es por 100.000, la comisión porcentual calculada será de 2.000 antes de aplicar otras reglas configuradas para el emisor.",
     "codigo": "12",
     "id": "8b508f49-4e64-4c1d-b904-ec6481cb0797",
     "creadoEn": "2026-09-07T22:39:53.227Z",
-    "actualizadoEn": "2026-09-07T22:39:53.227Z"
+    "actualizadoEn": "2026-11-13T16:21:36.706Z"
   },
   {
     "nombre": "Monto de Comisión por Adelanto de Efectivo en Cajero Automático \r\n(MCC 6011)",
@@ -841,13 +841,13 @@
     "valores": "Valores numéricos entre 0 y 9999999999,99.",
     "requisitosImplementacion": "Debe configurarse un monto fijo para definir la comisión aplicable a adelantos de efectivo realizados mediante cajeros automáticos identificados con el MCC 6011.",
     "configuracionComportamiento": "Define el componente fijo de la comisión por adelantos de efectivo en cajeros automáticos. Este monto se suma al valor calculado mediante el parámetro Porcentaje de Comisión por Adelanto de Efectivo en Cajero Automático (MCC 6011) y ambos generan un único Movimiento 29 - Comisión por Adelanto de Efectivo. El cálculo considera el tipo de cambio de compra de la moneda de la transacción y, cuando la operación es en dólares, utiliza un tipo de cambio igual a 1.",
-    "dependencias": "Depende funcionalmente del parámetro Porcentaje de Comisión por Adelanto de Efectivo en Cajero Automático (MCC 6011). Para transacciones realizadas en la red ATH de Costa Rica, este monto solo se cobra cuando el parámetro Cálculo Comisión por MCC se encuentra habilitado. Asimismo, el parámetro Cálculo Comisión Excluyente puede modificar la forma en que se aplica la comisión.",
+    "dependencias": "Depende funcionalmente del parámetro <a href=\"#\" class=\"dep-ref-inline\" data-target=\"56b437a8-1e04-41fe-9784-d8a500bc8c6e\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Porcentaje de Comisión\">Porcentaje de Comisión</a> por Adelanto de Efectivo en Cajero Automático (MCC 6011). Para transacciones realizadas en la red ATH de Costa Rica, este monto solo se cobra cuando el parámetro <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"El parámetro vinculado ya no existe. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Cálculo Comisión por MCC</span> se encuentra habilitado. Asimismo, el parámetro <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"El parámetro vinculado ya no existe. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Cálculo Comisión Excluyente</span> puede modificar la forma en que se aplica la comisión.",
     "condicionesOperativas": "Aplica a transacciones de adelanto de efectivo efectuadas en cajeros automáticos clasificadas bajo el MCC 6011.",
     "ejemploOperativo": "Si existe un monto fijo configurado de 5 y una comisión porcentual calculada de 3, ambos valores se consideran para determinar la comisión final según las reglas vigentes para el emisor.",
     "codigo": "12",
     "id": "f8d9ee22-a224-40fd-8339-670deece8ee6",
     "creadoEn": "2026-09-07T22:39:53.227Z",
-    "actualizadoEn": "2026-09-07T22:39:53.227Z"
+    "actualizadoEn": "2026-11-13T16:21:36.706Z"
   },
   {
     "nombre": "Cobrar Comisión Según Monto Informado por Incoming VISA",
@@ -858,13 +858,13 @@
     "valores": "S = Sí / N = No",
     "requisitosImplementacion": "Debe definirse si la comisión de adelanto de efectivo se calculará utilizando el importe enviado por VISA en el incoming o mediante los parámetros de comisión configurados en Siscard.",
     "configuracionComportamiento": "Determina si el cobro de la comisión asociada al Movimiento 29 (Comisión por Adelanto de Efectivo) utilizará directamente el monto informado por VISA en el incoming. Cuando está configurado en S, el sistema toma el monto enviado por VISA y omite los parámetros de comisión MCC 6010 y MCC 6011 definidos para el emisor.",
-    "dependencias": "Cuando se encuentra en S, ignora los parámetros Porcentaje Comisión 6010, Monto Comisión 6010, Porcentaje Comisión 6011 y Monto Comisión 6011. Cuando está en N, el cálculo se realiza utilizando la parametrización configurada para los MCC correspondientes.",
+    "dependencias": "Cuando se encuentra en S, ignora los parámetros <a href=\"#\" class=\"dep-ref-inline\" data-target=\"5a695ad6-58b6-4492-8771-b232e4270ce3\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Porcentaje Comisión\">Porcentaje Comisión</a> 6010, Monto Comisión 6010, <a href=\"#\" class=\"dep-ref-inline\" data-target=\"5a695ad6-58b6-4492-8771-b232e4270ce3\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Porcentaje Comisión\">Porcentaje Comisión</a> 6011 y Monto Comisión 6011. Cuando está en N, el cálculo se realiza utilizando la parametrización configurada para los MCC correspondientes.",
     "condicionesOperativas": "Aplica en procesos de adelanto de efectivo donde la marca VISA suministra información de comisión mediante el incoming transaccional.",
     "ejemploOperativo": "Si el parámetro está en S, la comisión será tomada del monto informado por VISA y no se considerarán los porcentajes o montos configurados para los MCC 6010 y 6011.",
     "codigo": "12",
     "id": "ea292254-35e4-4c66-b649-815cf88f2de1",
     "creadoEn": "2026-09-07T22:39:53.227Z",
-    "actualizadoEn": "2026-09-07T22:39:53.227Z"
+    "actualizadoEn": "2026-11-13T16:21:34.319Z"
   },
   {
     "nombre": "Monto de Gastos Administrativos por Activación de Tarjeta",
@@ -875,13 +875,13 @@
     "valores": "Valores numéricos entre 0 y 9999999999,99.",
     "requisitosImplementacion": "Debe configurarse un monto cuando se requiera aplicar un cargo administrativo asociado a la activación de una tarjeta.",
     "configuracionComportamiento": "Define el importe de gastos administrativos que el sistema aplicará a la cuenta durante el proceso de activación de una tarjeta. Si el parámetro tiene un valor configurado, el cargo se genera automáticamente al completar la activación.",
-    "dependencias": "Aplica únicamente cuando la tarjeta es activada desde la opción 20 Tarjetas, subopción 24 Activar, del programa Trabajar con una Cuenta (TRT28SN3). Si el parámetro no tiene un monto definido, la documentación no indica que se aplique el cargo.",
+    "dependencias": "Aplica únicamente cuando la tarjeta es activada desde la opción 20 Tarjetas, subopción 24 Activar, del programa Trabajar con una Cuenta (TRT28SN3). Si el parámetro <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Referencia sin coincidencia exacta. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">no</span> tiene un monto definido, la documentación no indica que se aplique el cargo.",
     "condicionesOperativas": "El cargo se evalúa exclusivamente durante el proceso de activación de tarjetas.",
     "ejemploOperativo": "Si el parámetro tiene configurado un valor de 10 y se activa una tarjeta mediante el proceso indicado, el sistema aplicará a la cuenta un cargo administrativo por ese importe.",
     "codigo": "12",
     "id": "fdb43f2b-57c9-4012-aa51-d92f5dd7d129",
     "creadoEn": "2026-09-07T22:39:53.227Z",
-    "actualizadoEn": "2026-09-07T22:39:53.227Z"
+    "actualizadoEn": "2026-11-13T16:21:34.320Z"
   },
   {
     "nombre": "Tasa de Interés por Sobregiro",
@@ -892,13 +892,13 @@
     "valores": "Porcentaje entre 0% y 100%.",
     "requisitosImplementacion": "Debe configurarse una tasa porcentual para definir el interés que será cobrado cuando una cuenta presente condición de sobregiro.",
     "configuracionComportamiento": "Define la tasa de interés que se aplica a las cuentas que presentan sobregiro. El porcentaje configurado se utiliza para calcular el cargo asociado a esta condición.",
-    "dependencias": "No es excluyente del parámetro Porcentaje de Sobregiro de la Opción 18 Por Tipo de Cliente. La documentación indica que, si ambos porcentajes están configurados, ambos cargos pueden ser aplicados al cliente.",
+    "dependencias": "No es excluyente del parámetro <a href=\"#\" class=\"dep-ref-inline\" data-target=\"2f7df47f-da57-4f98-96c8-d4011690b301\" data-auto=\"true\" title=\"Referencia automática: Op. 12 · Porcentaje\">Porcentaje</a> de Sobregiro de la Opción 18 Por <span class=\"dep-pendiente\" data-estado=\"pendiente\" title=\"Hay más de un parámetro con este nombre exacto. Seleccione el texto y haga clic derecho para vincularlo manualmente.\">Tipo de Cliente</span>. La documentación indica que, si ambos porcentajes están configurados, ambos cargos pueden ser aplicados al cliente.",
     "condicionesOperativas": "Aplica cuando una cuenta incurre en una condición de sobregiro y corresponde realizar el cálculo de los cargos asociados.",
     "ejemploOperativo": "Si una cuenta incurre en sobregiro y existe una tasa configurada en este parámetro, el sistema utilizará dicho porcentaje para calcular el interés correspondiente. Si además existe un porcentaje de sobregiro configurado en la Opción 18, ambos conceptos podrán ser aplicados.",
     "codigo": "12",
     "id": "cec81404-024a-49c0-b611-432551d4aee9",
     "creadoEn": "2026-09-07T22:39:53.227Z",
-    "actualizadoEn": "2026-09-07T22:39:53.227Z"
+    "actualizadoEn": "2026-11-13T16:21:34.321Z"
   },
   {
     "nombre": "Tipo Movimiento",
